@@ -7,9 +7,8 @@ A Dart implementation of the Magic Card Detector, which detects and recognizes M
 - Card detection using contour detection and polygon approximation
 - Card recognition using perceptual hashing (pHash)
 - Support for different lighting conditions and card orientations
-- Command-line interface for batch processing
-- Web server with UI for uploading and processing images
-- Hash database generation for reference cards
+- Multiplatform support (thanks to Dart)
+- Custom matrix operations and image transformations
 
 ## Prerequisites
 
@@ -20,7 +19,7 @@ A Dart implementation of the Magic Card Detector, which detects and recognizes M
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-repo/magic-card-detector.git
+git clone https://github.com/NextdoorPsycho/magic_card_detector.git
 cd magic-card-detector/mcd_dart
 ```
 
@@ -37,12 +36,12 @@ dart pub get
 Before using the detector, you need to generate a hash database from reference card images:
 
 ```bash
-dart run bin/generate_hashes.dart -i /path/to/reference/cards -o reference_phash.dat
+dart run lib/generate_hashes.dart -i /path/to/reference/cards -o assets/set_hashes/reference_phash.dat
 ```
 
 Options:
 - `-i, --input`: Directory containing reference card images (required)
-- `-o, --output`: Path to output hash file (default: reference_phash.dat)
+- `-o, --output`: Path to output hash file (default: assets/set_hashes/alpha_reference_phash.dat)
 - `-v, --verbose`: Enable verbose output
 - `-h, --help`: Show help message
 
@@ -52,30 +51,18 @@ Process a single image or a directory of images:
 
 ```bash
 # Process a single image
-dart run bin/magic_card_detector.dart -i /path/to/image.jpg -o /path/to/output/dir -r reference_phash.dat
+dart run lib/magic_card_detector.dart -i /path/to/image.jpg -o /path/to/output/dir -r assets/set_hashes/alpha_reference_phash.dat
 
 # Process a directory of images
-dart run bin/magic_card_detector.dart -i /path/to/image/dir -o /path/to/output/dir -r reference_phash.dat
+dart run lib/magic_card_detector.dart -i /path/to/image/dir -o /path/to/output/dir -r assets/set_hashes/alpha_reference_phash.dat
 ```
 
 Options:
 - `-i, --input`: Path to input image or directory (required)
-- `-o, --output`: Path to output directory (default: results)
-- `-r, --reference`: Path to reference hash file (default: alpha_reference_phash.dat)
+- `-o, --output`: Path to output directory (default: assets/out)
+- `-r, --reference`: Path to reference hash file (default: assets/set_hashes/alpha_reference_phash.dat)
 - `-v, --verbose`: Enable verbose output
-- `-d, --visual`: Enable visualization (requires GUI)
 - `-h, --help`: Show help message
-
-
-
-Options:
-- `-p, --port`: Port to listen on (default: 5001)
-- `-h, --host`: Host to bind to (default: 0.0.0.0)
-- `-r, --reference`: Path to reference hash file (default: alpha_reference_phash.dat)
-- `-v, --verbose`: Enable verbose output
-- `--help`: Show help message
-
-After starting the server, open a browser and navigate to `http://localhost:5001/` to upload and process images.
 
 ## Using the Library
 
@@ -87,10 +74,10 @@ import 'package:mcd_dart/mcd_dart.dart';
 
 Future<void> main() async {
   // Initialize detector
-  final detector = MagicCardDetector(outputPath: 'results');
+  final detector = MagicCardDetector(outputPath: 'assets/out');
   
   // Load reference hash data
-  await detector.readPrehashReferenceData('reference_phash.dat');
+  await detector.readPrehashReferenceData('assets/set_hashes/alpha_reference_phash.dat');
   
   // Process an image
   final imageFile = File('path/to/image.jpg');
@@ -107,7 +94,7 @@ Future<void> main() async {
 
 - `core/`: Core detector and recognition functionality
 - `models/`: Data models for cards and images
-- `geometry/`: Polygon and geometric transformation utilities
+- `geometry/`: Polygon and matrix transformation utilities
 - `image/`: Image processing functions
 - `utils/`: Utility functions and configuration
 
@@ -116,13 +103,23 @@ Future<void> main() async {
 - `args`: Command-line argument parsing
 - `image`: Image processing and manipulation
 - `path`: File path handling
-- `image_compare`: Perceptual hashing for image comparison
-- `geometry_kit`: Geometric operations on polygons
+- `collection`: Utility collections
+- `fast_log`: Logging utilities
+- `scryfall_api`: Used for looking up additional card data
+
+## Custom Implementations
+
+This Dart port includes several custom implementations of functionality that would normally be handled by libraries in Python:
+
+- **Matrix Operations**: Custom Matrix4 and Vector4 classes for perspective transformations
+- **Geometry**: Custom Point2D, Line, and Polygon classes
+- **Image Processing**: Custom implementations of contour detection, thresholding, and image adjustments
+- **Perceptual Hashing**: Custom implementation of perceptual image hashing
 
 ## License
 
-This project is licensed under the same license as the original Python implementation.
+This project is licensed under the MIT License.
 
 ## Acknowledgments
 
-This is a Dart port of the original Python implementation by Timo Ikonen.
+This is a Dart port of the original Magic Card Detector Python implementation.
