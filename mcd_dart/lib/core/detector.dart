@@ -11,6 +11,7 @@ import '../models/image.dart';
 // import '../models/card.dart';
 import '../image/processing.dart';
 import '../utils/image_hash.dart';
+import '../utils/config.dart';
 import 'recognition.dart';
 
 class MagicCardDetector {
@@ -58,9 +59,37 @@ class MagicCardDetector {
         );
       }
       
-      print('Done. Loaded ${referenceImages.length} reference cards.');
+      print('Done. Loaded ${referenceImages.length} reference cards from $path.');
     } catch (e) {
       print('Error reading reference data: $e');
+      rethrow;
+    }
+  }
+  
+  /// Loads all available set hash files from the assets/set_hashes directory
+  Future<void> loadAllSetHashes() async {
+    print('Loading all available set hashes...');
+    
+    try {
+      final hashFiles = Config.getAvailableSetHashes();
+      
+      if (hashFiles.isEmpty) {
+        print('No hash files found in ${Config.getSetHashesDirectory()}');
+        return;
+      }
+      
+      int totalCards = 0;
+      for (var file in hashFiles) {
+        final initialCount = referenceImages.length;
+        await readPrehashReferenceData(file.path);
+        final newCards = referenceImages.length - initialCount;
+        totalCards += newCards;
+        print('Loaded $newCards cards from ${path.basename(file.path)}');
+      }
+      
+      print('Total cards loaded from all set hashes: $totalCards');
+    } catch (e) {
+      print('Error loading set hashes: $e');
       rethrow;
     }
   }

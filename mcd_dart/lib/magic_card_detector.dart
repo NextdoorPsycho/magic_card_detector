@@ -9,8 +9,9 @@ void main(List<String> arguments) async {
   // Parse command-line arguments
   ArgParser parser = ArgParser()
     ..addOption('input', abbr: 'i', help: 'Path to input image or directory', mandatory: true)
-    ..addOption('output', abbr: 'o', help: 'Path to output directory', defaultsTo: 'results')
-    ..addOption('reference', abbr: 'r', help: 'Path to reference hash file', defaultsTo: 'alpha_reference_phash.dat')
+    ..addOption('output', abbr: 'o', help: 'Path to output directory', defaultsTo: Config.defaultResultsDirectory)
+    ..addOption('reference', abbr: 'r', help: 'Path to reference hash file', defaultsTo: Config.getDefaultReferenceHashPath())
+    ..addFlag('all-sets', abbr: 'a', help: 'Load all available set hashes', defaultsTo: false)
     ..addFlag('verbose', abbr: 'v', help: 'Enable verbose output', defaultsTo: false)
     ..addFlag('visual', abbr: 'd', help: 'Enable visualization (requires GUI)', defaultsTo: false)
     ..addFlag('help', abbr: 'h', help: 'Show this help message', defaultsTo: false);
@@ -27,6 +28,7 @@ void main(List<String> arguments) async {
     String inputPath = results['input'] as String;
     String outputPath = results['output'] as String;
     String refHashPath = results['reference'] as String;
+    bool loadAllSets = results['all-sets'] as bool;
     bool verbose = results['verbose'] as bool;
     bool visual = results['visual'] as bool;
 
@@ -44,10 +46,18 @@ void main(List<String> arguments) async {
 
     // Load reference data
     try {
-      await detector.readPrehashReferenceData(refHashPath);
+      if (loadAllSets) {
+        info('Loading all available set hashes...');
+        await detector.loadAllSetHashes();
+      } else {
+        info('Loading reference hash file: $refHashPath');
+        await detector.readPrehashReferenceData(refHashPath);
+      }
+      
+      info('Loaded ${detector.referenceImages.length} reference cards in total.');
     } catch (e) {
       error('Error loading reference data: $e');
-      error('Please make sure the reference hash file exists and is valid.');
+      error('Please make sure the reference hash file(s) exist and are valid.');
       exit(1);
     }
 

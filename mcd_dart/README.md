@@ -33,36 +33,56 @@ dart pub get
 
 ### Generating Hash Database
 
-Before using the detector, you need to generate a hash database from reference card images:
+Before using the detector, you need to generate a hash database from reference card images. You can generate multiple hash files, one for each Magic: The Gathering set you want to recognize:
 
 ```bash
-dart run lib/generate_hashes.dart -i /path/to/reference/cards -o assets/set_hashes/reference_phash.dat
+# Generate hash for the Alpha set
+dart run lib/generate_hashes.dart -i /path/to/alpha/cards -s alpha
+
+# Generate hash for the Beta set
+dart run lib/generate_hashes.dart -i /path/to/beta/cards -s beta
+
+# Generate a custom hash with a specific output path
+dart run lib/generate_hashes.dart -i /path/to/reference/cards -o assets/set_hashes/custom_set.dat
 ```
 
 Options:
 - `-i, --input`: Directory containing reference card images (required)
-- `-o, --output`: Path to output hash file (default: assets/set_hashes/alpha_reference_phash.dat)
+- `-o, --output`: Path to output hash file (default: assets/set_hashes/custom_reference_phash.dat)
+- `-s, --set`: Set name (e.g., "alpha", "beta", "unlimited") (default: "custom")
 - `-v, --verbose`: Enable verbose output
 - `-h, --help`: Show help message
+
+The tool will automatically create the proper directory structure if it doesn't exist.
 
 ### Command-line Interface
 
 Process a single image or a directory of images:
 
 ```bash
-# Process a single image
+# Process a single image with a specific hash set
 dart run lib/magic_card_detector.dart -i /path/to/image.jpg -o /path/to/output/dir -r assets/set_hashes/alpha_reference_phash.dat
 
-# Process a directory of images
-dart run lib/magic_card_detector.dart -i /path/to/image/dir -o /path/to/output/dir -r assets/set_hashes/alpha_reference_phash.dat
+# Process a directory of images using all available set hashes
+dart run lib/magic_card_detector.dart -i /path/to/image/dir -o /path/to/output/dir -a
 ```
 
 Options:
 - `-i, --input`: Path to input image or directory (required)
 - `-o, --output`: Path to output directory (default: assets/out)
 - `-r, --reference`: Path to reference hash file (default: assets/set_hashes/alpha_reference_phash.dat)
+- `-a, --all-sets`: Load all available set hashes from the assets/set_hashes directory
 - `-v, --verbose`: Enable verbose output
 - `-h, --help`: Show help message
+
+### Using Multiple Card Sets
+
+The Dart implementation can recognize cards from multiple Magic: The Gathering sets simultaneously. To do this, simply:
+
+1. Add your hash files to the `assets/set_hashes` directory
+2. Run the detector with the `-a` flag to load all available sets
+
+Each hash file should be generated using the `generate_hashes.dart` tool and have a `.dat` extension.
 
 ## Using the Library
 
@@ -76,8 +96,11 @@ Future<void> main() async {
   // Initialize detector
   final detector = MagicCardDetector(outputPath: 'assets/out');
   
-  // Load reference hash data
+  // Option 1: Load a specific reference hash file
   await detector.readPrehashReferenceData('assets/set_hashes/alpha_reference_phash.dat');
+  
+  // Option 2: Load all available set hashes
+  // await detector.loadAllSetHashes();
   
   // Process an image
   final imageFile = File('path/to/image.jpg');
