@@ -12,6 +12,8 @@ void main(List<String> arguments) async {
     ..addOption('output', abbr: 'o', help: 'Path to output hash file', defaultsTo: Config.getDefaultReferenceHashPath())
     ..addOption('tempdir', abbr: 't', help: 'Temporary directory to store downloaded images', defaultsTo: 'temp_images')
     ..addFlag('keep-images', help: 'Keep downloaded images after hash generation', defaultsTo: false)
+    ..addFlag('parallel', abbr: 'p', help: 'Use parallel processing for faster downloads and processing', defaultsTo: true)
+    ..addOption('concurrency', help: 'Number of parallel operations to perform', defaultsTo: '4') 
     ..addFlag('help', abbr: 'h', help: 'Show this help message', defaultsTo: false);
 
   try {
@@ -27,9 +29,18 @@ void main(List<String> arguments) async {
     String outputFile = results['output'] as String;
     String tempDir = results['tempdir'] as String;
     bool keepImages = results['keep-images'] as bool;
+    bool useParallel = results['parallel'] as bool;
+    int concurrency = int.tryParse(results['concurrency'] as String) ?? 4;
     
     // Always use verbose output
     bool verbose = true;
+    
+    if (verbose) {
+      info('Mode: ${useParallel ? "Parallel" : "Sequential"}');
+      if (useParallel) {
+        info('Concurrency level: $concurrency');
+      }
+    }
     
     // Always modify the output path to include the set name
     final hashesDir = Config.getSetHashesDirectory();
@@ -52,11 +63,24 @@ void main(List<String> arguments) async {
     try {
       // Download images for the specified set
       info('Downloading images for set: $setCode');
-      final downloadedFiles = await scryfallClient.downloadSetImages(
-        setCode, 
-        tempDirectory.path,
-        size: ImageSize.large,
-      );
+      List<String> downloadedFiles;
+      
+      // Use parallel or sequential download based on user choice
+      if (useParallel) {
+        downloadedFiles = await scryfallClient.downloadSetImagesParallel(
+          setCode, 
+          tempDirectory.path,
+          size: ImageSize.large,
+          concurrency: concurrency
+        );
+      } else {
+        downloadedFiles = await scryfallClient.downloadSetImages(
+          setCode, 
+          tempDirectory.path,
+          size: ImageSize.large
+        );
+      }
+      
       info('Downloaded ${downloadedFiles.length} images for set $setCode');
 
       if (downloadedFiles.isEmpty) {
@@ -70,7 +94,17 @@ void main(List<String> arguments) async {
 
       // Process the downloaded images
       info('Processing downloaded images...');
-      await detector.readAndAdjustReferenceImages(tempDirectory.path);
+      
+      // Use parallel or sequential processing based on user choice
+      if (useParallel) {
+        await detector.readAndAdjustReferenceImagesParallel(
+          tempDirectory.path,
+          concurrency: concurrency
+        );
+      } else {
+        await detector.readAndAdjustReferenceImages(tempDirectory.path);
+      }
+      
       info('Processed ${detector.referenceImages.length} reference images');
 
       // Export hash data

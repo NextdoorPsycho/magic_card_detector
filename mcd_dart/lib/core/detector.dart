@@ -95,6 +95,7 @@ class MagicCardDetector {
     }
   }
   
+  /// Reads and processes reference images from a directory (sequential version)
   Future<void> readAndAdjustReferenceImages(String directory) async {
     print('Reading images from $directory');
     print('...');
@@ -119,6 +120,66 @@ class MagicCardDetector {
     print('Done. Loaded ${referenceImages.length} reference cards.');
   }
   
+  /// Reads and processes reference images from a directory with parallel processing
+  /// 
+  /// [directory] - Directory containing reference card images
+  /// [concurrency] - Number of images to process concurrently (default: 5)
+  Future<void> readAndAdjustReferenceImagesParallel(String directory, {int concurrency = 5}) async {
+    print('Reading images from $directory using parallel processing (concurrency: $concurrency)');
+    print('...');
+    
+    final Stopwatch stopwatch = Stopwatch()..start();
+    final Directory dir = Directory(directory);
+    final List<FileSystemEntity> entities = await dir.list().toList();
+    final List<File> imageFiles = entities
+        .whereType<File>()
+        .where((File file) => file.path.toLowerCase().endsWith('.jpg') || file.path.toLowerCase().endsWith('.jpeg'))
+        .toList();
+    
+    int totalFiles = imageFiles.length;
+    int processedFiles = 0;
+    
+    // Process files in batches to control memory usage
+    for (int i = 0; i < totalFiles; i += concurrency) {
+      final int end = i + concurrency < totalFiles ? i + concurrency : totalFiles;
+      final batch = imageFiles.sublist(i, end);
+      
+      // Use Future.wait to process multiple images concurrently
+      final results = await Future.wait(
+        batch.map((File file) async {
+          try {
+            final Uint8List bytes = await file.readAsBytes();
+            final Image? img = decodeImage(bytes);
+            final String name = path.basename(file.path);
+            
+            if (img != null) {
+              return ReferenceImage(name, img);
+            }
+          } catch (e) {
+            print('Error processing file ${file.path}: $e');
+          }
+          return null;
+        })
+      );
+      
+      // Filter out nulls and add to reference images
+      final validResults = results.where((item) => item != null).cast<ReferenceImage>();
+      referenceImages.addAll(validResults);
+      
+      // Update progress
+      processedFiles += batch.length;
+      final progress = (processedFiles / totalFiles * 100).toStringAsFixed(1);
+      final elapsed = stopwatch.elapsed;
+      print('Progress: $progress% ($processedFiles/$totalFiles) - Elapsed: ${elapsed.inSeconds}s');
+      
+      // Short delay to allow memory cleanup
+      await Future.delayed(const Duration(milliseconds: 10));
+    }
+    
+    stopwatch.stop();
+    print('Done. Loaded ${referenceImages.length} reference cards in ${stopwatch.elapsed.inSeconds} seconds.');
+  }
+  
   Future<void> readAndAdjustTestImages(String directory) async {
     print('Reading images from $directory');
     print('...');
@@ -129,7 +190,7 @@ class MagicCardDetector {
     final List<FileSystemEntity> entities = await dir.list().toList();
     final List<File> imageFiles = entities
         .whereType<File>()
-        .where((File file) => file.path.toLowerCase().endsWith('.jpg'))
+        .where((File file) => file.path.toLowerCase().endsWith('.jpg') || file.path.toLowerCase().endsWith('.jpeg'))
         .toList();
     
     for (File file in imageFiles) {
@@ -154,6 +215,79 @@ class MagicCardDetector {
     }
     
     print('Done. Loaded ${testImages.length} test images.');
+  }
+  
+  /// Reads and processes test images from a directory with parallel processing
+  /// 
+  /// [directory] - Directory containing test images
+  /// [concurrency] - Number of images to process concurrently (default: 3)
+  Future<void> readAndAdjustTestImagesParallel(String directory, {int concurrency = 3}) async {
+    print('Reading test images from $directory using parallel processing (concurrency: $concurrency)');
+    print('...');
+    
+    final Stopwatch stopwatch = Stopwatch()..start();
+    final int maxSize = 1000;
+    
+    final Directory dir = Directory(directory);
+    final List<FileSystemEntity> entities = await dir.list().toList();
+    final List<File> imageFiles = entities
+        .whereType<File>()
+        .where((File file) => file.path.toLowerCase().endsWith('.jpg') || file.path.toLowerCase().endsWith('.jpeg'))
+        .toList();
+    
+    int totalFiles = imageFiles.length;
+    int processedFiles = 0;
+    
+    // Process files in batches to control memory usage (smaller batches for test images since they're typically larger)
+    for (int i = 0; i < totalFiles; i += concurrency) {
+      final int end = i + concurrency < totalFiles ? i + concurrency : totalFiles;
+      final batch = imageFiles.sublist(i, end);
+      
+      // Use Future.wait to process multiple images concurrently
+      final results = await Future.wait(
+        batch.map((File file) async {
+          try {
+            final Uint8List bytes = await file.readAsBytes();
+            Image? img = decodeImage(bytes);
+            
+            if (img != null) {
+              // Resize if needed
+              if (math.min(img.width, img.height) > maxSize) {
+                final double scalef = maxSize / math.min(img.width, img.height);
+                img = copyResize(
+                  img,
+                  width: (img.width * scalef).toInt(),
+                  height: (img.height * scalef).toInt(),
+                  interpolation: Interpolation.average
+                );
+              }
+              
+              final String name = path.basename(file.path);
+              return TestImage(name, img);
+            }
+          } catch (e) {
+            print('Error processing test file ${file.path}: $e');
+          }
+          return null;
+        })
+      );
+      
+      // Filter out nulls and add to test images
+      final validResults = results.where((item) => item != null).cast<TestImage>();
+      testImages.addAll(validResults);
+      
+      // Update progress
+      processedFiles += batch.length;
+      final progress = (processedFiles / totalFiles * 100).toStringAsFixed(1);
+      final elapsed = stopwatch.elapsed;
+      print('Progress: $progress% ($processedFiles/$totalFiles) - Elapsed: ${elapsed.inSeconds}s');
+      
+      // Short delay to allow memory cleanup
+      await Future.delayed(const Duration(milliseconds: 50));
+    }
+    
+    stopwatch.stop();
+    print('Done. Loaded ${testImages.length} test images in ${stopwatch.elapsed.inSeconds} seconds.');
   }
   
   RecognitionResult recognizeSegment(Image imageSegment) {

@@ -152,7 +152,7 @@ class ScryfallClient {
     }
   }
 
-  /// Download all card images for a set and save to a directory
+  /// Download all card images for a set and save to a directory (sequential version)
   Future<List<String>> downloadSetImages(String setCode, String outputDir,
       {ImageSize size = ImageSize.large}) async {
     final List<MtgCard> cards = await getCardsBySetCode(setCode);
@@ -193,6 +193,97 @@ class ScryfallClient {
       } catch (e) {
         warn('Error downloading card ${card.name}: $e');
       }
+    }
+    
+    return downloadedFiles;
+  }
+  
+  /// Download all card images for a set and save to a directory with parallel processing
+  /// 
+  /// [setCode] - The set code (e.g. "LTR", "MOM")
+  /// [outputDir] - Directory to save downloaded images
+  /// [size] - Image size to download
+  /// [concurrency] - Number of parallel downloads (default: 4)
+  Future<List<String>> downloadSetImagesParallel(String setCode, String outputDir,
+      {ImageSize size = ImageSize.large, int concurrency = 4}) async {
+    final Stopwatch stopwatch = Stopwatch()..start();
+    final List<MtgCard> cards = await getCardsBySetCode(setCode);
+    
+    if (verbose) {
+      info('Starting parallel download of ${cards.length} images from set $setCode (concurrency: $concurrency)');
+    }
+    
+    // Create output directory if it doesn't exist
+    final Directory directory = Directory(outputDir);
+    if (!await directory.exists()) {
+      await directory.create(recursive: true);
+    }
+    
+    final List<String> downloadedFiles = <String>[];
+    int totalCards = cards.length;
+    int processedCards = 0;
+    
+    // Process cards in batches to control parallel requests
+    for (int i = 0; i < totalCards; i += concurrency) {
+      final int end = i + concurrency < totalCards ? i + concurrency : totalCards;
+      final batch = cards.sublist(i, end);
+      
+      // Start concurrent downloads
+      final results = await Future.wait(
+        batch.map((MtgCard card) async {
+          try {
+            // Skip cards without images
+            String? imageUrl = getCardImageUrl(card, size: size);
+            if (imageUrl == null) {
+              if (verbose) {
+                warn('No image available for card: ${card.name}');
+              }
+              return null;
+            }
+            
+            // Generate a safe filename
+            final String filename = '${card.name.replaceAll(RegExp(r'[^\w\s]'), '_')}_${card.collectorNumber}.jpg';
+            final String filePath = path.join(outputDir, filename);
+            
+            // Download the image
+            final Uint8List imageBytes = await downloadImageFromUrl(imageUrl);
+            
+            // Save to file
+            await File(filePath).writeAsBytes(imageBytes);
+            
+            if (verbose) {
+              info('Downloaded: ${card.name}');
+            }
+            
+            return filePath;
+          } catch (e) {
+            warn('Error downloading card ${card.name}: $e');
+            return null;
+          }
+        }),
+        eagerError: false // Continue processing other downloads even if some fail
+      );
+      
+      // Filter out nulls and add to downloaded files list
+      final validResults = results.where((path) => path != null).cast<String>();
+      downloadedFiles.addAll(validResults);
+      
+      // Update progress
+      processedCards += batch.length;
+      final progress = (processedCards / totalCards * 100).toStringAsFixed(1);
+      final elapsed = stopwatch.elapsed;
+      
+      if (verbose) {
+        info('Progress: $progress% ($processedCards/$totalCards) - Downloaded: ${downloadedFiles.length} images - Elapsed: ${elapsed.inSeconds}s');
+      }
+      
+      // Add a small delay between batches to be nice to Scryfall API
+      await Future.delayed(const Duration(milliseconds: 200));
+    }
+    
+    stopwatch.stop();
+    if (verbose) {
+      success('Downloaded ${downloadedFiles.length} images in ${stopwatch.elapsed.inSeconds} seconds');
     }
     
     return downloadedFiles;
