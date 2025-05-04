@@ -12,7 +12,6 @@ void main(List<String> arguments) async {
     ..addOption('output', abbr: 'o', help: 'Path to output hash file', defaultsTo: Config.getDefaultReferenceHashPath())
     ..addOption('tempdir', abbr: 't', help: 'Temporary directory to store downloaded images', defaultsTo: 'temp_images')
     ..addFlag('keep-images', help: 'Keep downloaded images after hash generation', defaultsTo: false)
-    ..addFlag('verbose', abbr: 'v', help: 'Enable verbose output', defaultsTo: false)
     ..addFlag('help', abbr: 'h', help: 'Show this help message', defaultsTo: false);
 
   try {
@@ -28,14 +27,14 @@ void main(List<String> arguments) async {
     String outputFile = results['output'] as String;
     String tempDir = results['tempdir'] as String;
     bool keepImages = results['keep-images'] as bool;
-    bool verbose = results['verbose'] as bool;
     
-    // If using default output path, modify it to include the set name
-    if (outputFile == Config.getDefaultReferenceHashPath()) {
-      final hashesDir = Config.getSetHashesDirectory();
-      outputFile = path.join(hashesDir, '${setCode.toLowerCase()}_reference_phash.dat');
-      info('Using output file: $outputFile');
-    }
+    // Always use verbose output
+    bool verbose = true;
+    
+    // Always modify the output path to include the set name
+    final hashesDir = Config.getSetHashesDirectory();
+    outputFile = path.join(hashesDir, '${setCode.toLowerCase()}_reference_phash.dat');
+    info('Using output file: $outputFile');
 
     // Create a temporary directory for downloaded images
     final tempDirectory = Directory(tempDir);
@@ -121,8 +120,6 @@ void main(List<String> arguments) async {
 
 void printUsage(ArgParser parser) {
   info('Magic Card Detector - Hash Generator (Scryfall)');
-  info('This tool generates a perceptual hash database from Scryfall card images.');
-  info('The hash database can be used by the detector for faster card recognition.');
   info('Usage: generate_hashes_from_scryfall --set=<SET_CODE> [options]');
   info(parser.usage);
 }

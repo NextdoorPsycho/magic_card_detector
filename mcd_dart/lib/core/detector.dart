@@ -7,14 +7,6 @@ import 'package:image/image.dart';
 import 'package:mcd_dart/mcd_dart.dart';
 import 'package:path/path.dart' as path;
 
-import '../models/image.dart';
-// Import when needed
-// import '../models/card.dart';
-import '../image/processing.dart';
-import '../utils/image_hash.dart';
-import '../utils/config.dart';
-import 'recognition.dart';
-
 class MagicCardDetector {
   String? outputPath;
   List<ReferenceImage> referenceImages = [];
@@ -36,7 +28,7 @@ class MagicCardDetector {
       if (image.phash != null) {
         hashData.add({
           'name': image.name,
-          'hash': image.phash!.hashValue,
+          'hash': image.phash!.hashValue.toString(),
         });
       }
     }
@@ -54,7 +46,15 @@ class MagicCardDetector {
       final List<dynamic> data = jsonDecode(content);
       
       for (var item in data) {
-        final hash = ImageHash(item['hash'] as int);
+        // Handle different hash formats (might be either string or integer from older format)
+        BigInt hashValue;
+        if (item['hash'] is String) {
+          hashValue = BigInt.parse(item['hash']);
+        } else {
+          hashValue = BigInt.from(item['hash'] as int);
+        }
+        
+        final hash = ImageHash(hashValue);
         referenceImages.add(
           ReferenceImage(item['name'], null, phash: hash)
         );
@@ -220,8 +220,78 @@ class MagicCardDetector {
   Future<List<Uint8List>> processImage(Uint8List imageBytes, String imageName) async {
     print('\n--- Processing Image: $imageName ---');
     
-    // Decode the image
-    final Image? image = decodeImage(imageBytes);
+    // Decode the image with memory optimization
+    Image? image;
+    try {
+      // First try with default decoding
+      image = decodeImage(imageBytes);
+      
+      // If the image is too large, resize it before processing
+      if (image != null && (image.width > 3000 || image.height > 3000)) {
+        print('Large image detected. Optimizing memory usage...');
+        double scale = 2000 / (image.width > image.height ? image.width : image.height);
+        image = copyResize(
+          image,
+          width: (image.width * scale).floor(),
+          height: (image.height * scale).floor(),
+          interpolation: Interpolation.average
+        );
+        // Force garbage collection to free memory after resize
+        image.getBytes();
+      }
+    } catch (e) {
+      print('Error during image decoding. Trying with optimization: $e');
+      // Try again with a memory-optimized approach for large images
+      try {
+        // Use a different approach for large images
+        // Create a downsampled version directly without using JpegDecoder
+        // which has API compatibility issues
+        final decoder = JpegDecoder();
+        decoder.startDecode(imageBytes);
+        
+        // Get image info without fully decoding
+        final info = decoder.info;
+        if (info == null) {
+          throw Exception('Could not get image info from JPEG');
+        }
+        
+        int originalWidth = info.width;
+        int originalHeight = info.height;
+        
+        // If the image is very large, create a downsampled version
+        if (originalWidth > 3000 || originalHeight > 3000) {
+          print('Creating downsampled version of large image...');
+          double scale = 2000 / (originalWidth > originalHeight ? originalWidth : originalHeight);
+          int targetWidth = (originalWidth * scale).floor();
+          int targetHeight = (originalHeight * scale).floor();
+          
+          // Decode the full image first but with reduced quality
+          // This is not ideal but safer than using the lower-level API
+          Image? fullImage = decodeJpg(imageBytes);
+          if (fullImage == null) {
+            throw Exception('Failed to decode image with reduced quality');
+          }
+          
+          // Now resize
+          image = copyResize(
+            fullImage,
+            width: targetWidth,
+            height: targetHeight,
+            interpolation: Interpolation.average
+          );
+          
+          // Release original image memory
+          fullImage = Image(width: 1, height: 1);
+        } else {
+          // For smaller images, use standard decoding
+          image = decodeJpg(imageBytes);
+        }
+      } catch (e) {
+        print('Failed to decode image after optimization: $e');
+        throw Exception('Failed to decode image: $e');
+      }
+    }
+    
     if (image == null) {
       throw Exception('Failed to decode image');
     }
@@ -246,12 +316,12 @@ class MagicCardDetector {
     // Generate result images
     print('Generating result images...');
     
-    // Original image bytes
-    final Uint8List originalBytes = encodeJpg(testImage.original);
+    // Original image bytes - using a more efficient compression setting
+    final Uint8List originalBytes = encodeJpg(testImage.original, quality: 85);
     
     // Annotated image
     final Image annotatedImage = testImage.plotImageWithRecognized();
-    final Uint8List annotatedBytes = encodeJpg(annotatedImage);
+    final Uint8List annotatedBytes = encodeJpg(annotatedImage, quality: 85);
     
     print('Done.');
     

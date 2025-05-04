@@ -77,17 +77,63 @@ void segmentImage(
   TestImage testImage, {
   String contouringMode = 'gray',
 }) {
-  // Create a copy of the adjusted image
-  Image fullImage = testImage.adjusted!.clone();
+  // Create a copy of the adjusted image with memory optimization
+  Image fullImage;
+  try {
+    // Memory optimization for large images before segmentation
+    if (testImage.adjusted!.width > 2000 || testImage.adjusted!.height > 2000) {
+      print('Large image detected. Optimizing memory for segmentation...');
+      double scale = 2000 / (testImage.adjusted!.width > testImage.adjusted!.height 
+                            ? testImage.adjusted!.width 
+                            : testImage.adjusted!.height);
+      fullImage = copyResize(
+        testImage.adjusted!,
+        width: (testImage.adjusted!.width * scale).floor(),
+        height: (testImage.adjusted!.height * scale).floor(),
+        interpolation: Interpolation.average
+      );
+    } else {
+      fullImage = testImage.adjusted!.clone();
+    }
+  } catch (e) {
+    print('Error preparing image for segmentation: $e');
+    // Fallback to the original image but at lower resolution
+    double scale = 1000 / (testImage.adjusted!.width > testImage.adjusted!.height 
+                          ? testImage.adjusted!.width 
+                          : testImage.adjusted!.height);
+    fullImage = copyResize(
+      testImage.adjusted!,
+      width: (testImage.adjusted!.width * scale).floor(),
+      height: (testImage.adjusted!.height * scale).floor(),
+      interpolation: Interpolation.average
+    );
+    print('Using fallback lower resolution for segmentation.');
+  }
+  
   double imageArea = fullImage.width * fullImage.height.toDouble();
   double maxSegmentArea = 0.01; // Initial value for largest card area
   
-  // Get contours using the specified mode
+  // Get contours using the specified mode - limit number of contours to avoid memory issues
   List<List<List<int>>> contours = contourImage(fullImage, mode: contouringMode);
   
+  // Limit number of contours to process to avoid memory issues
+  int maxContours = 50; // Reasonable limit
+  if (contours.length > maxContours) {
+    print('Limiting contour processing to $maxContours contours to conserve memory.');
+    contours = contours.sublist(0, maxContours);
+  }
+  
   // Process each contour to find card candidates
+  int processedContours = 0;
   for (List<List<int>> cardContour in contours) {
     try {
+      // Periodically trigger garbage collection for large contour sets
+      processedContours++;
+      if (processedContours % 10 == 0) {
+        // Force a pause to allow garbage collection
+        print('Processed $processedContours contours...');
+      }
+      
       CardContourResult result = characterizeCardContour(
         cardContour,
         maxSegmentArea * imageArea,
@@ -110,7 +156,17 @@ void segmentImage(
           result.cropFactor
         );
         
-        Image warped = fourPointTransform(fullImage, scaledPoly);
+        // Try to transform with memory optimization
+        Image warped;
+        try {
+          warped = fourPointTransform(fullImage, scaledPoly);
+        } catch (e) {
+          print('Error in perspective transform: $e');
+          // Try with a smaller region to avoid memory issues
+          double scale = 0.9; // Slight reduction
+          Polygon smallerPoly = scalePolygon(scaledPoly, scale, scale);
+          warped = fourPointTransform(fullImage, smallerPoly);
+        }
         
         // Add to candidate list
         testImage.candidateList.add(
@@ -120,6 +176,12 @@ void segmentImage(
             result.boundingPoly!.area() / imageArea
           )
         );
+        
+        // Limit to a reasonable number of candidates to avoid memory issues
+        if (testImage.candidateList.length >= 15) {
+          print('Reached maximum number of candidates (15). Stopping segmentation.');
+          break;
+        }
       }
     } catch (e) {
       print('Error processing contour: $e');

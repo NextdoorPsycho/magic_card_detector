@@ -4,7 +4,7 @@ import 'package:path/path.dart' as path;
 class Config {
   // Reference image settings
   static const String defaultHashesDirectory = 'assets/set_hashes';
-  static const String defaultReferenceHashFile = 'alpha_reference_phash.dat';
+  static const String defaultReferenceHashFile = 'default_reference_phash.dat';
   
   // Processing settings
   static const double defaultHashSeparationThreshold = 4.0;
