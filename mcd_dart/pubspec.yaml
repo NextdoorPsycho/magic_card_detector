@@ -13,13 +13,11 @@ dependency_overrides:
 dependencies:
   args: ^2.7.0
   image: ^4.5.4 # Image processing
-  opencv_dart: ^1.4.1 # OpenCV bindings for Dart
   path: ^1.9.1 # File path manipulations
-  image_compare: ^1.1.2 # Perceptual hashing
-  geometry_kit: ^0.1.1 # Basic polygon operations
+  image_compare: ^1.1.2 # Perceptual hashing (used by our custom ImageHash implementation)
   collection: ^1.19.1 # Utility collections
   fast_log: ^1.0.7
-  scryfall_api: ^2.2.0
+  scryfall_api: ^2.2.0 # Used for looking up additional card data
 
 dev_dependencies:
   lints: ^5.1.1

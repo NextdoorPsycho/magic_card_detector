@@ -1,0 +1,288 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:convert';
+import 'dart:math' as math;
+
+import 'package:image/image.dart';
+import 'package:path/path.dart' as path;
+
+import '../models/image.dart';
+// Import when needed
+// import '../models/card.dart';
+import '../image/processing.dart';
+import '../utils/image_hash.dart';
+import 'recognition.dart';
+
+class MagicCardDetector {
+  String? outputPath;
+  List<ReferenceImage> referenceImages = [];
+  List<TestImage> testImages = [];
+  
+  bool verbose = false;
+  bool visual = false;
+  
+  double hashSeparationThr = 4.0;
+  int thrLvl = 70;
+  
+  MagicCardDetector({this.outputPath});
+  
+  Future<void> exportReferenceData(String path) async {
+    // Export the hash and card name data for future use
+    List<Map<String, dynamic>> hashData = [];
+    
+    for (var image in referenceImages) {
+      if (image.phash != null) {
+        hashData.add({
+          'name': image.name,
+          'hash': image.phash!.hashValue,
+        });
+      }
+    }
+    
+    final jsonData = jsonEncode(hashData);
+    await File(path).writeAsString(jsonData);
+  }
+  
+  Future<void> readPrehashReferenceData(String path) async {
+    print('Reading prehashed data from $path');
+    print('...');
+    
+    try {
+      final content = await File(path).readAsString();
+      final List<dynamic> data = jsonDecode(content);
+      
+      for (var item in data) {
+        final hash = ImageHash(item['hash'] as int);
+        referenceImages.add(
+          ReferenceImage(item['name'], null, phash: hash)
+        );
+      }
+      
+      print('Done. Loaded ${referenceImages.length} reference cards.');
+    } catch (e) {
+      print('Error reading reference data: $e');
+      rethrow;
+    }
+  }
+  
+  Future<void> readAndAdjustReferenceImages(String directory) async {
+    print('Reading images from $directory');
+    print('...');
+    
+    final dir = Directory(directory);
+    final List<FileSystemEntity> entities = await dir.list().toList();
+    final imageFiles = entities
+        .whereType<File>()
+        .where((file) => file.path.toLowerCase().endsWith('.jpg'))
+        .toList();
+    
+    for (var file in imageFiles) {
+      final bytes = await file.readAsBytes();
+      final img = decodeImage(bytes);
+      
+      if (img != null) {
+        final name = path.basename(file.path);
+        referenceImages.add(ReferenceImage(name, img));
+      }
+    }
+    
+    print('Done. Loaded ${referenceImages.length} reference cards.');
+  }
+  
+  Future<void> readAndAdjustTestImages(String directory) async {
+    print('Reading images from $directory');
+    print('...');
+    
+    final maxSize = 1000;
+    
+    final dir = Directory(directory);
+    final List<FileSystemEntity> entities = await dir.list().toList();
+    final imageFiles = entities
+        .whereType<File>()
+        .where((file) => file.path.toLowerCase().endsWith('.jpg'))
+        .toList();
+    
+    for (var file in imageFiles) {
+      final bytes = await file.readAsBytes();
+      Image? img = decodeImage(bytes);
+      
+      if (img != null) {
+        // Resize if needed
+        if (math.min(img.width, img.height) > maxSize) {
+          final scalef = maxSize / math.min(img.width, img.height);
+          img = copyResize(
+            img,
+            width: (img.width * scalef).toInt(),
+            height: (img.height * scalef).toInt(),
+            interpolation: Interpolation.average
+          );
+        }
+        
+        final name = path.basename(file.path);
+        testImages.add(TestImage(name, img));
+      }
+    }
+    
+    print('Done. Loaded ${testImages.length} test images.');
+  }
+  
+  RecognitionResult recognizeSegment(Image imageSegment) {
+    // Wrapper for different recognition algorithms
+    return phashCompare(
+      imageSegment, 
+      referenceImages,
+      hashSeparationThr: hashSeparationThr,
+      verbose: verbose
+    );
+  }
+  
+  void recognizeCardsInImage(TestImage testImage, String contouringMode) {
+    print('Segmenting card candidates out of the image...');
+    print('Using $contouringMode algorithm.');
+    
+    testImage.candidateList.clear();
+    segmentImage(testImage, contouringMode: contouringMode);
+    
+    print('Done. Found ${testImage.candidateList.length} candidates.');
+    print('Recognizing candidates.');
+    
+    for (int iCand = 0; iCand < testImage.candidateList.length; iCand++) {
+      var candidate = testImage.candidateList[iCand];
+      
+      if (verbose) {
+        print('${iCand + 1} / ${testImage.candidateList.length}');
+      }
+      
+      // Easy fragment / duplicate detection
+      bool isFragment = false;
+      for (var otherCandidate in testImage.candidateList) {
+        if (otherCandidate.isRecognized && !otherCandidate.isFragment) {
+          if (otherCandidate.contains(candidate)) {
+            candidate.isFragment = true;
+            isFragment = true;
+            break;
+          }
+        }
+      }
+      
+      if (!isFragment) {
+        // Recognize the segment
+        final result = recognizeSegment(candidate.image);
+        candidate.isRecognized = result.isRecognized;
+        candidate.recognitionScore = result.recognitionScore;
+        candidate.name = result.cardName;
+      }
+    }
+    
+    print('Done. Found ${testImage.returnRecognized().length} cards.');
+    if (verbose) {
+      for (var card in testImage.returnRecognized()) {
+        print('${card.name}; S = ${card.recognitionScore}');
+      }
+    }
+    
+    print('Removing duplicates...');
+    // Final fragment detection
+    testImage.markFragments();
+    print('Done.');
+  }
+  
+  Future<List<Uint8List>> processImage(Uint8List imageBytes, String imageName) async {
+    print('\n--- Processing Image: $imageName ---');
+    
+    // Decode the image
+    final image = decodeImage(imageBytes);
+    if (image == null) {
+      throw Exception('Failed to decode image');
+    }
+    
+    // Create a temporary TestImage
+    final testImage = TestImage(imageName, image);
+    
+    // Try different algorithms
+    final algList = ['adaptive', 'rgb'];
+    
+    for (var alg in algList) {
+      recognizeCardsInImage(testImage, alg);
+      testImage.discardUnrecognizedCandidates();
+      
+      // Stop if we've found enough cards or exhausted search potential
+      if (!testImage.mayContainMoreCards() || 
+          testImage.returnRecognized().length > 5) {
+        break;
+      }
+    }
+    
+    // Generate result images
+    print('Generating result images...');
+    
+    // Original image bytes
+    final originalBytes = encodeJpg(testImage.original);
+    
+    // Annotated image
+    final annotatedImage = testImage.plotImageWithRecognized();
+    final annotatedBytes = encodeJpg(annotatedImage);
+    
+    print('Done.');
+    
+    // Return both images
+    return [originalBytes, annotatedBytes];
+  }
+  
+  Future<void> runRecognition([List<int>? imageIndices]) async {
+    // The top-level image recognition method
+    final indices = imageIndices ?? List<int>.generate(testImages.length, (i) => i);
+    
+    for (var i in indices) {
+      final testImage = testImages[i];
+      print('Accessing image ${testImage.name}');
+      
+      if (visual) {
+        print('Original image displayed');
+      }
+      
+      final algList = ['adaptive', 'rgb'];
+      
+      for (var alg in algList) {
+        recognizeCardsInImage(testImage, alg);
+        testImage.discardUnrecognizedCandidates();
+        
+        if (!testImage.mayContainMoreCards() || 
+            testImage.returnRecognized().length > 5) {
+          break;
+        }
+      }
+      
+      print('Plotting and saving the results...');
+      
+      // Create annotated image
+      final resultImage = testImage.plotImageWithRecognized();
+      
+      // Save to file if output path is provided
+      if (outputPath != null) {
+        final fileName = testImage.name.contains('.jpg') 
+            ? testImage.name.split('.jpg')[0] 
+            : testImage.name;
+        
+        final outFileName = path.join(
+          outputPath!, 
+          'MTG_card_recognition_results_$fileName.jpg'
+        );
+        
+        final outFile = File(outFileName);
+        await outFile.writeAsBytes(encodeJpg(resultImage));
+      }
+      
+      print('Done.');
+      
+      // Print recognized cards
+      final recognizedList = testImage.returnRecognized();
+      print('Recognized cards (${recognizedList.length} cards):');
+      for (var card in recognizedList) {
+        print('${card.name} - with score ${card.recognitionScore}');
+      }
+    }
+    
+    print('Recognition done.');
+  }
+}
