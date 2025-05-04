@@ -44,7 +44,7 @@ RecognitionResult phashCompare(
   List<double> d0Dist = List.filled(rotations.length, 0.0);
   List<List<double>> d0 = List.generate(
     referenceImages.length, 
-    (_) => List.filled(rotations.length, 0.0)
+    (int _) => List.filled(rotations.length, 0.0)
   );
   
   for (int j = 0; j < rotations.length; j++) {
@@ -60,13 +60,13 @@ RecognitionResult phashCompare(
     ImageHash phashIm = ImageHash.createPerceptualHash(rotatedImage);
     
     // Calculate differences with all reference images
-    d0.asMap().forEach((i, row) {
+    d0.asMap().forEach((int i, List<double> row) {
       row[j] = phashDiff(referenceImages, phashIm)[i];
     });
     
     // Calculate statistical distance
     double minDiff = double.infinity;
-    for (var row in d0) {
+    for (List<double> row in d0) {
       if (row[j] < minDiff) {
         minDiff = row[j];
       }
@@ -74,7 +74,7 @@ RecognitionResult phashCompare(
     
     // Create a list of differences excluding the minimum
     List<double> d0Filtered = [];
-    for (var row in d0) {
+    for (List<double> row in d0) {
       if (row[j] > minDiff) {
         d0Filtered.add(row[j]);
       }

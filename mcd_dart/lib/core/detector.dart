@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:image/image.dart';
+import 'package:mcd_dart/mcd_dart.dart';
 import 'package:path/path.dart' as path;
 
 import '../models/image.dart';
@@ -98,19 +99,19 @@ class MagicCardDetector {
     print('Reading images from $directory');
     print('...');
     
-    final dir = Directory(directory);
+    final Directory dir = Directory(directory);
     final List<FileSystemEntity> entities = await dir.list().toList();
-    final imageFiles = entities
+    final List<File> imageFiles = entities
         .whereType<File>()
-        .where((file) => file.path.toLowerCase().endsWith('.jpg'))
+        .where((File file) => file.path.toLowerCase().endsWith('.jpg'))
         .toList();
     
-    for (var file in imageFiles) {
-      final bytes = await file.readAsBytes();
-      final img = decodeImage(bytes);
+    for (File file in imageFiles) {
+      final Uint8List bytes = await file.readAsBytes();
+      final Image? img = decodeImage(bytes);
       
       if (img != null) {
-        final name = path.basename(file.path);
+        final String name = path.basename(file.path);
         referenceImages.add(ReferenceImage(name, img));
       }
     }
@@ -122,23 +123,23 @@ class MagicCardDetector {
     print('Reading images from $directory');
     print('...');
     
-    final maxSize = 1000;
+    final int maxSize = 1000;
     
-    final dir = Directory(directory);
+    final Directory dir = Directory(directory);
     final List<FileSystemEntity> entities = await dir.list().toList();
-    final imageFiles = entities
+    final List<File> imageFiles = entities
         .whereType<File>()
-        .where((file) => file.path.toLowerCase().endsWith('.jpg'))
+        .where((File file) => file.path.toLowerCase().endsWith('.jpg'))
         .toList();
     
-    for (var file in imageFiles) {
-      final bytes = await file.readAsBytes();
+    for (File file in imageFiles) {
+      final Uint8List bytes = await file.readAsBytes();
       Image? img = decodeImage(bytes);
       
       if (img != null) {
         // Resize if needed
         if (math.min(img.width, img.height) > maxSize) {
-          final scalef = maxSize / math.min(img.width, img.height);
+          final double scalef = maxSize / math.min(img.width, img.height);
           img = copyResize(
             img,
             width: (img.width * scalef).toInt(),
@@ -147,7 +148,7 @@ class MagicCardDetector {
           );
         }
         
-        final name = path.basename(file.path);
+        final String name = path.basename(file.path);
         testImages.add(TestImage(name, img));
       }
     }
@@ -176,7 +177,7 @@ class MagicCardDetector {
     print('Recognizing candidates.');
     
     for (int iCand = 0; iCand < testImage.candidateList.length; iCand++) {
-      var candidate = testImage.candidateList[iCand];
+      CardCandidate candidate = testImage.candidateList[iCand];
       
       if (verbose) {
         print('${iCand + 1} / ${testImage.candidateList.length}');
@@ -184,7 +185,7 @@ class MagicCardDetector {
       
       // Easy fragment / duplicate detection
       bool isFragment = false;
-      for (var otherCandidate in testImage.candidateList) {
+      for (CardCandidate otherCandidate in testImage.candidateList) {
         if (otherCandidate.isRecognized && !otherCandidate.isFragment) {
           if (otherCandidate.contains(candidate)) {
             candidate.isFragment = true;
@@ -196,7 +197,7 @@ class MagicCardDetector {
       
       if (!isFragment) {
         // Recognize the segment
-        final result = recognizeSegment(candidate.image);
+        final RecognitionResult result = recognizeSegment(candidate.image);
         candidate.isRecognized = result.isRecognized;
         candidate.recognitionScore = result.recognitionScore;
         candidate.name = result.cardName;
@@ -205,7 +206,7 @@ class MagicCardDetector {
     
     print('Done. Found ${testImage.returnRecognized().length} cards.');
     if (verbose) {
-      for (var card in testImage.returnRecognized()) {
+      for (CardCandidate card in testImage.returnRecognized()) {
         print('${card.name}; S = ${card.recognitionScore}');
       }
     }
@@ -220,18 +221,18 @@ class MagicCardDetector {
     print('\n--- Processing Image: $imageName ---');
     
     // Decode the image
-    final image = decodeImage(imageBytes);
+    final Image? image = decodeImage(imageBytes);
     if (image == null) {
       throw Exception('Failed to decode image');
     }
     
     // Create a temporary TestImage
-    final testImage = TestImage(imageName, image);
+    final TestImage testImage = TestImage(imageName, image);
     
     // Try different algorithms
-    final algList = ['adaptive', 'rgb'];
+    final List<String> algList = ['adaptive', 'rgb'];
     
-    for (var alg in algList) {
+    for (String alg in algList) {
       recognizeCardsInImage(testImage, alg);
       testImage.discardUnrecognizedCandidates();
       
@@ -246,11 +247,11 @@ class MagicCardDetector {
     print('Generating result images...');
     
     // Original image bytes
-    final originalBytes = encodeJpg(testImage.original);
+    final Uint8List originalBytes = encodeJpg(testImage.original);
     
     // Annotated image
-    final annotatedImage = testImage.plotImageWithRecognized();
-    final annotatedBytes = encodeJpg(annotatedImage);
+    final Image annotatedImage = testImage.plotImageWithRecognized();
+    final Uint8List annotatedBytes = encodeJpg(annotatedImage);
     
     print('Done.');
     
@@ -260,19 +261,19 @@ class MagicCardDetector {
   
   Future<void> runRecognition([List<int>? imageIndices]) async {
     // The top-level image recognition method
-    final indices = imageIndices ?? List<int>.generate(testImages.length, (i) => i);
+    final List<int> indices = imageIndices ?? List<int>.generate(testImages.length, (int i) => i);
     
-    for (var i in indices) {
-      final testImage = testImages[i];
+    for (int i in indices) {
+      final TestImage testImage = testImages[i];
       print('Accessing image ${testImage.name}');
       
       if (visual) {
         print('Original image displayed');
       }
       
-      final algList = ['adaptive', 'rgb'];
+      final List<String> algList = ['adaptive', 'rgb'];
       
-      for (var alg in algList) {
+      for (String alg in algList) {
         recognizeCardsInImage(testImage, alg);
         testImage.discardUnrecognizedCandidates();
         
@@ -285,29 +286,29 @@ class MagicCardDetector {
       print('Plotting and saving the results...');
       
       // Create annotated image
-      final resultImage = testImage.plotImageWithRecognized();
+      final Image resultImage = testImage.plotImageWithRecognized();
       
       // Save to file if output path is provided
       if (outputPath != null) {
-        final fileName = testImage.name.contains('.jpg') 
+        final String fileName = testImage.name.contains('.jpg') 
             ? testImage.name.split('.jpg')[0] 
             : testImage.name;
         
-        final outFileName = path.join(
+        final String outFileName = path.join(
           outputPath!, 
           'MTG_card_recognition_results_$fileName.jpg'
         );
         
-        final outFile = File(outFileName);
+        final File outFile = File(outFileName);
         await outFile.writeAsBytes(encodeJpg(resultImage));
       }
       
       print('Done.');
       
       // Print recognized cards
-      final recognizedList = testImage.returnRecognized();
+      final List<CardCandidate> recognizedList = testImage.returnRecognized();
       print('Recognized cards (${recognizedList.length} cards):');
-      for (var card in recognizedList) {
+      for (CardCandidate card in recognizedList) {
         print('${card.name} - with score ${card.recognitionScore}');
       }
     }

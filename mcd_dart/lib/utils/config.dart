@@ -20,25 +20,25 @@ class Config {
   /// Get the absolute path to the set hashes directory
   static String getSetHashesDirectory() {
     // Get the script directory
-    final scriptDir = Directory.current.path;
+    final String scriptDir = Directory.current.path;
     return path.join(scriptDir, defaultHashesDirectory);
   }
   
   /// Get all available set hash files
   static List<File> getAvailableSetHashes() {
-    final hashesDir = getSetHashesDirectory();
+    final String hashesDir = getSetHashesDirectory();
     
     try {
-      final hashesDirectory = Directory(hashesDir);
+      final Directory hashesDirectory = Directory(hashesDir);
       if (!hashesDirectory.existsSync()) {
         print('Warning: Set hashes directory does not exist: $hashesDir');
         return [];
       }
       
-      final files = hashesDirectory
+      final List<File> files = hashesDirectory
           .listSync()
           .whereType<File>()
-          .where((file) => file.path.endsWith('.dat'))
+          .where((File file) => file.path.endsWith('.dat'))
           .toList();
       
       return files;

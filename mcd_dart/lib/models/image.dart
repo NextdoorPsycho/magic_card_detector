@@ -59,8 +59,8 @@ class TestImage {
     // Find duplicates and mark one as fragment
     for (int i = 0; i < candidateList.length; i++) {
       for (int j = 0; j < candidateList.length; j++) {
-        var candidate = candidateList[i];
-        var otherCandidate = candidateList[j];
+        CardCandidate candidate = candidateList[i];
+        CardCandidate otherCandidate = candidateList[j];
         
         if (candidate.isFragment || otherCandidate.isFragment) {
           continue;
@@ -100,7 +100,7 @@ class TestImage {
     Image result = original.clone();
     
     // Draw bounding quadrilateral and labels for each recognized card
-    for (var candidate in candidateList) {
+    for (CardCandidate candidate in candidateList) {
       if (!candidate.isFragment) {
         // Draw the bounding quadrilateral
         drawPolygon(result, candidate.boundingQuad, colorGreen);
@@ -122,7 +122,7 @@ class TestImage {
 
   List<CardCandidate> returnRecognized() {
     return candidateList
-        .where((candidate) => candidate.isRecognized && !candidate.isFragment)
+        .where((CardCandidate candidate) => candidate.isRecognized && !candidate.isFragment)
         .toList();
   }
 
@@ -142,7 +142,7 @@ class TestImage {
     double totalArea = 0.0;
     double minArea = 1.0;
     
-    for (var card in recognized) {
+    for (CardCandidate card in recognized) {
       totalArea += card.imageAreaFraction;
       if (card.imageAreaFraction < minArea) {
         minArea = card.imageAreaFraction;

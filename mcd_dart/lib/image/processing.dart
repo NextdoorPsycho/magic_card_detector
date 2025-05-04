@@ -29,7 +29,7 @@ List<List<List<int>>> contourImageRgb(Image fullImage) {
   // Apply histogram equalization and thresholding to each channel
   List<Image> thresholds = [];
   
-  for (var channelImage in channels) {
+  for (Image channelImage in channels) {
     
     // Apply clahe-like enhancement
     channelImage = adjustContrast(channelImage); 
@@ -41,7 +41,7 @@ List<List<List<int>>> contourImageRgb(Image fullImage) {
   // Find contours in each threshold
   List<List<List<int>>> allContours = [];
   
-  for (var threshold in thresholds) {
+  for (Image threshold in thresholds) {
     allContours.addAll(findContours(threshold));
   }
   
@@ -68,7 +68,7 @@ List<List<List<int>>> contourImage(Image fullImage, {String mode = 'gray'}) {
   }
   
   // Sort contours by area (largest first)
-  contours.sort((a, b) => calculateContourArea(b).compareTo(calculateContourArea(a)));
+  contours.sort((List<List<int>> a, List<List<int>> b) => calculateContourArea(b).compareTo(calculateContourArea(a)));
   
   return contours;
 }
@@ -86,7 +86,7 @@ void segmentImage(
   List<List<List<int>>> contours = contourImage(fullImage, mode: contouringMode);
   
   // Process each contour to find card candidates
-  for (var cardContour in contours) {
+  for (List<List<int>> cardContour in contours) {
     try {
       CardContourResult result = characterizeCardContour(
         cardContour,
@@ -174,7 +174,7 @@ List<List<List<int>>> findContours(Image binaryImage) {
   
   // Approximate contours (reduce number of points)
   List<List<List<int>>> approximatedContours = [];
-  for (var contour in contours) {
+  for (List<List<int>> contour in contours) {
     approximatedContours.add(approximateContour(contour));
   }
   
@@ -324,7 +324,7 @@ Image adaptiveThreshold(Image image, int blockSize, int c) {
   // Create an integral image
   List<List<int>> integral = List.generate(
     image.height + 1,
-    (i) => List.filled(image.width + 1, 0),
+    (int i) => List.filled(image.width + 1, 0),
   );
   
   // Fill integral image
@@ -427,7 +427,7 @@ Polygon scalePolygon(Polygon polygon, double xfact, double yfact) {
   Point2D centroid = polygon.centroid();
   List<Point2D> newVertices = [];
   
-  for (var point in polygon.vertices) {
+  for (Point2D point in polygon.vertices) {
     double newX = centroid.x + xfact * (point.x - centroid.x);
     double newY = centroid.y + yfact * (point.y - centroid.y);
     newVertices.add(Point2D(newX, newY));

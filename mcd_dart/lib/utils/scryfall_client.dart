@@ -31,30 +31,30 @@ class ScryfallClient {
       info('Fetching cards for set: $setCode');
     }
 
-    final cards = <MtgCard>[];
+    final List<MtgCard> cards = <MtgCard>[];
     
     try {
       // Get the first page of results
-      final searchResult = await _client.searchCards('set:$setCode');
+      final PaginableList<MtgCard> searchResult = await _client.searchCards('set:$setCode');
       cards.addAll(searchResult.data);
       
       // Get all subsequent pages if any
       PaginableList<MtgCard>? currentPage = searchResult;
       while (currentPage?.hasMore == true) {
         // Handle pagination manually since getNextPage isn't available
-        final nextPageUri = currentPage!.nextPage;
+        final Uri? nextPageUri = currentPage!.nextPage;
         if (nextPageUri == null) break;
         
-        final response = await http.get(nextPageUri);
+        final http.Response response = await http.get(nextPageUri);
         if (response.statusCode != 200) {
           throw Exception('Failed to fetch next page: ${response.statusCode}');
         }
         
         // Parse the response body as JSON map
-        final jsonMap = json.decode(response.body) as Map<String, dynamic>;
-        final nextPage = PaginableList<MtgCard>.fromJson(
+        final Map<String, dynamic> jsonMap = json.decode(response.body) as Map<String, dynamic>;
+        final PaginableList<MtgCard> nextPage = PaginableList<MtgCard>.fromJson(
           jsonMap, 
-          (json) => MtgCard.fromJson(json as Map<String, dynamic>)
+          (dynamic json) => MtgCard.fromJson(json as Map<String, dynamic>)
         );
         
         cards.addAll(nextPage.data);
@@ -111,7 +111,7 @@ class ScryfallClient {
         info('Downloading image for card: $setCode #$collectorNumber');
       }
 
-      final imageBytes = await _client.getCardBySetCodeAndCollectorNumberAsImage(
+      final Uint8List imageBytes = await _client.getCardBySetCodeAndCollectorNumberAsImage(
         setCode,
         collectorNumber,
         imageVersion: _getApiImageVersion(size),
@@ -135,7 +135,7 @@ class ScryfallClient {
         info('Downloading image from URL: $url');
       }
 
-      final response = await http.get(Uri.parse(url));
+      final http.Response response = await http.get(Uri.parse(url));
       
       if (response.statusCode != 200) {
         throw Exception('Failed to download image: ${response.statusCode}');
@@ -155,16 +155,16 @@ class ScryfallClient {
   /// Download all card images for a set and save to a directory
   Future<List<String>> downloadSetImages(String setCode, String outputDir,
       {ImageSize size = ImageSize.large}) async {
-    final cards = await getCardsBySetCode(setCode);
-    final downloadedFiles = <String>[];
+    final List<MtgCard> cards = await getCardsBySetCode(setCode);
+    final List<String> downloadedFiles = <String>[];
     
     // Create output directory if it doesn't exist
-    final directory = Directory(outputDir);
+    final Directory directory = Directory(outputDir);
     if (!await directory.exists()) {
       await directory.create(recursive: true);
     }
     
-    for (final card in cards) {
+    for (final MtgCard card in cards) {
       try {
         // Skip cards without images (like tokens or special card entries)
         String? imageUrl = getCardImageUrl(card, size: size);
@@ -174,11 +174,11 @@ class ScryfallClient {
         }
         
         // Generate a safe filename
-        final filename = '${card.name.replaceAll(RegExp(r'[^\w\s]'), '_')}_${card.collectorNumber}.jpg';
-        final filePath = path.join(outputDir, filename);
+        final String filename = '${card.name.replaceAll(RegExp(r'[^\w\s]'), '_')}_${card.collectorNumber}.jpg';
+        final String filePath = path.join(outputDir, filename);
         
         // Download the image
-        final imageBytes = await downloadImageFromUrl(imageUrl);
+        final Uint8List imageBytes = await downloadImageFromUrl(imageUrl);
         
         // Save to file
         await File(filePath).writeAsBytes(imageBytes);
