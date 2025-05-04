@@ -3,16 +3,15 @@ Classes for representing reference and test images.
 """
 
 import io
-import numpy as np
-import cv2
-import matplotlib.pyplot as plt
 from copy import deepcopy
 from itertools import product
+
+import cv2
+import imagehash
+import matplotlib.pyplot as plt
+import numpy as np
 from PIL import Image as PILImage
 from shapely.geometry.polygon import Polygon
-import imagehash
-
-from mtg_card_detector.models.card import CardCandidate
 
 
 class ReferenceImage:

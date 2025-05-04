@@ -117,7 +117,7 @@ def generate_quad_corners(indices, x, y):
         (xis[3], yis[3]) = line_intersection(x[gpi(l, i)],
                                              y[gpi(l, i)])
 
-    return (xis, yis)
+    return xis, yis
 
 
 def generate_quad_candidates(in_poly):
@@ -130,7 +130,7 @@ def generate_quad_candidates(in_poly):
     remove very short segments from the polygon.
     """
     # make sure that the points are ordered
-    from mtg_card_detector.geometry.transforms import order_polygon_points
+    from lib.geometry.transforms import order_polygon_points
     
     (x_s, y_s) = order_polygon_points(
         np.asarray(in_poly.exterior.coords)[:-1, 0],

@@ -10,13 +10,14 @@ import argparse
 import io
 import cProfile
 import pstats
-from mtg_card_detector import MagicCardDetector
+from lib import MagicCardDetector
 
 
 def main():
     """
     Main function for the MTG card detector CLI tool.
     """
+    global profiler
     parser = argparse.ArgumentParser(
         description='Recognize Magic: the Gathering cards from images. ' +
                     'Author: Timo Ikonen, timo.ikonen(at)iki.fi')

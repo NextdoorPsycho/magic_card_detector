@@ -6,8 +6,8 @@ import numpy as np
 import cv2
 from shapely.affinity import scale
 
-from mtg_card_detector.geometry import four_point_transform, characterize_card_contour
-from mtg_card_detector.models import CardCandidate
+from lib.geometry import four_point_transform, characterize_card_contour
+from lib.models import CardCandidate
 
 
 def contour_image_gray(full_image, thresholding='adaptive', visual=False, verbose=False):

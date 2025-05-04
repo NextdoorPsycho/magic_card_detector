@@ -6,10 +6,10 @@ This tool generates perceptual hashes for a set of MTG card images
 and saves them to a reference file.
 """
 
-import os
 import argparse
-import cv2
-from mtg_card_detector import MagicCardDetector
+import os
+
+from lib import MagicCardDetector
 
 
 def main():

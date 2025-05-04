@@ -78,10 +78,10 @@ generate_hashes.py --set-path images/modern_horizons/ --output modern_horizons_p
 You can also use MTG Card Detector as a library in your own Python code:
 
 ```python
-from mtg_card_detector import MagicCardDetector
+from lib import MagicCardDetector
 
 # Initialize the detector
-detector = MagicCardDetector(output_path='results')
+detector = MagicCardDetector(output_path='out')
 
 # Load reference hashes
 detector.read_prehashed_reference_data('alpha_reference_phash.dat')

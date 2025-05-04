@@ -1044,7 +1044,6 @@ def main():
     card_detector.run_recognition()
 
     if do_profile:
-        # Stop profiling and organize and print profiling results.
         profiler.disable()
         profiler.dump_stats('magic_card_detector.prof')
         profiler_stream = io.StringIO()

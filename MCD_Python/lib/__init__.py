@@ -6,6 +6,6 @@ Email: timo.ikonen (at) iki.fi
 Refactored version with modular structure for improved maintainability.
 """
 
-from mtg_card_detector.core.detector import MagicCardDetector
+from lib.core.detector import MagicCardDetector
 
 __version__ = "1.0.0"

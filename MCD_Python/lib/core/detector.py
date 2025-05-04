@@ -5,12 +5,11 @@ Core detector class for MTG card detector.
 import glob
 import os
 import pickle
-import numpy as np
 import cv2
 
-from mtg_card_detector.models import ReferenceImage, TestImage
-from mtg_card_detector.image import segment_image
-from mtg_card_detector.core.recognition import phash_compare
+from lib.models import ReferenceImage, TestImage
+from lib.image import segment_image
+from lib.core.recognition import phash_compare
 
 
 class MagicCardDetector:
