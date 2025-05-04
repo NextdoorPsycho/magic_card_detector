@@ -1,10 +1,6 @@
 import 'package:image/image.dart';
+import 'package:mcd_dart/mcd_dart.dart';
 import 'dart:math' as math;
-
-import '../models/card.dart';
-import '../models/image.dart';
-import '../geometry/polygons.dart';
-import '../geometry/transforms.dart';
 
 List<List<List<int>>> contourImageGray(Image fullImage, {String thresholding = 'adaptive'}) {
   // Convert to grayscale
@@ -231,12 +227,6 @@ void floodFill(Image source, Image labelImage, int x, int y, int label, List<Lis
   }
 }
 
-int getBrightness(Pixel pixel) {
-  int r = getRed(pixel);
-  int g = getGreen(pixel);
-  int b = getBlue(pixel);
-  return ((r + g + b) / 3).round();
-}
 
 List<List<int>> approximateContour(List<List<int>> contour) {
   // Simple Douglas-Peucker-like algorithm to reduce contour points

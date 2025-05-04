@@ -35,6 +35,8 @@ dart pub get
 
 Before using the detector, you need to generate a hash database from reference card images. You can generate multiple hash files, one for each Magic: The Gathering set you want to recognize:
 
+#### From Local Card Images
+
 ```bash
 # Generate hash for the Alpha set
 dart run lib/generate_hashes.dart -i /path/to/alpha/cards -s alpha
@@ -52,6 +54,31 @@ Options:
 - `-s, --set`: Set name (e.g., "alpha", "beta", "unlimited") (default: "custom")
 - `-v, --verbose`: Enable verbose output
 - `-h, --help`: Show help message
+
+#### From Scryfall Card Images (New!)
+
+You can now generate hash databases directly from Scryfall by specifying a set code:
+
+```bash
+# Generate hash for the Duskmorne set
+dart run bin/generate_hashes_from_scryfall.dart --set=DSK
+
+# Generate hash for Lord of the Rings set with verbose output
+dart run bin/generate_hashes_from_scryfall.dart --set=LTR --verbose
+
+# Keep downloaded images for inspection
+dart run bin/generate_hashes_from_scryfall.dart --set=MOM --keep-images
+```
+
+Options:
+- `-s, --set`: Set code (e.g., "DSK", "LTR", "MOM") (required)
+- `-o, --output`: Path to output hash file (default: assets/set_hashes/{set}_reference_phash.dat)
+- `-t, --tempdir`: Temporary directory to store downloaded images (default: "temp_images")
+- `--keep-images`: Keep downloaded images after hash generation (default: false)
+- `-v, --verbose`: Enable verbose output
+- `-h, --help`: Show help message
+
+For a complete list of set codes, visit [Scryfall Sets](https://scryfall.com/sets).
 
 The tool will automatically create the proper directory structure if it doesn't exist.
 
@@ -128,7 +155,8 @@ Future<void> main() async {
 - `path`: File path handling
 - `collection`: Utility collections
 - `fast_log`: Logging utilities
-- `scryfall_api`: Used for looking up additional card data
+- `scryfall_api`: Used for looking up additional card data and downloading card images
+- `http`: HTTP client for downloading images
 
 ## Custom Implementations
 

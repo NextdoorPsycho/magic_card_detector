@@ -18,6 +18,7 @@ dependencies:
   collection: ^1.19.1 # Utility collections
   fast_log: ^1.0.7
   scryfall_api: ^2.2.0 # Used for looking up additional card data
+  http: ^1.2.0 # Used for HTTP requests
 
 dev_dependencies:
   lints: ^5.1.1

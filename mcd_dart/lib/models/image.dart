@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:image/image.dart';
+import 'package:mcd_dart/image/processing.dart';
 
 import 'card.dart';
 import '../geometry/polygons.dart';
@@ -152,12 +153,6 @@ class TestImage {
   }
 }
 
-// Helper functions
-
-Image adjustContrast(Image image) {
-  // Approximate CLAHE with contrast adjustment - using clone for now
-  return image.clone(); // Simple copy for now until we implement contrast adjustment
-}
 
 // Basic color definitions for drawing
 final colorGreen = ColorRgb8(0, 255, 0);

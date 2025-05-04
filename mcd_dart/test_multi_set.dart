@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:mcd_dart/mcd_dart.dart';
 
 /// Test script for loading multiple set hashes

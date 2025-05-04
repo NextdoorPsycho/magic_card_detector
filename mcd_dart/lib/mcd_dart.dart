@@ -12,6 +12,10 @@ export 'models/image.dart';
 export 'geometry/polygons.dart';
 export 'geometry/transforms.dart';
 
+// Image processing
+export 'image/processing.dart';
 
 // Utils
 export 'utils/config.dart';
+export 'utils/image_hash.dart';
+export 'utils/scryfall_client.dart';
