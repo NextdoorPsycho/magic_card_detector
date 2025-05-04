@@ -1,0 +1,7 @@
+"""
+Configuration utilities for MTG card detector.
+"""
+
+DEFAULT_HASH_SEPARATION_THRESHOLD = 4.0
+DEFAULT_THRESHOLD_LEVEL = 70
+DEFAULT_MAX_IMAGE_SIZE = 1000
