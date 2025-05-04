@@ -13,7 +13,7 @@ void main(List<String> arguments) async {
     ..addOption('tempdir', abbr: 't', help: 'Temporary directory to store downloaded images', defaultsTo: 'temp_images')
     ..addFlag('keep-images', help: 'Keep downloaded images after hash generation', defaultsTo: false)
     ..addFlag('parallel', abbr: 'p', help: 'Use parallel processing for faster downloads and processing', defaultsTo: true)
-    ..addOption('concurrency', help: 'Number of parallel operations to perform', defaultsTo: '4') 
+    ..addOption('concurrency', help: 'Number of parallel operations to perform', defaultsTo: '50')
     ..addFlag('help', abbr: 'h', help: 'Show this help message', defaultsTo: false);
 
   try {
@@ -30,7 +30,7 @@ void main(List<String> arguments) async {
     String tempDir = results['tempdir'] as String;
     bool keepImages = results['keep-images'] as bool;
     bool useParallel = results['parallel'] as bool;
-    int concurrency = int.tryParse(results['concurrency'] as String) ?? 4;
+    int concurrency = int.tryParse(results['concurrency'] as String) ?? 50;
     
     // Always use verbose output
     bool verbose = true;
