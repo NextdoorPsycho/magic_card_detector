@@ -61,7 +61,7 @@ To detect and extract Magic cards from images:
 
 3. Choose the set to use for recognition:
    ```
-   Select a set (defaults to All):
+   Select a set:
    > All
      LEA
      DSK
@@ -90,7 +90,7 @@ To detect and extract Magic cards from images:
 
 8. Configure whether to save debug images:
    ```
-   Save debug images with card outlines? [y/N]: y
+   Save debug images with detection information? [y/N]: y
    ```
 
 9. The CLI will display your configuration and start the extraction process:
@@ -106,7 +106,33 @@ To detect and extract Magic cards from images:
    Running card extraction...
    ```
 
-10. Wait for the process to complete. Extracted cards will be saved to the specified output directory.
+10. The tool will output the detection results directly to your console:
+    ```
+    Image: dragon_whelp.jpg
+    Cards found: 1
+    Recognized cards:
+      - dragon whelp (confidence: 95.2%)
+    
+    Image: counterspell_bgs.jpg
+    Cards found: 1
+    Recognized cards:
+      - counterspell (confidence: 92.8%)
+    
+    Total recognized cards: 2
+    
+    Annotated images have been saved to: ./output
+    ```
+
+## Working with Custom Hash Files
+
+When selecting "Other" for the set, you'll be prompted to enter a path to a custom hash file:
+
+```
+Enter the path to your custom hash file:
+/path/to/your/custom_set_reference_phash.dat
+```
+
+This allows you to use hash files that may be located outside the default directory or have non-standard names.
 
 ## Tips for Best Results
 

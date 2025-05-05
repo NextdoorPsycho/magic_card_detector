@@ -164,28 +164,49 @@ class HashGenerator {
     print('Generating hashes using Python integration...');
     
     try {
-      // Attempting to use Flython is challenging since the API seems different
-      // than documented. We'll fall back to the subprocess approach for reliability.
-      print('Using subprocess execution for Python integration...');
-      
-      // Run Python script to generate hashes
-      final result = Process.runSync(
-        'python3',
-        [
-          path.join('bin', 'generate_hash.py'),
-          '--set-path', imagePath,
-          '--output', outputPath,
-          if (verbose) '--verbose',
-        ],
-      );
-      
-      if (result.exitCode != 0) {
-        print('Error running Python script:');
-        print(result.stderr);
-        throw Exception('Python script execution failed: ${result.stderr}');
+      // Check which Python script to use
+      final File enhancedScript = File(path.join('bin', 'python', 'generate_hash.py'));
+      if (enhancedScript.existsSync()) {
+        // Use enhanced script that directly connects to mcd_python library
+        print('Using enhanced hash generator...');
+        final result = Process.runSync(
+          'python3',
+          [
+            enhancedScript.path,
+            '--set-path', imagePath,
+            '--output', outputPath,
+            if (verbose) '--verbose',
+          ],
+        );
+        
+        if (result.exitCode != 0) {
+          print('Error running Python script:');
+          print(result.stderr);
+          throw Exception('Python script execution failed: ${result.stderr}');
+        }
+        
+        print(result.stdout);
+      } else {
+        // Use legacy script (original implementation)
+        print('Using legacy hash generator...');
+        final result = Process.runSync(
+          'python3',
+          [
+            path.join('bin', 'generate_hash.py'),
+            '--set-path', imagePath,
+            '--output', outputPath,
+            if (verbose) '--verbose',
+          ],
+        );
+        
+        if (result.exitCode != 0) {
+          print('Error running Python script:');
+          print(result.stderr);
+          throw Exception('Python script execution failed: ${result.stderr}');
+        }
+        
+        print(result.stdout);
       }
-      
-      print(result.stdout);
     } catch (e) {
       print('Error executing Python script: $e');
       rethrow;

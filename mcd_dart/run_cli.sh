@@ -38,6 +38,19 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Make sure the Python scripts are executable
+chmod +x bin/python/*.py
+
+# Check if Python project is accessible
+PYTHON_PROJECT="../../mcd_python"
+if [ ! -d "$PYTHON_PROJECT" ]; then
+    echo "Warning: Python project not found at $PYTHON_PROJECT"
+    echo "The detector may not work correctly."
+    echo "Make sure the Python project is at the expected location."
+else
+    echo "Python project found at $PYTHON_PROJECT"
+fi
+
 # Run the CLI
 echo "Starting Magic Card Detector CLI..."
 dart run bin/mcd_cli.dart

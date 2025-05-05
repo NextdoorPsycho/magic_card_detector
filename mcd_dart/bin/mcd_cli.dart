@@ -94,7 +94,7 @@ void _extractCards() {
   final List<String> availableSets = ['All', 'LEA', 'DSK', 'Other'];
   final int setIndex =
       Select(
-        prompt: 'Select a set (defaults to All):',
+        prompt: 'Select a set:',
         options: availableSets,
       ).interact();
   final String selectedSet = availableSets[setIndex];
