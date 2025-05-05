@@ -25,8 +25,24 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
+  characters:
+    dependency: transitive
+    description:
+      name: characters
+      sha256: f71061c654a3380576a52b451dd5532377954cf9dbd272a78fc8479606670803
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
+  clock:
+    dependency: transitive
+    description:
+      name: clock
+      sha256: fddb70d9b5277016c77a80201021d40a2247104d9f4aa7bab7157b7e3f05b84b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   collection:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: collection
       sha256: "2f5709ae4d3d59dd8f7cd309b4e023046b57d8a6c82130785d2b0e5868084e76"
@@ -49,6 +65,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
+  dart_console:
+    dependency: transitive
+    description:
+      name: dart_console
+      sha256: dfa4b63eb4382325ff975fdb6b7a0db8303bb5809ee5cb4516b44153844742ed
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   fast_log:
     dependency: "direct main"
     description:
@@ -65,14 +89,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  fixnum:
-    dependency: transitive
-    description:
-      name: fixnum
-      sha256: b6dc7065e46c974bc7c5f143080a6764ec7a4be6da1285ececdc37be96de53be
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.1"
   http:
     dependency: "direct main"
     description:
@@ -97,14 +113,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.5.4"
-  image_compare:
+  interact:
     dependency: "direct main"
     description:
-      name: image_compare
-      sha256: "774e9ef1558ca328191fe9690e8e024159a3a2db6ea4ef6b65bea0faa3631b74"
+      name: interact
+      sha256: b1abf79334bec42e58496a054cb7ee7ca74da6181f6a1fb6b134f1aa22bc4080
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.2"
+    version: "2.2.0"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.18.1"
   json_annotation:
     dependency: transitive
     description:
@@ -169,14 +193,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.1"
-  sprintf:
-    dependency: transitive
-    description:
-      name: sprintf
-      sha256: "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23"
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.0.0"
   string_scanner:
     dependency: transitive
     description:
@@ -193,6 +209,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.2"
+  tint:
+    dependency: transitive
+    description:
+      name: tint
+      sha256: "9652d9a589f4536d5e392cf790263d120474f15da3cf1bee7f1fdb31b4de5f46"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   typed_data:
     dependency: transitive
     description:
@@ -201,22 +225,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-  universal_io:
-    dependency: transitive
-    description:
-      name: universal_io
-      sha256: "1722b2dcc462b4b2f3ee7d188dad008b6eb4c40bbd03a3de451d82c78bba9aad"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.2"
-  uuid:
-    dependency: "direct overridden"
-    description:
-      name: uuid
-      sha256: a5be9ef6618a7ac1e964353ef476418026db906c4facdedaa299b7a2e71690ff
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.5.1"
   web:
     dependency: transitive
     description:
@@ -225,6 +233,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  win32:
+    dependency: transitive
+    description:
+      name: win32
+      sha256: dc6ecaa00a7c708e5b4d10ee7bec8c270e9276dfcab1783f57e9962d7884305f
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.12.0"
   xml:
     dependency: transitive
     description:
