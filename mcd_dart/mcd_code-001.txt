@@ -1,0 +1,2140 @@
+// File: lib/python/save_hash.py
+# [PYTHON FILE]
+import pickle
+import magic_card_detector as mcg
+card_detector = mcg.MagicCardDetector()
+card_detector.read_and_adjust_reference_images()
+hlist = []
+for image in card_detector.reference_images:
+    image.original = None
+    image.clahe = None
+    image.adjusted = None
+    hlist.append(image)
+with open(, ) as f:
+    pickle.dump(hlist, f)// File: lib/python/magic_card_detector.py
+# [PYTHON FILE]
+import glob
+import os
+import cProfile
+import pstats
+import io
+import base64
+import pickle
+import argparse
+from copy import deepcopy
+from itertools import product
+from dataclasses import dataclass
+import numpy as np
+import matplotlib
+matplotlib.use()
+import matplotlib.pyplot as plt
+from shapely.geometry import LineString
+from shapely.geometry.polygon import Polygon
+from shapely.affinity import scale
+from scipy.ndimage import rotate
+from PIL import Image as PILImage
+import imagehash
+import cv2
+def order_polygon_points(x, y):
+    
+    angle = np.arctan2(y - np.average(y), x - np.average(x))
+    ind = np.argsort(angle)
+    return (x[ind], y[ind])
+def four_point_transform(image, poly):
+    
+    pts = np.zeros((4, 2))
+    pts[:, 0] = np.asarray(poly.exterior.coords)[:-1, 0]
+    pts[:, 1] = np.asarray(poly.exterior.coords)[:-1, 1]
+    # obtain a consistent order of the points and unpack them
+    # individually
+    rect = np.zeros((4, 2))
+    (rect[:, 0], rect[:, 1]) = order_polygon_points(pts[:, 0], pts[:, 1])
+    # compute the width of the new image, which will be the
+    # maximum distance between bottom-right and bottom-left
+    # x-coordiates or the top-right and top-left x-coordinates
+    # width_a = np.sqrt(((b_r[0] - b_l[0]) ** 2) + ((b_r[1] - b_l[1]) ** 2))
+    # width_b = np.sqrt(((t_r[0] - t_l[0]) ** 2) + ((t_r[1] - t_l[1]) ** 2))
+    width_a = np.sqrt(((rect[1, 0] - rect[0, 0]) ** 2) +
+                      ((rect[1, 1] - rect[0, 1]) ** 2))
+    width_b = np.sqrt(((rect[3, 0] - rect[2, 0]) ** 2) +
+                      ((rect[3, 1] - rect[2, 1]) ** 2))
+    max_width = max(int(width_a), int(width_b))
+    # compute the height of the new image, which will be the
+    # maximum distance between the top-right and bottom-right
+    # y-coordinates or the top-left and bottom-left y-coordinates
+    height_a = np.sqrt(((rect[0, 0] - rect[3, 0]) ** 2) +
+                       ((rect[0, 1] - rect[3, 1]) ** 2))
+    height_b = np.sqrt(((rect[1, 0] - rect[2, 0]) ** 2) +
+                       ((rect[1, 1] - rect[2, 1]) ** 2))
+    max_height = max(int(height_a), int(height_b))
+    # now that we have the dimensions of the new image, construct
+    # the set of destination points to obtain a "birds eye view",
+    # (i.e. top-down view) of the image, again specifying points
+    # in the top-left, top-right, bottom-right, and bottom-left
+    # order
+    rect = np.array([
+        [rect[0, 0], rect[0, 1]],
+        [rect[1, 0], rect[1, 1]],
+        [rect[2, 0], rect[2, 1]],
+        [rect[3, 0], rect[3, 1]]], dtype="float32")
+    dst = np.array([
+        [0, 0],
+        [max_width - 1, 0],
+        [max_width - 1, max_height - 1],
+        [0, max_height - 1]], dtype="float32")
+    # compute the perspective transform matrix and then apply it
+    transform = cv2.getPerspectiveTransform(rect, dst)
+    warped = cv2.warpPerspective(image, transform, (max_width, max_height))
+    # return the warped image
+    return warped
+def line_intersection(x, y):
+    
+    slope_0 = (x[0] - x[1]) * (y[2] - y[3])
+    slope_2 = (y[0] - y[1]) * (x[2] - x[3])
+    if slope_0 == slope_2:
+        # parallel lines
+        xis = np.nan
+        yis = np.nan
+    else:
+        xy_01 = x[0] * y[1] - y[0] * x[1]
+        xy_23 = x[2] * y[3] - y[2] * x[3]
+        denom = slope_0 - slope_2
+        xis = (xy_01 * (x[2] - x[3]) - (x[0] - x[1]) * xy_23) / denom
+        yis = (xy_01 * (y[2] - y[3]) - (y[0] - y[1]) * xy_23) / denom
+    return (xis, yis)
+def simplify_polygon(in_poly,
+                     length_cutoff=0.15,
+                     maxiter=None,
+                     segment_to_remove=None):
+    
+    x_in = np.asarray(in_poly.exterior.coords)[:-1, 0]
+    y_in = np.asarray(in_poly.exterior.coords)[:-1, 1]
+    len_poly = len(x_in)
+    niter = 0
+    if segment_to_remove is not None:
+        maxiter = 1
+    while len_poly > 4:
+        d_in = np.sqrt(np.ediff1d(x_in, to_end=x_in[0] - x_in[-1]) ** 2. +
+                       np.ediff1d(y_in, to_end=y_in[0] - y_in[-1]) ** 2.)
+        d_tot = np.sum(d_in)
+        if segment_to_remove is not None:
+            k = segment_to_remove
+        else:
+            k = np.argmin(d_in)
+        if d_in[k] < length_cutoff * d_tot:
+            ind = generate_point_indices(k - 1, k + 1, len_poly)
+            (xis, yis) = line_intersection(x_in[ind], y_in[ind])
+            x_in[k] = xis
+            y_in[k] = yis
+            x_in = np.delete(x_in, (k + 1) % len_poly)
+            y_in = np.delete(y_in, (k + 1) % len_poly)
+            len_poly = len(x_in)
+            niter += 1
+            if (maxiter is not None) and (niter >= maxiter):
+                break
+        else:
+            break
+    out_poly = Polygon([[ix, iy] for (ix, iy) in zip(x_in, y_in)])
+    return out_poly
+def generate_point_indices(index_1, index_2, max_len):
+    
+    return np.array([index_1 % max_len,
+                     (index_1 + 1) % max_len,
+                     index_2 % max_len,
+                     (index_2 + 1) % max_len])
+def generate_quad_corners(indices, x, y):
+    
+    (i, j, k, l) = indices
+    def gpi(index_1, index_2):
+        return generate_point_indices(index_1, index_2, len(x))
+    xis = np.empty(4)
+    yis = np.empty(4)
+    xis.fill(np.nan)
+    yis.fill(np.nan)
+    if j <= i or k <= j or l <= k:
+        pass
+    else:
+        (xis[0], yis[0]) = line_intersection(x[gpi(i, j)],
+                                             y[gpi(i, j)])
+        (xis[1], yis[1]) = line_intersection(x[gpi(j, k)],
+                                             y[gpi(j, k)])
+        (xis[2], yis[2]) = line_intersection(x[gpi(k, l)],
+                                             y[gpi(k, l)])
+        (xis[3], yis[3]) = line_intersection(x[gpi(l, i)],
+                                             y[gpi(l, i)])
+    return (xis, yis)
+def generate_quad_candidates(in_poly):
+    
+    # make sure that the points are ordered
+    (x_s, y_s) = order_polygon_points(
+        np.asarray(in_poly.exterior.coords)[:-1, 0],
+        np.asarray(in_poly.exterior.coords)[:-1, 1])
+    x_s_ave = np.average(x_s)
+    y_s_ave = np.average(y_s)
+    x_shrunk = x_s_ave + 0.9999 * (x_s - x_s_ave)
+    y_shrunk = y_s_ave + 0.9999 * (y_s - y_s_ave)
+    shrunk_poly = Polygon([[x, y] for (x, y) in
+                           zip(x_shrunk, y_shrunk)])
+    quads = []
+    len_poly = len(x_s)
+    for indices in product(range(len_poly), repeat=4):
+        (xis, yis) = generate_quad_corners(indices, x_s, y_s)
+        if (np.sum(np.isnan(xis)) + np.sum(np.isnan(yis))) > 0:
+            # no intersection point for some of the lines
+            pass
+        else:
+            (xis, yis) = order_polygon_points(xis, yis)
+            enclose = True
+            quad = Polygon([(xis[0], yis[0]),
+                            (xis[1], yis[1]),
+                            (xis[2], yis[2]),
+                            (xis[3], yis[3])])
+            if not quad.contains(shrunk_poly):
+                enclose = False
+            if enclose:
+                quads.append(quad)
+    return quads
+def get_bounding_quad(hull_poly):
+    
+    simple_poly = simplify_polygon(hull_poly)
+    bounding_quads = generate_quad_candidates(simple_poly)
+    bquad_areas = np.zeros(len(bounding_quads))
+    for iquad, bquad in enumerate(bounding_quads):
+        bquad_areas[iquad] = bquad.area
+    min_area_quad = bounding_quads[np.argmin(bquad_areas)]
+    return min_area_quad
+def quad_corner_diff(hull_poly, bquad_poly, region_size=0.9):
+    
+    bquad_corners = np.zeros((4, 2))
+    bquad_corners[:, 0] = np.asarray(bquad_poly.exterior.coords)[:-1, 0]
+    bquad_corners[:, 1] = np.asarray(bquad_poly.exterior.coords)[:-1, 1]
+    # The point inside the quadrilateral, region_size towards the quad center
+    interior_points = np.zeros((4, 2))
+    interior_points[:, 0] = np.average(bquad_corners[:, 0]) + \
+        region_size * (bquad_corners[:, 0] - np.average(bquad_corners[:, 0]))
+    interior_points[:, 1] = np.average(bquad_corners[:, 1]) + \
+        region_size * (bquad_corners[:, 1] - np.average(bquad_corners[:, 1]))
+    # The points p0 and p1 (at each corner) define the line whose intersections
+    # with the quad together with the corner point define the triangular
+    # area where the roundness of the convex hull in relation to the bounding
+    # quadrilateral is evaluated.
+    # The line (out of p0 and p1) is constructed such that it goes through the
+    # "interior_point" and is orthogonal to the line going from the corner to
+    # the center of the quad.
+    p0_x = interior_points[:, 0] + \
+        (bquad_corners[:, 1] - np.average(bquad_corners[:, 1]))
+    p1_x = interior_points[:, 0] - \
+        (bquad_corners[:, 1] - np.average(bquad_corners[:, 1]))
+    p0_y = interior_points[:, 1] - \
+        (bquad_corners[:, 0] - np.average(bquad_corners[:, 0]))
+    p1_y = interior_points[:, 1] + \
+        (bquad_corners[:, 0] - np.average(bquad_corners[:, 0]))
+    corner_area_polys = []
+    for i in range(len(interior_points[:, 0])):
+        bline = LineString([(p0_x[i], p0_y[i]), (p1_x[i], p1_y[i])])
+        corner_area_polys.append(Polygon(
+            [bquad_poly.intersection(bline).coords[0],
+             bquad_poly.intersection(bline).coords[1],
+             (bquad_corners[i, 0], bquad_corners[i, 1])]))
+    hull_corner_area = 0
+    quad_corner_area = 0
+    for capoly in corner_area_polys:
+        quad_corner_area += capoly.area
+        hull_corner_area += capoly.intersection(hull_poly).area
+    return 1. - hull_corner_area / quad_corner_area
+def convex_hull_polygon(contour):
+    
+    hull = cv2.convexHull(contour)
+    phull = Polygon([[x, y] for (x, y) in
+                     zip(hull[:, :, 0], hull[:, :, 1])])
+    return phull
+def polygon_form_factor(poly):
+    
+    # minimum side length
+    d_0 = np.amin(np.sqrt(np.sum(np.diff(np.asarray(poly.exterior.coords),
+                                         axis=0) ** 2., axis=1)))
+    return poly.area / (poly.length * d_0)
+def characterize_card_contour(card_contour,
+                              max_segment_area,
+                              image_area):
+    
+    phull = convex_hull_polygon(card_contour)
+    if (phull.area < 0.1 * max_segment_area or
+            phull.area < image_area / 1000.):
+        # break after card size range has been explored
+        continue_segmentation = False
+        is_card_candidate = False
+        bounding_poly = None
+        crop_factor = 1.
+    else:
+        continue_segmentation = True
+        bounding_poly = get_bounding_quad(phull)
+        qc_diff = quad_corner_diff(phull, bounding_poly)
+        crop_factor = min(1., (1. - qc_diff * 22. / 100.))
+        is_card_candidate = bool(
+            0.1 * max_segment_area < bounding_poly.area <
+            image_area * 0.99 and
+            qc_diff < 0.35 and
+            0.25 < polygon_form_factor(bounding_poly) < 0.33)
+    return (continue_segmentation,
+            is_card_candidate,
+            bounding_poly,
+            crop_factor)
+@dataclass
+class CardCandidate:
+    
+    image: np.ndarray
+    bounding_quad: Polygon
+    image_area_fraction: float
+    is_recognized: bool = False
+    recognition_score: float = 0.
+    is_fragment: bool = False
+    name: str = 
+    # def __init__(self, im_seg, bquad, fraction):
+    #    self.image = im_seg
+    #    self.bounding_quad = bquad
+    #    self.is_recognized = False
+    #    self.recognition_score = 0.
+    #    self.is_fragment = False
+    #    self.image_area_fraction = fraction
+    #    self.name = 
+    def contains(self, other):
+        
+        return bool(other.bounding_quad.within(self.bounding_quad) and
+                    other.name == self.name)
+class ReferenceImage:
+    
+    def __init__(self, name, original_image, clahe, phash=None):
+        self.name = name
+        self.original = original_image
+        self.clahe = clahe
+        self.adjusted = None
+        self.phash = phash
+        if self.original is not None:
+            self.histogram_adjust()
+            self.calculate_phash()
+    def calculate_phash(self):
+        
+        self.phash = imagehash.phash(
+            PILImage.fromarray(np.uint8(255 * cv2.cvtColor(
+                self.adjusted, cv2.COLOR_BGR2RGB))),
+            hash_size=32)
+    def histogram_adjust(self):
+        
+        lab = cv2.cvtColor(self.original, cv2.COLOR_BGR2LAB)
+        lightness, redness, yellowness = cv2.split(lab)
+        corrected_lightness = self.clahe.apply(lightness)
+        limg = cv2.merge((corrected_lightness, redness, yellowness))
+        self.adjusted = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
+class TestImage:
+    
+    def __init__(self, name, original_image, clahe):
+        self.name = name
+        self.original = original_image
+        self.clahe = clahe
+        self.adjusted = None
+        self.phash = None
+        self.visual = False
+        self.histogram_adjust()
+        # self.calculate_phash()
+        self.candidate_list = []
+    def histogram_adjust(self):
+        
+        lab = cv2.cvtColor(self.original, cv2.COLOR_BGR2LAB)
+        lightness, redness, yellowness = cv2.split(lab)
+        corrected_lightness = self.clahe.apply(lightness)
+        limg = cv2.merge((corrected_lightness, redness, yellowness))
+        self.adjusted = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
+    def mark_fragments(self):
+        
+        for (candidate, other_candidate) in product(self.candidate_list,
+                                                    repeat=2):
+            if candidate.is_fragment or other_candidate.is_fragment:
+                continue
+            if ((candidate.is_recognized or other_candidate.is_recognized) and
+                    candidate is not other_candidate):
+                i_area = candidate.bounding_quad.intersection(
+                    other_candidate.bounding_quad).area
+                min_area = min(candidate.bounding_quad.area,
+                               other_candidate.bounding_quad.area)
+                if i_area > 0.5 * min_area:
+                    if (candidate.is_recognized and
+                            other_candidate.is_recognized):
+                        if (candidate.recognition_score <
+                                other_candidate.recognition_score):
+                            candidate.is_fragment = True
+                        else:
+                            other_candidate.is_fragment = True
+                    else:
+                        if candidate.is_recognized:
+                            other_candidate.is_fragment = True
+                        else:
+                            candidate.is_fragment = True
+    def plot_image_with_recognized(self, output_path=None, visual=False):
+        
+        # Plotting
+        plt.figure()
+        plt.imshow(cv2.cvtColor(self.original, cv2.COLOR_BGR2RGB))
+        plt.axis()
+        for candidate in self.candidate_list:
+            if not candidate.is_fragment:
+                full_image = self.adjusted
+                bquad_corners = np.empty((4, 2))
+                bquad_corners[:, 0] = np.asarray(
+                    candidate.bounding_quad.exterior.coords)[:-1, 0]
+                bquad_corners[:, 1] = np.asarray(
+                    candidate.bounding_quad.exterior.coords)[:-1, 1]
+                plt.plot(np.append(bquad_corners[:, 0],
+                                   bquad_corners[0, 0]),
+                         np.append(bquad_corners[:, 1],
+                                   bquad_corners[0, 1]), )
+                bounding_poly = Polygon([[x, y] for (x, y) in
+                                         zip(bquad_corners[:, 0],
+                                             bquad_corners[:, 1])])
+                fntsze = int(6 * bounding_poly.length / full_image.shape[1])
+                bbox_color =  if candidate.is_recognized else 
+                plt.text(np.average(bquad_corners[:, 0]),
+                         np.average(bquad_corners[:, 1]),
+                         candidate.name.capitalize(),
+                         horizontalalignment=,
+                         fontsize=fntsze,
+                         bbox=dict(facecolor=bbox_color,
+                                   alpha=0.7))
+        if output_path is not None:
+            plt.savefig(output_path +  +
+                        str(self.name.split()[0]) +
+                        , dpi=600)
+        if visual:
+            plt.show()
+        # Save figure to a bytes buffer
+        buf = io.BytesIO()
+        # Save as PNG for transparency support if needed, or JPG for size
+        plt.savefig(buf, format=, bbox_inches=, pad_inches=0)
+        plt.close() # Close the plot figure to free memory
+        buf.seek(0)
+        img_bytes = buf.getvalue()
+        buf.close()
+        return img_bytes
+    def print_recognized(self):
+        
+        recognized_list = self.return_recognized()
+        print( +
+              str(len(recognized_list)) +
+              )
+        for card in recognized_list:
+            print(card.name +
+                   +
+                  str(card.recognition_score))
+    def return_recognized(self):
+        
+        recognized_list = []
+        for candidate in self.candidate_list:
+            if candidate.is_recognized and not candidate.is_fragment:
+                recognized_list.append(candidate)
+        return recognized_list
+    def discard_unrecognized_candidates(self):
+        
+        recognized_list = deepcopy(self.return_recognized())
+        self.candidate_list.clear()
+        self.candidate_list = recognized_list
+    def may_contain_more_cards(self):
+        
+        recognized_list = self.return_recognized()
+        if not recognized_list:
+            return True
+        tot_area = 0.
+        min_area = 1.
+        for card in recognized_list:
+            tot_area += card.image_area_fraction
+            if card.image_area_fraction < min_area:
+                min_area = card.image_area_fraction
+        return bool(tot_area + 1.5 * min_area < 1.)
+class MagicCardDetector:
+    
+    def __init__(self, output_path=None):
+        
+        self.output_path = output_path  # Store it (will be None if not provided by Flask)
+        self.reference_images = []
+        self.test_images = []
+        self.verbose = False
+        self.visual = False
+        self.hash_separation_thr = 4.
+        self.thr_lvl = 70
+        self.clahe = cv2.createCLAHE(clipLimit=2.0,
+                                     tileGridSize=(8, 8))
+    def export_reference_data(self, path):
+        
+        hlist = []
+        for image in self.reference_images:
+            hlist.append(ReferenceImage(image.name,
+                                        None,
+                                        None,
+                                        image.phash))
+        with open(path, ) as fhandle:
+            pickle.dump(hlist, fhandle)
+    def read_prehashed_reference_data(self, path):
+        
+        print( + str(path))
+        print(, end=)
+        with open(path, ) as filename:
+            hashed_list = pickle.load(filename)
+        for ref_im in hashed_list:
+            self.reference_images.append(
+                ReferenceImage(ref_im.name, None, self.clahe, ref_im.phash))
+        print()
+    def read_and_adjust_reference_images(self, path):
+        
+        print( + str(path))
+        print(, end=)
+        filenames = glob.glob(path + )
+        for filename in filenames:
+            img = cv2.imread(filename)
+            img_name = filename.split(path)[1]
+            self.reference_images.append(
+                ReferenceImage(img_name, img, self.clahe))
+        print()
+    def read_and_adjust_test_images(self, path):
+        
+        maxsize = 1000
+        print( + str(path))
+        print(, end=)
+        filenames = glob.glob(path.rstrip() + )
+        for filename in filenames:
+            img = cv2.imread(filename)
+            if min(img.shape[0], img.shape[1]) > maxsize:
+                scalef = maxsize / min(img.shape[0], img.shape[1])
+                img = cv2.resize(img,
+                                 (int(img.shape[1] * scalef),
+                                  int(img.shape[0] * scalef)),
+                                 interpolation=cv2.INTER_AREA)
+            img_name = os.path.basename(filename)
+            self.test_images.append(
+                TestImage(img_name, img, self.clahe))
+        print()
+    def contour_image_gray(self, full_image, thresholding=):
+        
+        gray = cv2.cvtColor(full_image, cv2.COLOR_BGR2GRAY)
+        if thresholding == :
+            fltr_size = 1 + 2 * (min(full_image.shape[0],
+                                     full_image.shape[1]) // 20)
+            thresh = cv2.adaptiveThreshold(gray,
+                                           255,
+                                           cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                           cv2.THRESH_BINARY,
+                                           fltr_size,
+                                           10)
+        else:
+            _, thresh = cv2.threshold(gray,
+                                      70,
+                                      255,
+                                      cv2.THRESH_BINARY)
+        if self.visual and self.verbose:
+            plt.imshow(thresh)
+            plt.show()
+        contours, _ = cv2.findContours(
+            np.uint8(thresh), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        return contours
+    def contour_image_rgb(self, full_image):
+        
+        blue, green, red = cv2.split(full_image)
+        blue = self.clahe.apply(blue)
+        green = self.clahe.apply(green)
+        red = self.clahe.apply(red)
+        _, thr_b = cv2.threshold(blue, 110, 255, cv2.THRESH_BINARY)
+        _, thr_g = cv2.threshold(green, 110, 255, cv2.THRESH_BINARY)
+        _, thr_r = cv2.threshold(red, 110, 255, cv2.THRESH_BINARY)
+        contours_b, _ = cv2.findContours(
+            np.uint8(thr_b), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours_g, _ = cv2.findContours(
+            np.uint8(thr_g), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours_r, _ = cv2.findContours(
+            np.uint8(thr_r), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours = contours_b + contours_g + contours_r
+        if self.visual and self.verbose:
+            plt.imshow(thr_r)
+            plt.show()
+            plt.imshow(thr_g)
+            plt.show()
+            plt.imshow(thr_b)
+            plt.show()
+        return contours
+    def contour_image(self, full_image, mode=):
+        
+        if mode == :
+            contours = self.contour_image_gray(full_image,
+                                               thresholding=)
+        elif mode == :
+            contours = self.contour_image_gray(full_image,
+                                               thresholding=)
+        elif mode == :
+            contours = self.contour_image_rgb(full_image)
+        elif mode == :
+            contours = self.contour_image_gray(full_image,
+                                               thresholding=)
+            contours += self.contour_image_gray(full_image,
+                                                thresholding=)
+            contours += self.contour_image_rgb(full_image)
+        else:
+            raise ValueError()
+        contours_sorted = sorted(contours, key=cv2.contourArea, reverse=True)
+        return contours_sorted
+    def segment_image(self, test_image, contouring_mode=):
+        
+        full_image = test_image.adjusted.copy()
+        image_area = full_image.shape[0] * full_image.shape[1]
+        max_segment_area = 0.01  # largest card area
+        contours = self.contour_image(full_image, mode=contouring_mode)
+        for card_contour in contours:
+            try:
+                (continue_segmentation,
+                 is_card_candidate,
+                 bounding_poly,
+                 crop_factor) = characterize_card_contour(card_contour,
+                                                          max_segment_area,
+                                                          image_area)
+            except NotImplementedError as nie:
+                # this can occur in Shapely for some funny contour shapes
+                # resolve by discarding the candidate
+                print(nie)
+                (continue_segmentation,
+                 is_card_candidate,
+                 bounding_poly,
+                 crop_factor) = (True, False, None, 1.)
+            if not continue_segmentation:
+                break
+            if is_card_candidate:
+                if max_segment_area < 0.1:
+                    max_segment_area = bounding_poly.area
+                warped = four_point_transform(full_image,
+                                              scale(bounding_poly,
+                                                    xfact=crop_factor,
+                                                    yfact=crop_factor,
+                                                    origin=))
+                test_image.candidate_list.append(
+                    CardCandidate(warped,
+                                  bounding_poly,
+                                  bounding_poly.area / image_area))
+                if self.verbose:
+                    print( +
+                          str(len(test_image.candidate_list)) +
+                          )
+    def phash_diff(self, phash_im):
+        
+        diff = np.zeros(len(self.reference_images))
+        for i, ref_im in enumerate(self.reference_images):
+            diff[i] = phash_im - ref_im.phash
+        return diff
+    def phash_compare(self, im_seg):
+        
+        card_name = 
+        is_recognized = False
+        recognition_score = 0.
+        rotations = np.array([0., 90., 180., 270.])
+        d_0_dist = np.zeros(len(rotations))
+        d_0 = np.zeros((len(self.reference_images), len(rotations)))
+        for j, rot in enumerate(rotations):
+            if not -1.e-5 < rot < 1.e-5:
+                phash_im = imagehash.phash(
+                    PILImage.fromarray(np.uint8(255 * cv2.cvtColor(
+                        rotate(im_seg, rot), cv2.COLOR_BGR2RGB))),
+                    hash_size=32)
+            else:
+                phash_im = imagehash.phash(
+                    PILImage.fromarray(np.uint8(255 * cv2.cvtColor(
+                        im_seg, cv2.COLOR_BGR2RGB))),
+                    hash_size=32)
+            d_0[:, j] = self.phash_diff(phash_im)
+            d_0_ = d_0[d_0[:, j] > np.amin(d_0[:, j]), j]
+            d_0_ave = np.average(d_0_)
+            d_0_std = np.std(d_0_)
+            d_0_dist[j] = (d_0_ave - np.amin(d_0[:, j])) / d_0_std
+            if self.verbose:
+                print( + str(d_0_dist[j]))
+            if (d_0_dist[j] > self.hash_separation_thr and
+                    np.argmax(d_0_dist) == j):
+                card_name = self.reference_images[np.argmin(d_0[:, j])]\
+                    .name.split()[0]
+                is_recognized = True
+                recognition_score = d_0_dist[j] / self.hash_separation_thr
+                break
+        return (is_recognized, recognition_score, card_name)
+    def recognize_segment(self, image_segment):
+        
+        return self.phash_compare(image_segment)
+    def run_recognition(self, image_index=None):
+        
+        if image_index is None:
+            image_index = range(len(self.test_images))
+        elif not isinstance(image_index, list):
+            image_index = [image_index]
+        for i in image_index:
+            test_image = self.test_images[i]
+            print( + test_image.name)
+            if self.visual:
+                print()
+                plt.imshow(cv2.cvtColor(test_image.original,
+                                        cv2.COLOR_BGR2RGB))
+                plt.show()
+            alg_list = [, ]
+            for alg in alg_list:
+                self.recognize_cards_in_image(test_image, alg)
+                test_image.discard_unrecognized_candidates()
+                if (not test_image.may_contain_more_cards() or
+                        len(test_image.return_recognized()) > 5):
+                    break
+            print()
+            test_image.plot_image_with_recognized(self.output_path, self.visual)
+            print()
+            test_image.print_recognized()
+        print()
+    def process_image_data(self, image_cv2, image_name="uploaded_image"):
+        
+        print(f"\n--- Processing Web Request Image: {image_name} ---")
+        if image_cv2 is None:
+            print("Error: Received None for image data in process_image_data.")
+            return None, None
+        # --- Prepare Temporary TestImage ---
+        # Resize if needed
+        maxsize = 1000
+        img_h, img_w = image_cv2.shape[:2]
+        if min(img_h, img_w) > maxsize:
+            scalef = maxsize / min(img_h, img_w)
+            print(f"  Resizing image from {img_w}x{img_h} with scale factor {scalef:.2f}")
+            image_cv2 = cv2.resize(image_cv2,
+                                (int(img_w * scalef), int(img_h * scalef)),
+                                interpolation=cv2.INTER_AREA)
+        # Create a temporary TestImage object JUST for this request
+        # Use verbose/visual settings from the detector instance (usually False for web)
+        temp_test_image = TestImage(image_name, image_cv2, self.clahe)
+        temp_test_image.visual = False # For consistency, though not used for web output
+        alg_list = [, ]
+        for alg in alg_list:
+            self.recognize_cards_in_image(temp_test_image, alg)
+            temp_test_image.discard_unrecognized_candidates()
+            if (not temp_test_image.may_contain_more_cards() or
+                    len(temp_test_image.return_recognized()) > 5):
+                break
+        # === Handle Web Output ===
+        print(f)
+        # Generate annotated image BYTES
+        annotated_image_bytes = temp_test_image.plot_image_with_recognized()
+        # Encode original image to BYTES
+        is_success, buffer = cv2.imencode(".png", temp_test_image.original) # Encode as PNG
+        original_image_bytes = buffer.tobytes() if is_success else None
+        if not is_success:
+            print(f"  Error encoding original image  to bytes!")
+        print(f"Web Output: Finished processing . Returning image bytes.")
+        return original_image_bytes, annotated_image_bytes
+    def recognize_cards_in_image(self, test_image, contouring_mode):
+        
+        print()
+        print( + str(contouring_mode) + )
+        test_image.candidate_list.clear()
+        self.segment_image(test_image, contouring_mode=contouring_mode)
+        print( +
+              str(len(test_image.candidate_list)) + )
+        print()
+        for i_cand, candidate in enumerate(test_image.candidate_list):
+            im_seg = candidate.image
+            if self.verbose:
+                print(str(i_cand + 1) + " / " +
+                      str(len(test_image.candidate_list)))
+            # Easy fragment / duplicate detection
+            for other_candidate in test_image.candidate_list:
+                if (other_candidate.is_recognized and
+                        not other_candidate.is_fragment):
+                    if other_candidate.contains(candidate):
+                        candidate.is_fragment = True
+            if not candidate.is_fragment:
+                (candidate.is_recognized,
+                 candidate.recognition_score,
+                 candidate.name) = self.recognize_segment(im_seg)
+        print( +
+              str(len(test_image.return_recognized())) +
+              )
+        if self.verbose:
+            for card in test_image.return_recognized():
+                print(card.name +  + str(card.recognition_score))
+        print()
+        # Final fragment detection
+        test_image.mark_fragments()
+        print()
+def main():
+    
+    # Add command line parser
+    parser = argparse.ArgumentParser(
+        description= +
+                     )
+    parser.add_argument(,
+                        help=)
+    parser.add_argument(,
+                        help=)
+    parser.add_argument(, default=,
+                        help=)
+    parser.add_argument(, default=False, action=,
+                        help=)
+    parser.add_argument(, default=False, action=,
+                        help=)
+    args = parser.parse_args()
+    # Create the output path
+    output_path = args.output_path.rstrip()
+    if not os.path.exists(output_path):
+        os.mkdir(output_path)
+    # Instantiate the detector
+    card_detector = MagicCardDetector(output_path)
+    do_profile = False
+    card_detector.visual = args.visual
+    card_detector.verbose = args.verbose
+    # Read the reference and test data sets
+    # card_detector.read_and_adjust_reference_images(
+    #     )
+    card_detector.read_prehashed_reference_data(args.phash)
+    card_detector.read_and_adjust_test_images(args.input_path)
+    if do_profile:
+        # Start up the profiler.
+        profiler = cProfile.Profile()
+        profiler.enable()
+    # Run the card detection and recognition.
+    card_detector.run_recognition()
+    if do_profile:
+        # Stop profiling and organize and print profiling results.
+        profiler.disable()
+        profiler.dump_stats()
+        profiler_stream = io.StringIO()
+        sortby = pstats.SortKey.CUMULATIVE
+        profiler_stats = pstats.Stats(
+            profiler, stream=profiler_stream).sort_stats(sortby)
+        profiler_stats.print_stats(20)
+        print(profiler_stream.getvalue())
+if __name__ == "__main__":
+    main()
+// File: lib/python/app.py
+# [PYTHON FILE]
+import os
+import io
+import base64
+import numpy as np
+import cv2
+from flask import Flask, request, render_template, redirect, url_for, flash
+from magic_card_detector import MagicCardDetector
+ALLOWED_EXTENSIONS = {, , }
+REFERENCE_HASH_FILE = 
+app = Flask(__name__)
+app.secret_key =  # TBD
+print("Initializing Magic Card Detector...")
+detector = MagicCardDetector()
+try:
+    detector.read_prehashed_reference_data(REFERENCE_HASH_FILE)
+    print(f"Successfully loaded reference data from {REFERENCE_HASH_FILE}")
+except FileNotFoundError:
+    print(f"ERROR: Reference hash file  not found!")
+    print("The detector will not be able to recognize cards.")
+    detector = None # Disable detector if reference data fails
+except Exception as e:
+    print(f"ERROR loading reference data: {e}")
+    detector = None
+def allowed_file(filename):
+    return  in filename and \
+           filename.rsplit(, 1)[1].lower() in ALLOWED_EXTENSIONS
+@app.route()
+def index():
+    
+    return render_template()
+@app.route(, methods=[])
+def upload_image():
+    
+    if detector is None:
+         flash(, )
+         return redirect(url_for())
+    if  not in request.files:
+        flash(, )
+        return redirect(url_for())
+    file = request.files[]
+    if file.filename == :
+        flash(, )
+        return redirect(url_for())
+    if file and allowed_file(file.filename):
+        try:
+            # Read image file stream into OpenCV
+            filestr = file.read()
+            npimg = np.frombuffer(filestr, np.uint8)
+            img_cv = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+            if img_cv is None:
+                 flash(, )
+                 return redirect(url_for())
+            print(f"Image  loaded successfully. Processing...")
+            # Process the image using the detector instance
+            # This now returns original_bytes, annotated_bytes
+            original_bytes, annotated_bytes = detector.process_image_data(img_cv, file.filename)
+            print("Processing complete. Encoding images for display...")
+            # Encode images to Base64 for embedding in HTML
+            original_b64 = base64.b64encode(original_bytes).decode() if original_bytes else None
+            result_b64 = base64.b64encode(annotated_bytes).decode() if annotated_bytes else None
+            # Render the results page
+            return render_template(,
+                                   original_image_b64=original_b64,
+                                   result_image_b64=result_b64)
+        except Exception as e:
+            print(f"An error occurred during processing: {e}")
+            import traceback
+            traceback.print_exc() # Print detailed traceback to server console
+            flash(f, )
+            return redirect(url_for())
+    else:
+        flash(, )
+        return redirect(url_for())
+if __name__ == "__main__":
+    # Use debug=True only for development
+    # For production, use a proper WSGI server like Gunicorn or Waitress
+    # Example: gunicorn -w 4 app:app
+    app.run(debug=True, host=, port=5001) # Makes it accessible on your network// File: lib/utils/command_memory.dart
+// [DART FILE]
+import 'dart:convert';
+import 'dart:io';
+import 'package:path/path.dart' as path;
+class CommandMemory {
+  static const String _memoryFileName = '.mcd_memory.json';
+  static const int _maxCommandHistory = 2; // Number of commands to store
+  /// Command types for different operations
+  static const String typeHashGeneration = 'hash_generation';
+  static const String typeCardExtraction = 'card_extraction';
+  /// Saves the hash generation command parameters to memory
+  static Future<bool> saveHashGenerationCommand({
+    required String setCode,
+    required String source,
+    required int parallelism,
+    required bool cleanup,
+  }) async {
+    final Map<String, dynamic> commandData = {
+      'type': typeHashGeneration,
+      'timestamp': DateTime.now().toIso8601String(),
+      'parameters': {
+        'setCode': setCode,
+        'source': source,
+        'parallelism': parallelism,
+        'cleanup': cleanup,
+      },
+    };
+    return _saveCommandData(commandData);
+  }
+  /// Saves the card extraction command parameters to memory
+  static Future<bool> saveCardExtractionCommand({
+    required String selectedSet,
+    required String outputPath,
+    required String inputPath,
+    required int confidenceThreshold,
+    required bool saveDebugImages,
+  }) async {
+    final Map<String, dynamic> commandData = {
+      'type': typeCardExtraction,
+      'timestamp': DateTime.now().toIso8601String(),
+      'parameters': {
+        'selectedSet': selectedSet,
+        'outputPath': outputPath,
+        'inputPath': inputPath,
+        'confidenceThreshold': confidenceThreshold,
+        'saveDebugImages': saveDebugImages,
+      },
+    };
+    return _saveCommandData(commandData);
+  }
+  /// Loads all stored commands from memory
+  static Future<List<Map<String, dynamic>>> loadCommands() async {
+    try {
+      final File memoryFile = File(_getMemoryFilePath());
+      if (!memoryFile.existsSync()) {
+        return [];
+      }
+      final String fileContent = await memoryFile.readAsString();
+      final List<dynamic> commands = jsonDecode(fileContent);
+      return commands.cast<Map<String, dynamic>>();
+    } catch (e) {
+      print('Error loading commands: $e');
+      return [];
+    }
+  }
+  /// Loads a specific command by index (0 = most recent)
+  static Future<Map<String, dynamic>?> loadCommandByIndex(int index) async {
+    final commands = await loadCommands();
+    if (commands.isEmpty || index >= commands.length) {
+      return null;
+    }
+    return commands[index];
+  }
+  /// Loads the last (most recent) command
+  static Future<Map<String, dynamic>?> loadLastCommand() async {
+    return loadCommandByIndex(0);
+  }
+  /// Checks if previous commands exist
+  static bool hasPreviousCommand() {
+    final File memoryFile = File(_getMemoryFilePath());
+    return memoryFile.existsSync();
+  }
+  /// Gets the number of stored commands
+  static Future<int> getCommandCount() async {
+    final commands = await loadCommands();
+    return commands.length;
+  }
+  /// Gets a command description for display in the menu
+  static Future<String> getCommandDescription(int index) async {
+    final command = await loadCommandByIndex(index);
+    if (command == null) {
+      return 'Run Command #${index + 1}';
+    }
+    final String type = command['type'] as String;
+    final Map<String, dynamic> params =
+        command['parameters'] as Map<String, dynamic>;
+    if (type == typeHashGeneration) {
+      return 'Generate Hashes for ${params['setCode']} (${params['source']})';
+    } else if (type == typeCardExtraction) {
+      return 'Extract Cards from ${params['inputPath']} using ${params['selectedSet']}';
+    } else {
+      return 'Run Command #${index + 1}';
+    }
+  }
+  /// Gets the last command description
+  static Future<String> getLastCommandDescription() async {
+    return getCommandDescription(0);
+  }
+  /// Gets the second-to-last command description
+  static Future<String> getSecondLastCommandDescription() async {
+    return getCommandDescription(1);
+  }
+  /// Deletes the memory file
+  static Future<void> clearMemory() async {
+    final File memoryFile = File(_getMemoryFilePath());
+    if (memoryFile.existsSync()) {
+      await memoryFile.delete();
+    }
+  }
+  /// Internal helper to save command data to file
+  static Future<bool> _saveCommandData(Map<String, dynamic> data) async {
+    try {
+      final List<Map<String, dynamic>> commands = await loadCommands();
+      
+      // Add new command to the beginning of the list
+      commands.insert(0, data);
+      
+      // Limit the number of stored commands
+      while (commands.length > _maxCommandHistory) {
+        commands.removeLast();
+      }
+      
+      // Save the updated list
+      final File memoryFile = File(_getMemoryFilePath());
+      final String jsonData = jsonEncode(commands);
+      await memoryFile.writeAsString(jsonData);
+      return true;
+    } catch (e) {
+      print('Error saving command: $e');
+      return false;
+    }
+  }
+  /// Gets the path to the memory file
+  static String _getMemoryFilePath() {
+    return path.join(Directory.current.path, _memoryFileName);
+  }
+}
+// File: lib/utils/scryfall_client.dart
+// [DART FILE]
+import 'dart:io';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
+class ScryfallClient {
+  static const String _baseUrl = 'https://api.scryfall.com';
+  /// Get all cards from a specific set including ALL printing variants
+  ///
+  /// [setCode] - The three-letter code for the set (e.g., 'LEA', 'DSK')
+  /// [includeLanguage] - Restrict to specific language (default: 'en' for English)
+  static Future<List<Map<String, dynamic>>> getCardsFromSet(
+    String setCode, {
+    String includeLanguage = 'en',
+  }) async {
+    final List<Map<String, dynamic>> allCards = [];
+    final Set<String> collectedPrintings = <String>{};
+    // First get all base cards in the set to gather their oracle IDs
+    String query = 'set:${setCode.toLowerCase()}';
+    
+    // Add language filter if specified
+    if (includeLanguage.isNotEmpty) {
+      query += '+lang:$includeLanguage';
+    }
+    
+    String url = '$_baseUrl/cards/search?q=$query&unique=cards';
+    print('Fetching basic cards from set $setCode...');
+    
+    final List<String> oracleIds = [];
+    
+    // Step 1: Get all oracle IDs for cards in this set
+    String? nextPage = url;
+    while (nextPage != null) {
+      final http.Response response = await http.get(Uri.parse(nextPage));
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Failed to load cards from Scryfall: ${response.statusCode} - ${response.body}',
+        );
+      }
+      final Map<String, dynamic> data = json.decode(response.body);
+      final List<dynamic> cards = data['data'] as List<dynamic>;
+      
+      // Extract oracle IDs
+      for (final card in cards) {
+        final cardData = card as Map<String, dynamic>;
+        final String oracleId = cardData['oracle_id'] as String;
+        if (!oracleIds.contains(oracleId)) {
+          oracleIds.add(oracleId);
+        }
+      }
+      nextPage = data['has_more'] == true ? data['next_page'] as String : null;
+    }
+    
+    print('Found ${oracleIds.length} unique cards in set $setCode');
+    
+    // Step 2: For each oracle ID, get ALL printings in the specified set
+    for (final oracleId in oracleIds) {
+      // Build query to get all printings with this oracle ID in the set
+      String printingsQuery = 'oracleid:$oracleId+set:${setCode.toLowerCase()}';
+      
+      // Add language filter
+      if (includeLanguage.isNotEmpty) {
+        printingsQuery += '+lang:$includeLanguage';
+      }
+      
+      // Include all extras, promos, etc.
+      printingsQuery += '+include:extras+include:variations+include:promos';
+      
+      String printingsUrl = '$_baseUrl/cards/search?q=$printingsQuery&unique=prints';
+      
+      String? printingsPage = printingsUrl;
+      while (printingsPage != null) {
+        final http.Response response = await http.get(Uri.parse(printingsPage));
+        if (response.statusCode != 200) {
+          print('Warning: Failed to load printings for oracle ID $oracleId: ${response.statusCode}');
+          break;
+        }
+        final Map<String, dynamic> data = json.decode(response.body);
+        final List<dynamic> printings = data['data'] as List<dynamic>;
+        
+        for (final printing in printings) {
+          final printingData = printing as Map<String, dynamic>;
+          final String id = printingData['id'] as String;
+          
+          // Only add if we haven't seen this exact printing before
+          if (!collectedPrintings.contains(id)) {
+            collectedPrintings.add(id);
+            allCards.add(printingData);
+          }
+        }
+        printingsPage = data['has_more'] == true ? data['next_page'] as String : null;
+      }
+    }
+    
+    // Step 3: Add any remaining cards that may not have been captured
+    // This is a safety measure to ensure we get everything
+    String extrasQuery = 'set:${setCode.toLowerCase()}+is:variant';
+    if (includeLanguage.isNotEmpty) {
+      extrasQuery += '+lang:$includeLanguage';
+    }
+    
+    String extrasUrl = '$_baseUrl/cards/search?q=$extrasQuery&unique=prints';
+    
+    try {
+      String? extrasPage = extrasUrl;
+      while (extrasPage != null) {
+        final http.Response response = await http.get(Uri.parse(extrasPage));
+        if (response.statusCode != 200) {
+          break; // This query may return no results, which is fine
+        }
+        final Map<String, dynamic> data = json.decode(response.body);
+        final List<dynamic> extras = data['data'] as List<dynamic>;
+        
+        for (final extra in extras) {
+          final extraData = extra as Map<String, dynamic>;
+          final String id = extraData['id'] as String;
+          
+          // Only add if we haven't seen this exact printing before
+          if (!collectedPrintings.contains(id)) {
+            collectedPrintings.add(id);
+            allCards.add(extraData);
+          }
+        }
+        extrasPage = data['has_more'] == true ? data['next_page'] as String : null;
+      }
+    } catch (e) {
+      // This additional query may fail, but it's just a safety net
+      print('Note: Additional variant search completed or not available.');
+    }
+    print('Downloaded ${allCards.length} cards (including ALL variants) from set $setCode');
+    return allCards;
+  }
+  /// Download an image from a URL to a local file
+  ///
+  /// [imageUrl] - The URL of the image to download
+  /// [outputPath] - The path where the image should be saved
+  static Future<File> downloadImage(String imageUrl, String outputPath) async {
+    final http.Response response = await http.get(Uri.parse(imageUrl));
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Failed to download image from $imageUrl: ${response.statusCode}',
+      );
+    }
+    final File file = File(outputPath);
+    await file.writeAsBytes(response.bodyBytes);
+    return file;
+  }
+  /// Download all cards from a set including all variants
+  ///
+  /// [setCode] - The three-letter code for the set (e.g., 'LEA', 'DSK')
+  /// [outputDir] - The directory where images should be saved
+  /// [parallelism] - Number of concurrent downloads
+  /// [progressCallback] - Callback function to report progress (index, total, cardName)
+  /// [includeLanguage] - Restrict to specific language (default: 'en' for English)
+  static Future<List<String>> downloadSetImages(
+    String setCode,
+    String outputDir,
+    int parallelism,
+    void Function(int, int, String)? progressCallback, {
+    String includeLanguage = 'en',
+  }) async {
+    // Create the output directory if it doesn't exist
+    final Directory dir = Directory(outputDir);
+    if (!dir.existsSync()) {
+      dir.createSync(recursive: true);
+    }
+    // Get all cards from the set including variants
+    final List<Map<String, dynamic>> cards = await getCardsFromSet(
+      setCode, 
+      includeLanguage: includeLanguage,
+    );
+    final List<String> downloadedFiles = [];
+    // Process cards in batches based on parallelism
+    for (int i = 0; i < cards.length; i += parallelism) {
+      final int endIndex =
+          (i + parallelism) < cards.length ? i + parallelism : cards.length;
+      final List<Map<String, dynamic>> batch = cards.sublist(i, endIndex);
+      final List<Future<void>> downloads = [];
+      for (int j = 0; j < batch.length; j++) {
+        final int currentIndex = i + j;
+        final Map<String, dynamic> card = batch[j];
+        
+        // Extract variant information
+        final String cardName = card['name'] as String;
+        final String collectorNumber = card['collector_number'] as String;
+        final String variantType = _determineVariantType(card);
+        
+        // Create a descriptive filename that includes variant information
+        final String safeCardName = cardName.replaceAll(
+          RegExp(r'[<>:"/\\|?*]'),
+          '_',
+        );
+        
+        final String fileName = _buildVariantFileName(
+          safeCardName, 
+          setCode, 
+          collectorNumber, 
+          variantType,
+          currentIndex,
+        );
+        if (card.containsKey('image_uris') &&
+            (card['image_uris'] as Map<String, dynamic>).containsKey('large')) {
+          final String imageUrl = card['image_uris']['large'] as String;
+          final String imagePath = path.join(outputDir, fileName);
+          downloads.add(
+            downloadImage(imageUrl, imagePath)
+                .then((file) {
+                  downloadedFiles.add(file.path);
+                  if (progressCallback != null) {
+                    final String displayName = '$cardName ($variantType)';
+                    progressCallback(currentIndex + 1, cards.length, displayName);
+                  }
+                })
+                .catchError((e) {
+                  print('Error downloading $cardName ($variantType): $e');
+                }),
+          );
+        } else if (card.containsKey('card_faces') &&
+            (card['card_faces'] as List<dynamic>).isNotEmpty &&
+            ((card['card_faces'] as List<dynamic>)[0] as Map<String, dynamic>)
+                .containsKey('image_uris')) {
+          // Handle double-faced cards - front face
+          final String imageUrl =
+              (card['card_faces'][0]
+                      as Map<String, dynamic>)['image_uris']['large']
+                  as String;
+          
+          final String imagePath = path.join(
+            outputDir,
+            fileName.replaceFirst('.jpg', '_front.jpg'),
+          );
+          downloads.add(
+            downloadImage(imageUrl, imagePath)
+                .then((file) {
+                  downloadedFiles.add(file.path);
+                  if (progressCallback != null) {
+                    final String displayName = '$cardName ($variantType) - Front';
+                    progressCallback(currentIndex + 1, cards.length, displayName);
+                  }
+                })
+                .catchError((e) {
+                  print('Error downloading $cardName ($variantType) - Front: $e');
+                }),
+          );
+          
+          // Also download back face if available
+          if ((card['card_faces'] as List<dynamic>).length > 1 &&
+              ((card['card_faces'] as List<dynamic>)[1] as Map<String, dynamic>)
+                  .containsKey('image_uris')) {
+            final String backImageUrl =
+                (card['card_faces'][1]
+                        as Map<String, dynamic>)['image_uris']['large']
+                    as String;
+            
+            final String backImagePath = path.join(
+              outputDir,
+              fileName.replaceFirst('.jpg', '_back.jpg'),
+            );
+            
+            downloads.add(
+              downloadImage(backImageUrl, backImagePath)
+                  .then((file) {
+                    downloadedFiles.add(file.path);
+                    if (progressCallback != null) {
+                      final String displayName = '$cardName ($variantType) - Back';
+                      progressCallback(currentIndex + 1, cards.length, displayName);
+                    }
+                  })
+                  .catchError((e) {
+                    print('Error downloading $cardName ($variantType) - Back: $e');
+                  }),
+            );
+          }
+        } else {
+          if (progressCallback != null) {
+            progressCallback(
+              currentIndex + 1,
+              cards.length,
+              '$cardName ($variantType)',
+            );
+          }
+          print(
+            'Warning: No suitable image found for $cardName ($variantType)',
+          );
+        }
+      }
+      // Wait for all downloads in this batch to complete
+      await Future.wait(downloads);
+    }
+    return downloadedFiles;
+  }
+  
+  /// Determines the variant type from a Scryfall card object
+  static String _determineVariantType(Map<String, dynamic> card) {
+    // Default variant type
+    String variantType = 'normal';
+    
+    // Check for specific variant indicators
+    if (card.containsKey('frame_effects')) {
+      final List<dynamic> frameEffects = card['frame_effects'] as List<dynamic>;
+      if (frameEffects.contains('extendedart')) {
+        variantType = 'extended';
+      } else if (frameEffects.contains('showcase')) {
+        variantType = 'showcase';
+      } else if (frameEffects.contains('borderless')) {
+        variantType = 'borderless';
+      }
+    }
+    
+    // Check for full art
+    if (card.containsKey('full_art') && card['full_art'] == true) {
+      variantType = 'fullart';
+    }
+    
+    // Check promo status
+    if (card.containsKey('promo') && card['promo'] == true) {
+      variantType = 'promo';
+    }
+    
+    // Check textless status
+    if (card.containsKey('textless') && card['textless'] == true) {
+      variantType = 'textless';
+    }
+    
+    // For digital only cards
+    if (card.containsKey('digital') && card['digital'] == true) {
+      variantType = 'digital';
+    }
+    
+    // Borderless and alternate art detection
+    if (card.containsKey('border_color')) {
+      final String borderColor = card['border_color'] as String;
+      if (borderColor == 'borderless') {
+        variantType = 'borderless';
+      }
+    }
+    
+    // Fetch specific frame types from Scryfall data
+    if (card.containsKey('frame')) {
+      final String frame = card['frame'] as String;
+      if (frame == 'showcase') {
+        variantType = 'showcase';
+      }
+    }
+    
+    // If we have variation or finishes, append to variant type
+    if (card.containsKey('variation') && card['variation'] == true) {
+      if (variantType == 'normal') {
+        variantType = 'alternate';
+      } else {
+        variantType = 'alternate_$variantType';
+      }
+    }
+    
+    return variantType;
+  }
+  
+  /// Builds a filename for the variant that includes all necessary information
+  static String _buildVariantFileName(
+    String cardName,
+    String setCode,
+    String collectorNumber,
+    String variantType,
+    int index,
+  ) {
+    return '${cardName}__${setCode.toUpperCase()}_${collectorNumber}_${variantType}_$index.jpg';
+  }
+}
+// File: lib/utils/utils_exports.dart
+// [DART FILE]
+library;
+export 'scryfall_client.dart';
+export 'command_memory.dart';
+// File: lib/cli/hash_generator.dart
+// [DART FILE]
+import 'dart:io';
+import 'dart:async';
+import 'package:path/path.dart' as path;
+import 'package:mcd_dart/utils/scryfall_client.dart';
+class HashGenerator {
+  /// Generates hash data for a specific set
+  ///
+  /// [setCode] - The set code (e.g., LEA, DSK)
+  /// [source] - The source to use ('Scryfall' or 'Local')
+  /// [parallelism] - Number of parallel operations
+  /// [cleanup] - Whether to clean up temporary files
+  ///
+  /// Returns true if the operation was successful, false otherwise
+  static Future<bool> generateHashes(
+    String setCode,
+    String source,
+    int parallelism,
+    bool cleanup,
+  ) async {
+    print('Generating hashes for set: $setCode');
+    print('Using source: $source');
+    print('Running with parallelism: $parallelism');
+    // Define paths
+    final Directory tempDir = Directory(path.join('.', 'temp_$setCode'));
+    final String outputPath = path.join(
+      'assets',
+      'set_hashes',
+      '${setCode.toLowerCase()}_reference_phash.dat',
+    );
+    final Directory outputDir = Directory(path.dirname(outputPath));
+    try {
+      // Ensure output directory exists
+      if (!outputDir.existsSync()) {
+        outputDir.createSync(recursive: true);
+        print('Created output directory: ${outputDir.path}');
+      }
+      // Set up image source
+      String imagePath;
+      if (source == 'Scryfall') {
+        // Create temp directory for downloaded images if it doesn't exist
+        if (!tempDir.existsSync()) {
+          tempDir.createSync(recursive: true);
+        }
+        print('Creating temporary directory: ${tempDir.path}');
+        print('Fetching card data from Scryfall API...');
+        // Download card images from Scryfall
+        try {
+          final int totalCards = await _downloadCardsFromScryfall(
+            setCode,
+            tempDir.path,
+            parallelism,
+          );
+          print('Successfully downloaded $totalCards cards from Scryfall');
+          imagePath = tempDir.path;
+        } catch (e) {
+          print('Error downloading cards from Scryfall: $e');
+          return false;
+        }
+      } else {
+        // Use local images
+        print('Reading card images from local storage...');
+        imagePath = path.join('assets', 'in');
+        // Check if directory exists and contains images
+        final Directory inputDir = Directory(imagePath);
+        if (!inputDir.existsSync()) {
+          print('Error: Local input directory does not exist: $imagePath');
+          return false;
+        }
+        final List<FileSystemEntity> files = inputDir.listSync();
+        final List<FileSystemEntity> imageFiles =
+            files.where((file) {
+              final String extension = path.extension(file.path).toLowerCase();
+              return extension == '.jpg' ||
+                  extension == '.jpeg' ||
+                  extension == '.png';
+            }).toList();
+        if (imageFiles.isEmpty) {
+          print('Error: No image files found in local directory: $imagePath');
+          return false;
+        }
+        print('Found ${imageFiles.length} image files in local directory');
+      }
+      // Run Python script to generate hashes
+      print('Generating perceptual hashes...');
+      final bool verbose = true; // Set to true for verbose output
+      // Use Flython to integrate with the Python script
+      print('Initializing Python integration...');
+      bool hashSuccess = false;
+      try {
+        await _generateHashesWithPython(
+          imagePath,
+          outputPath,
+          setCode,
+          verbose,
+        );
+        hashSuccess = true;
+      } catch (e) {
+        print('Error running Python hash generation: $e');
+        // Don't return yet, we still need to clean up if requested
+      }
+      // Clean up if requested, even if hash generation failed
+      if (cleanup && tempDir.existsSync() && source == 'Scryfall') {
+        print('Cleaning up temporary files...');
+        try {
+          tempDir.deleteSync(recursive: true);
+          print('Temporary files cleaned up successfully.');
+        } catch (e) {
+          print('Warning: Failed to clean up temporary files: $e');
+        }
+      }
+      
+      // Return success only if hash generation succeeded
+      if (!hashSuccess) {
+        return false;
+      }
+      print('Hash generation completed successfully!');
+      print('Hash data saved to: $outputPath');
+      return true;
+    } catch (e) {
+      print('Error during hash generation: $e');
+      return false;
+    }
+  }
+  /// Download card images from Scryfall API
+  ///
+  /// [setCode] - The set code (e.g., LEA, DSK)
+  /// [outputDir] - Directory to save downloaded images
+  /// [parallelism] - Number of parallel downloads
+  ///
+  /// Returns the number of cards downloaded
+  static Future<int> _downloadCardsFromScryfall(
+    String setCode,
+    String outputDir,
+    int parallelism,
+  ) async {
+    print('Downloading cards from set: $setCode');
+    print('Using parallelism: $parallelism');
+    try {
+      // Use the ScryfallClient to download images including all variants
+      final List<String> downloadedFiles =
+          await ScryfallClient.downloadSetImages(
+            setCode,
+            outputDir,
+            parallelism,
+            (current, total, cardName) {
+              // Update progress
+              if (current % 10 == 0 || current == total) {
+                print('Progress: $current/$total - Processing: $cardName');
+              }
+            },
+            includeLanguage: 'en', // English only
+          );
+      print('Downloaded ${downloadedFiles.length} card images to: $outputDir');
+      return downloadedFiles.length;
+    } catch (e) {
+      print('Error downloading from Scryfall: $e');
+      rethrow;
+    }
+  }
+  /// Generate hashes using Python integration
+  ///
+  /// [imagePath] - Path to the directory containing card images
+  /// [outputPath] - Path to save the hash data
+  /// [setCode] - The set code (e.g., LEA, DSK)
+  /// [verbose] - Whether to show verbose output
+  static Future<void> _generateHashesWithPython(
+    String imagePath,
+    String outputPath,
+    String setCode,
+    bool verbose,
+  ) async {
+    print('Generating hashes using Python integration...');
+    try {
+      // Check which Python script to use
+      final File superEnhancedScript = File(
+        path.join('bin', 'python', 'enhanced_hash_generator.py'),
+      );
+      final File enhancedScript = File(
+        path.join('bin', 'python', 'generate_hash.py'),
+      );
+      if (superEnhancedScript.existsSync()) {
+        // Use the metadata-enhanced hash generator
+        print('Using metadata-enhanced hash generator...');
+        final result = Process.runSync('python3', [
+          superEnhancedScript.path,
+          '--set-path', imagePath,
+          '--output', outputPath,
+          '--set-code',
+          setCode
+              .toUpperCase(), // Pass the set code for Scryfall metadata lookup
+          '--store-names', // Make sure card names are stored in the hash
+          '--json', // Generate a JSON metadata file alongside the hash data
+          if (verbose) '--verbose',
+        ]);
+        if (result.exitCode != 0) {
+          print('Error running Python script:');
+          print(result.stderr);
+          throw Exception('Python script execution failed: ${result.stderr}');
+        }
+        print(result.stdout);
+      } else if (enhancedScript.existsSync()) {
+        // Use enhanced script that directly connects to mcd_python library
+        print('Using enhanced hash generator...');
+        final result = Process.runSync('python3', [
+          enhancedScript.path,
+          '--set-path',
+          imagePath,
+          '--output',
+          outputPath,
+          if (verbose) '--verbose',
+        ]);
+        if (result.exitCode != 0) {
+          print('Error running Python script:');
+          print(result.stderr);
+          throw Exception('Python script execution failed: ${result.stderr}');
+        }
+        print(result.stdout);
+      } else {
+        // Use legacy script (original implementation)
+        print('Using legacy hash generator...');
+        final result = Process.runSync('python3', [
+          path.join('bin', 'generate_hash.py'),
+          '--set-path',
+          imagePath,
+          '--output',
+          outputPath,
+          if (verbose) '--verbose',
+        ]);
+        if (result.exitCode != 0) {
+          print('Error running Python script:');
+          print(result.stderr);
+          throw Exception('Python script execution failed: ${result.stderr}');
+        }
+        print(result.stdout);
+      }
+    } catch (e) {
+      print('Error executing Python script: $e');
+      rethrow;
+    }
+  }
+}
+// File: lib/cli/card_extractor.dart
+// [DART FILE]
+import 'dart:io';
+import 'dart:convert';
+import 'package:path/path.dart' as path;
+class CardExtractor {
+  /// Extracts cards from images
+  ///
+  /// [selectedSet] - The set to use for recognition (e.g., LEA, DSK, or 'All')
+  /// [outputPath] - The path where to save processed images
+  /// [inputPath] - The path containing source images
+  /// [confidenceThreshold] - Minimum confidence level for recognition (50-100)
+  /// [saveDebugImages] - Whether to save debug images with detections
+  ///
+  /// Returns true if the operation was successful, false otherwise
+  static bool extractCards(
+    String selectedSet,
+    String outputPath,
+    String inputPath,
+    int confidenceThreshold,
+    bool saveDebugImages,
+  ) {
+    print('Extracting cards from images in $inputPath');
+    try {
+      // Create output directory if it doesn't exist
+      final Directory outputDir = Directory(outputPath);
+      if (!outputDir.existsSync()) {
+        outputDir.createSync(recursive: true);
+        print('Created output directory: ${outputDir.path}');
+      } else {
+        print('Using existing output directory: ${outputDir.path}');
+      }
+      // Check if input directory exists
+      final Directory inputDir = Directory(inputPath);
+      if (!inputDir.existsSync()) {
+        print('Error: Input directory does not exist: ${inputDir.path}');
+        return false;
+      }
+      // Determine hash file path based on selected set
+      String hashFilePath;
+      if (selectedSet == 'All') {
+        print('Using all available hash sets...');
+        // Use a specific set as default for now
+        hashFilePath = path.join(
+          'assets',
+          'set_hashes',
+          'dsk_reference_phash.dat',
+        );
+      } else if (selectedSet == 'Other') {
+        // Allow the user to enter a custom hash file path
+        print('Enter the path to your custom hash file:');
+        hashFilePath = stdin.readLineSync() ?? '';
+        if (hashFilePath.isEmpty) {
+          print('Error: No hash file path provided');
+          return false;
+        }
+      } else {
+        print('Using hash data for set: $selectedSet');
+        hashFilePath = path.join(
+          'assets',
+          'set_hashes',
+          '${selectedSet.toLowerCase()}_reference_phash.dat',
+        );
+      }
+      // Check if hash file exists
+      final File hashFile = File(hashFilePath);
+      if (!hashFile.existsSync()) {
+        print('Error: Hash file does not exist: ${hashFile.path}');
+        return false;
+      }
+      // Adjust confidence threshold to match Python script's expectations
+      // The Python script expects a value around 4.0, while our UI uses 50-100%
+      final double adjustedThreshold = 4.0 * confidenceThreshold / 85;
+      // Check which Python script to use
+      final File superEnhancedScript = File(
+        path.join('bin', 'python', 'enhanced_detector.py'),
+      );
+      final File enhancedScript = File(
+        path.join('bin', 'python', 'detect_cards.py'),
+      );
+      if (superEnhancedScript.existsSync()) {
+        // Use enhanced detector with metadata support
+        print('Using metadata-enhanced card detector...');
+        final result = Process.runSync('python3', [
+          superEnhancedScript.path,
+          '--input',
+          inputPath,
+          '--output',
+          outputPath,
+          '--hash-file',
+          hashFilePath,
+          '--threshold',
+          adjustedThreshold.toString(),
+          if (saveDebugImages) '--visual',
+          if (saveDebugImages || inputPath.contains(',')) '--verbose',
+        ]);
+        if (result.exitCode != 0) {
+          print('Error running Python script:');
+          print(result.stderr);
+          return false;
+        }
+        // Parse and display results
+        try {
+          final dynamic jsonResult = jsonDecode(
+            result.stdout.toString().trim(),
+          );
+          _printEnhancedResults(jsonResult);
+        } catch (e) {
+          print('Error parsing JSON result: $e');
+          print(result.stdout);
+        }
+      } else if (enhancedScript.existsSync()) {
+        // Use enhanced script that directly connects to mcd_python library
+        print('Using enhanced card detector...');
+        final result = Process.runSync('python3', [
+          enhancedScript.path,
+          '--input-path',
+          inputPath,
+          '--output-path',
+          outputPath,
+          '--phash',
+          hashFilePath,
+          '--threshold',
+          adjustedThreshold.toString(),
+          if (saveDebugImages) '--debug-images',
+          if (saveDebugImages) '--verbose',
+        ]);
+        if (result.exitCode != 0) {
+          print('Error running Python script:');
+          print(result.stderr);
+          return false;
+        }
+        print(result.stdout);
+      } else {
+        // Use legacy detector script (original implementation)
+        print('Using legacy card detector...');
+        final result = Process.runSync('python3', [
+          path.join('bin', 'detect_cards.py'),
+          '--input-path',
+          inputPath,
+          '--output-path',
+          outputPath,
+          '--phash',
+          hashFilePath,
+          '--threshold',
+          adjustedThreshold.toString(),
+          if (saveDebugImages) '--debug-images',
+          '--verbose',
+        ]);
+        if (result.exitCode != 0) {
+          print('Error running Python script:');
+          print(result.stderr);
+          return false;
+        }
+        print(result.stdout);
+      }
+      return true;
+    } catch (e) {
+      print('Error during card extraction: $e');
+      return false;
+    }
+  }
+  /// Prints enhanced detection results with metadata
+  static void _printEnhancedResults(dynamic jsonResult) {
+    // Handle single image result
+    if (jsonResult is Map<String, dynamic>) {
+      _printEnhancedResult(jsonResult);
+      return;
+    }
+    // Handle multiple image results
+    if (jsonResult is List) {
+      for (final result in jsonResult) {
+        if (result is Map<String, dynamic>) {
+          _printEnhancedResult(result);
+        }
+      }
+    }
+  }
+  /// Prints a single enhanced detection result
+  static void _printEnhancedResult(Map<String, dynamic> result) {
+    final String imageName = result['image_name'] ?? 'Unknown';
+    final int cardCount = result['card_count'] ?? 0;
+    print('\nImage: $imageName');
+    print('Cards found: $cardCount');
+    if (cardCount > 0 && result.containsKey('cards')) {
+      print('Recognized cards:');
+      for (final card in result['cards']) {
+        final String name = card['name'] ?? 'Unknown';
+        final double score = card['score'] ?? 0.0;
+        // Check if we have metadata
+        final Map<String, dynamic>? metadata = card['metadata'];
+        if (metadata != null && metadata.isNotEmpty) {
+          // Print with metadata
+          final String cardName = metadata['card_name'] ?? name;
+          final String setCode = metadata['set_code'] ?? '';
+          final String collectorNumber = metadata['collector_number'] ?? '';
+          final String scryfallId = metadata['scryfall_id'] ?? '';
+          print('  - $cardName (${setCode.toUpperCase()}) #$collectorNumber');
+          print('    Confidence: ${(score * 100).toStringAsFixed(1)}%');
+          if (scryfallId.isNotEmpty) {
+            print('    Scryfall ID: $scryfallId');
+            print(
+              '    Scryfall URL: https://scryfall.com/card/$setCode/$collectorNumber',
+            );
+          }
+        } else {
+          // Print without metadata
+          print('  - $name (confidence: ${(score * 100).toStringAsFixed(1)}%)');
+        }
+      }
+    }
+    if (result.containsKey('result_image_path') &&
+        result['result_image_path'] != null) {
+      print('Result image saved to: ${result['result_image_path']}');
+    }
+  }
+}
+// File: lib/cli/cli_exports.dart
+// [DART FILE]
+library;
+export 'hash_generator.dart';
+export 'card_extractor.dart';
+export 'advanced_config.dart';
+// File: lib/cli/advanced_config.dart
+// [DART FILE]
+import 'package:interact/interact.dart';
+class AdvancedConfig {
+  /// Configures and returns the confidence threshold for card detection
+  ///
+  /// Returns the confidence threshold (percentage between 50-100)
+  static int configureConfidenceThreshold() {
+    final String thresholdInput =
+        Input(
+          prompt: 'Enter confidence threshold (50-100%):',
+          defaultValue: '85',
+          validator: (value) {
+            final int? threshold = int.tryParse(value);
+            return threshold != null && threshold >= 50 && threshold <= 100;
+          },
+        ).interact();
+    return int.parse(thresholdInput);
+  }
+  /// Configures and returns whether to save debug images
+  ///
+  /// Returns true if debug images should be saved, false otherwise
+  static bool configureDebugImageSaving() {
+    return Confirm(
+      prompt: 'Save debug images with detection information?',
+      defaultValue: false,
+    ).interact();
+  }
+}
+// File: lib/mcd_dart.dart
+// [DART FILE]
+library;
+export 'cli/cli_exports.dart';
+export 'utils/utils_exports.dart';
+// File: bin/mcd_cli.dart
+// [DART FILE]
+import 'package:interact/interact.dart';
+import 'dart:io';
+import 'dart:async';
+import 'package:mcd_dart/cli/cli_exports.dart';
+import 'package:mcd_dart/utils/command_memory.dart';
+Future<void> main() async {
+  print('Magic Card Detector CLI');
+  print('======================');
+  // Check if there's a previous command
+  final bool hasPreviousCommand = CommandMemory.hasPreviousCommand();
+  final String previousCommandDesc =
+      await CommandMemory.getLastCommandDescription();
+  // Create menu options
+  final List<String> menuOptions = ['Generate Set Hashes', 'Extract Cards'];
+  // Add the previous command option if available
+  if (hasPreviousCommand) {
+    menuOptions.insert(0, previousCommandDesc);
+  }
+  // Add exit option
+  menuOptions.add('Exit');
+  final int mainSelection =
+      Select(prompt: 'Select an operation:', options: menuOptions).interact();
+  // Calculate the adjusted index based on whether we have a previous command
+  final int exitIndex = menuOptions.length - 1;
+  final int extractCardsIndex = hasPreviousCommand ? 2 : 1;
+  final int generateHashesIndex = hasPreviousCommand ? 1 : 0;
+  if (hasPreviousCommand && mainSelection == 0) {
+    // Run previous command
+    await _runPreviousCommand();
+  } else if (mainSelection == generateHashesIndex) {
+    // Generate set hashes
+    await _generateSetHashes();
+  } else if (mainSelection == extractCardsIndex) {
+    // Extract cards
+    await _extractCards();
+  } else if (mainSelection == exitIndex) {
+    // Exit
+    print('Exiting...');
+    exit(0);
+  }
+}
+Future<void> _runPreviousCommand() async {
+  print('\nRunning previous command...');
+  final Map<String, dynamic>? lastCommand =
+      await CommandMemory.loadLastCommand();
+  if (lastCommand == null) {
+    print('Error: No previous command found.');
+    return;
+  }
+  final String type = lastCommand['type'] as String;
+  final Map<String, dynamic> params =
+      lastCommand['parameters'] as Map<String, dynamic>;
+  if (type == CommandMemory.typeHashGeneration) {
+    // Run hash generation with saved parameters
+    print('\nGenerate Set Hashes Configuration:');
+    print('Set Code: ${params['setCode']}');
+    print('Source: ${params['source']}');
+    print('Parallelism: ${params['parallelism']}');
+    print('Cleanup: ${params['cleanup'] ? 'Yes' : 'No'}');
+    print('\nRunning hash generation...');
+    final bool success = await HashGenerator.generateHashes(
+      params['setCode'] as String,
+      params['source'] as String,
+      params['parallelism'] as int,
+      params['cleanup'] as bool,
+    );
+    if (success) {
+      print('Hash generation complete!');
+    } else {
+      print('Hash generation failed.');
+    }
+  } else if (type == CommandMemory.typeCardExtraction) {
+    // Run card extraction with saved parameters
+    print('\nExtract Cards Configuration:');
+    print('Selected Set: ${params['selectedSet']}');
+    print('Output Path: ${params['outputPath']}');
+    print('Input Path: ${params['inputPath']}');
+    print('Confidence Threshold: ${params['confidenceThreshold']}%');
+    print('Save Debug Images: ${params['saveDebugImages'] ? 'Yes' : 'No'}');
+    print('\nRunning card extraction...');
+    final bool success = CardExtractor.extractCards(
+      params['selectedSet'] as String,
+      params['outputPath'] as String,
+      params['inputPath'] as String,
+      params['confidenceThreshold'] as int,
+      params['saveDebugImages'] as bool,
+    );
+    if (success) {
+      print('Card extraction complete!');
+    } else {
+      print('Card extraction failed.');
+    }
+  } else {
+    print('Error: Unknown command type.');
+  }
+}
+Future<void> _generateSetHashes() async {
+  // Step 1: Ask for a setcode
+  final String setCode =
+      Input(
+        prompt: 'Enter the set code (e.g., LEA, DSK):',
+        validator: (value) {
+          if (value.isEmpty) {
+            return false;
+          }
+          return true;
+        },
+      ).interact();
+  // Step 2: Select a source
+  final int sourceIndex =
+      Select(
+        prompt: 'Select the source:',
+        options: ['Scryfall', 'Local'],
+      ).interact();
+  final String source = sourceIndex == 0 ? 'Scryfall' : 'Local';
+  // Step 3: Ask for parallelism
+  final String parallelismInput =
+      Input(
+        prompt: 'Enter parallelism level (default: 10):',
+        defaultValue: '10',
+        validator: (value) {
+          final int? intValue = int.tryParse(value);
+          return intValue != null && intValue > 0;
+        },
+      ).interact();
+  final int parallelism = int.parse(parallelismInput);
+  // Step 4: Ask about cleanup
+  final bool cleanup =
+      Confirm(
+        prompt: 'Cleanup/Delete temporary files after completion?',
+        defaultValue: true,
+      ).interact();
+  // Display the settings and run
+  print('\nGenerate Set Hashes Configuration:');
+  print('Set Code: $setCode');
+  print('Source: $source');
+  print('Parallelism: $parallelism');
+  print('Cleanup: ${cleanup ? 'Yes' : 'No'}');
+  print('\nRunning hash generation...');
+  // Save command to memory
+  await CommandMemory.saveHashGenerationCommand(
+    setCode: setCode,
+    source: source,
+    parallelism: parallelism,
+    cleanup: cleanup,
+  );
+  // Run the hash generation with the configured parameters
+  final bool success = await HashGenerator.generateHashes(
+    setCode,
+    source,
+    parallelism,
+    cleanup,
+  );
+  if (success) {
+    print('Hash generation complete!');
+  } else {
+    print('Hash generation failed.');
+  }
+}
+Future<void> _extractCards() async {
+  // Step 1: Set selection
+  final List<String> availableSets = ['All', 'LEA', 'DSK', 'Other'];
+  final int setIndex =
+      Select(prompt: 'Select a set:', options: availableSets).interact();
+  final String selectedSet = availableSets[setIndex];
+  // Step 2: Output path
+  final String outputPath =
+      Input(
+        prompt: 'Enter output directory path:',
+        defaultValue: './assets/out',
+      ).interact();
+  // Step 3: Input selection
+  final String inputPath =
+      Input(
+        prompt: 'Enter input directory path:',
+        defaultValue: './assets/in',
+      ).interact();
+  // Step 4: Advanced options
+  final bool showAdvanced =
+      Confirm(
+        prompt: 'Would you like to see advanced options?',
+        defaultValue: false,
+      ).interact();
+  // Default advanced options
+  int confidenceThreshold = 85;
+  bool saveDebugImages = false;
+  if (showAdvanced) {
+    confidenceThreshold = AdvancedConfig.configureConfidenceThreshold();
+    saveDebugImages = AdvancedConfig.configureDebugImageSaving();
+  }
+  // Display the settings and run
+  print('\nExtract Cards Configuration:');
+  print('Selected Set: $selectedSet');
+  print('Output Path: $outputPath');
+  print('Input Path: $inputPath');
+  print('Advanced Options: ${showAdvanced ? 'Enabled' : 'Disabled'}');
+  if (showAdvanced) {
+    print('Confidence Threshold: $confidenceThreshold%');
+    print('Save Debug Images: ${saveDebugImages ? 'Yes' : 'No'}');
+  }
+  print('\nRunning card extraction...');
+  // Save command to memory
+  await CommandMemory.saveCardExtractionCommand(
+    selectedSet: selectedSet,
+    outputPath: outputPath,
+    inputPath: inputPath,
+    confidenceThreshold: confidenceThreshold,
+    saveDebugImages: saveDebugImages,
+  );
+  // Run the card extraction with the configured parameters
+  final bool success = CardExtractor.extractCards(
+    selectedSet,
+    outputPath,
+    inputPath,
+    confidenceThreshold,
+    saveDebugImages,
+  );
+  if (success) {
+    print('Card extraction complete!');
+  } else {
+    print('Card extraction failed.');
+  }
+}
+// File: bin/python/detect_cards.py
+# [PYTHON FILE]
+// File: bin/python/generate_hash.py
+# [PYTHON FILE]

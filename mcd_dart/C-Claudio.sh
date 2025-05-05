@@ -1,21 +1,24 @@
 #!/bin/bash
 
 # ------------------------------------------------------------------------------
-# Script: combine_dart_files.sh
+# Script: combine_code_files.sh
 # Description:
-#   Combines .dart files from the 'lib' directory into multiple output files,
-#   each capped at a target file size. Certain files and patterns are ignored.
-#   Deletes previously generated output files before starting.
+#   Combines .dart and .py files from the 'lib' and 'bin' directories into
+#   multiple output files, each capped at a target file size.
+#   Adds language markers, removes comments, and skips ignored files.
 # ------------------------------------------------------------------------------
 
 # === Configuration ===
 IGNORE_FILES=(
   "lib/ignore.dart"
   "lib/ignore.txt"
+  "lib/ignore.py"
+  "bin/ignore.dart"
+  "bin/ignore.py"
 )
 
-LIB_FOLDER="lib"
-OUTPUT_PREFIX="mcd_dart"
+SRC_FOLDERS=("lib" "bin")
+OUTPUT_PREFIX="mcd_code"
 TARGET_SIZE_KB=1000  # Max size per output file (in KB)
 REMOVE_COMMENTS=true  # Set to false to keep comments in output
 
@@ -30,15 +33,13 @@ current_output=$(printf "%s-%03d.txt" "$OUTPUT_PREFIX" "$part")
 function should_ignore_file() {
   local filepath="$1"
 
-  # Ignore based on path pattern or extension
   case "$filepath" in
-    */generated/* | *.g.dart | lib/testing/* | lib/test/core/* | lib/autumn/*)
+    */generated/* | *.g.dart | */testing/* | */test/core/* | */autumn/* | */__pycache__/* | *.pyc)
       echo "Ignoring: $filepath (pattern match)"
       return 0
       ;;
   esac
 
-  # Ignore exact matches in IGNORE_FILES
   for ignore in "${IGNORE_FILES[@]}"; do
     if [[ "$filepath" == "$ignore" ]]; then
       echo "Ignoring: $filepath (in IGNORE_FILES)"
