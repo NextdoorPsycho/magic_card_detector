@@ -1,8 +1,9 @@
 import 'package:interact/interact.dart';
 import 'dart:io';
+import 'dart:async';
 import 'package:mcd_dart/cli/cli_exports.dart';
 
-void main() {
+Future<void> main() async {
   print('Magic Card Detector CLI');
   print('======================');
 
@@ -14,7 +15,7 @@ void main() {
 
   switch (mainSelection) {
     case 0:
-      _generateSetHashes();
+      await _generateSetHashes();
       break;
     case 1:
       _extractCards();
@@ -25,7 +26,7 @@ void main() {
   }
 }
 
-void _generateSetHashes() {
+Future<void> _generateSetHashes() async {
   // Step 1: Ask for a setcode
   final String setCode =
       Input(
@@ -74,7 +75,7 @@ void _generateSetHashes() {
   print('\nRunning hash generation...');
 
   // Run the hash generation with the configured parameters
-  final bool success = HashGenerator.generateHashes(
+  final bool success = await HashGenerator.generateHashes(
     setCode,
     source,
     parallelism,

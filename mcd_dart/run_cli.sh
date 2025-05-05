@@ -22,11 +22,15 @@ try:
     import numpy
     import imagehash
     from PIL import Image
+    import pickle
+    import scipy
+    import matplotlib
+    import shapely
     print('All required Python libraries are installed.')
 except ImportError as e:
     print(f'Missing Python library: {e}')
     print('Please install the required libraries using:')
-    print('pip install opencv-python numpy imagehash pillow')
+    print('pip install -r requirements.txt')
     sys.exit(1)
 "
 

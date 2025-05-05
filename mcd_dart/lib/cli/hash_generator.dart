@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:async';
 import 'package:path/path.dart' as path;
+import 'package:mcd_dart/utils/scryfall_client.dart';
 
 /// Handles the generation of perceptual hashes for card sets
 class HashGenerator {
@@ -11,12 +13,12 @@ class HashGenerator {
   /// [cleanup] - Whether to clean up temporary files
   ///
   /// Returns true if the operation was successful, false otherwise
-  static bool generateHashes(
+  static Future<bool> generateHashes(
     String setCode,
     String source,
     int parallelism,
     bool cleanup,
-  ) {
+  ) async {
     print('Generating hashes for set: $setCode');
     print('Using source: $source');
     print('Running with parallelism: $parallelism');
@@ -44,20 +46,129 @@ class HashGenerator {
         print('Creating temporary directory: ${tempDir.path}');
         
         print('Fetching card data from Scryfall API...');
-        print('Processing $parallelism cards at a time...');
-        // This is where you would download images from Scryfall
-        // For now, we'll assume images are already downloaded to temp dir
-        imagePath = tempDir.path;
+        
+        // Download card images from Scryfall
+        try {
+          final int totalCards = await _downloadCardsFromScryfall(
+            setCode, 
+            tempDir.path, 
+            parallelism
+          );
+          print('Successfully downloaded $totalCards cards from Scryfall');
+          imagePath = tempDir.path;
+        } catch (e) {
+          print('Error downloading cards from Scryfall: $e');
+          return false;
+        }
       } else {
         // Use local images
         print('Reading card images from local storage...');
         imagePath = path.join('assets', 'in');
+        
+        // Check if directory exists and contains images
+        final Directory inputDir = Directory(imagePath);
+        if (!inputDir.existsSync()) {
+          print('Error: Local input directory does not exist: $imagePath');
+          return false;
+        }
+        
+        final List<FileSystemEntity> files = inputDir.listSync();
+        final List<FileSystemEntity> imageFiles = files.where((file) {
+          final String extension = path.extension(file.path).toLowerCase();
+          return extension == '.jpg' || extension == '.jpeg' || extension == '.png';
+        }).toList();
+        
+        if (imageFiles.isEmpty) {
+          print('Error: No image files found in local directory: $imagePath');
+          return false;
+        }
+        
+        print('Found ${imageFiles.length} image files in local directory');
       }
 
       // Run Python script to generate hashes
       print('Generating perceptual hashes...');
-      final verbose = true; // Set to true for verbose output
+      final bool verbose = true; // Set to true for verbose output
       
+      // Use Flython to integrate with the Python script
+      print('Initializing Python integration...');
+      try {
+        await _generateHashesWithPython(imagePath, outputPath, verbose);
+      } catch (e) {
+        print('Error running Python hash generation: $e');
+        return false;
+      }
+      
+      // Clean up if requested
+      if (cleanup && tempDir.existsSync() && source == 'Scryfall') {
+        print('Cleaning up temporary files...');
+        tempDir.deleteSync(recursive: true);
+      }
+
+      print('Hash generation completed successfully!');
+      print('Hash data saved to: $outputPath');
+      return true;
+    } catch (e) {
+      print('Error during hash generation: $e');
+      return false;
+    }
+  }
+  
+  /// Download card images from Scryfall API
+  ///
+  /// [setCode] - The set code (e.g., LEA, DSK)
+  /// [outputDir] - Directory to save downloaded images
+  /// [parallelism] - Number of parallel downloads
+  ///
+  /// Returns the number of cards downloaded
+  static Future<int> _downloadCardsFromScryfall(
+    String setCode,
+    String outputDir,
+    int parallelism,
+  ) async {
+    print('Downloading cards from set: $setCode');
+    print('Using parallelism: $parallelism');
+    
+    try {
+      // Use the ScryfallClient to download images
+      final List<String> downloadedFiles = await ScryfallClient.downloadSetImages(
+        setCode,
+        outputDir,
+        parallelism,
+        (current, total, cardName) {
+          // Update progress
+          if (current % 10 == 0 || current == total) {
+            print('Progress: $current/$total - Processing: $cardName');
+          }
+        },
+      );
+      
+      print('Downloaded ${downloadedFiles.length} card images to: $outputDir');
+      return downloadedFiles.length;
+    } catch (e) {
+      print('Error downloading from Scryfall: $e');
+      rethrow;
+    }
+  }
+  
+  /// Generate hashes using Python integration
+  ///
+  /// [imagePath] - Path to the directory containing card images
+  /// [outputPath] - Path to save the hash data
+  /// [verbose] - Whether to show verbose output
+  static Future<void> _generateHashesWithPython(
+    String imagePath, 
+    String outputPath, 
+    bool verbose
+  ) async {
+    print('Generating hashes using Python integration...');
+    
+    try {
+      // Attempting to use Flython is challenging since the API seems different
+      // than documented. We'll fall back to the subprocess approach for reliability.
+      print('Using subprocess execution for Python integration...');
+      
+      // Run Python script to generate hashes
       final result = Process.runSync(
         'python3',
         [
@@ -71,21 +182,13 @@ class HashGenerator {
       if (result.exitCode != 0) {
         print('Error running Python script:');
         print(result.stderr);
-        return false;
+        throw Exception('Python script execution failed: ${result.stderr}');
       }
       
       print(result.stdout);
-      
-      // Clean up if requested
-      if (cleanup && tempDir.existsSync() && source == 'Scryfall') {
-        print('Cleaning up temporary files...');
-        tempDir.deleteSync(recursive: true);
-      }
-
-      return true;
     } catch (e) {
-      print('Error during hash generation: $e');
-      return false;
+      print('Error executing Python script: $e');
+      rethrow;
     }
   }
 }
