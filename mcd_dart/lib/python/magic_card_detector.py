@@ -596,18 +596,20 @@ class MagicCardDetector:
     def __init__(self, output_path=None):
         """
         Initialize the detector.
-        output_path: Optional path for saving results (used in CLI mode).
+        output_path: Optional path for saving results.
         """
-        self.output_path = output_path  # Store it (will be None if not provided by Flask)
+        self.output_path = output_path
         self.reference_images = []
         self.test_images = []
 
         self.verbose = False
         self.visual = False
 
-        self.hash_separation_thr = 4.
+        # Recognition parameters
+        self.hash_separation_thr = 4.0  # Default confidence threshold
         self.thr_lvl = 70
 
+        # Create CLAHE object for contrast enhancement
         self.clahe = cv2.createCLAHE(clipLimit=2.0,
                                      tileGridSize=(8, 8))
 
@@ -631,12 +633,16 @@ class MagicCardDetector:
         """
         print('Reading prehashed data from ' + str(path))
         print('...', end=' ')
-        with open(path, 'rb') as filename:
-            hashed_list = pickle.load(filename)
-        for ref_im in hashed_list:
-            self.reference_images.append(
-                ReferenceImage(ref_im.name, None, self.clahe, ref_im.phash))
-        print('Done.')
+        try:
+            with open(path, 'rb') as filename:
+                hashed_list = pickle.load(filename)
+            for ref_im in hashed_list:
+                self.reference_images.append(
+                    ReferenceImage(ref_im.name, None, self.clahe, ref_im.phash))
+            print(f'Done. Loaded {len(hashed_list)} reference images.')
+        except Exception as e:
+            print(f'Error loading hash data: {e}')
+            raise
 
     def read_and_adjust_reference_images(self, path):
         """
@@ -645,13 +651,29 @@ class MagicCardDetector:
         """
         print('Reading images from ' + str(path))
         print('...', end=' ')
-        filenames = glob.glob(path + '*.jpg')
-        for filename in filenames:
+        
+        # Make sure path ends with a separator
+        if not path.endswith(os.path.sep):
+            path += os.path.sep
+            
+        # Look for jpg, jpeg, and png files
+        image_files = []
+        for ext in ['*.jpg', '*.jpeg', '*.png']:
+            image_files.extend(glob.glob(os.path.join(path, ext)))
+            
+        print(f'Found {len(image_files)} image files')
+        
+        for filename in image_files:
             img = cv2.imread(filename)
-            img_name = filename.split(path)[1]
+            if img is None:
+                print(f'Warning: Could not read image {filename}')
+                continue
+                
+            img_name = os.path.basename(filename)
             self.reference_images.append(
                 ReferenceImage(img_name, img, self.clahe))
-        print('Done.')
+                
+        print(f'Done. Loaded {len(self.reference_images)} reference images.')
 
     def read_and_adjust_test_images(self, path):
         """
@@ -660,20 +682,36 @@ class MagicCardDetector:
         maxsize = 1000
         print('Reading images from ' + str(path))
         print('...', end=' ')
-        filenames = glob.glob(path.rstrip('/') + '/*.jpg')
-        for filename in filenames:
-            img = cv2.imread(filename)
-            if min(img.shape[0], img.shape[1]) > maxsize:
-                scalef = maxsize / min(img.shape[0], img.shape[1])
-                img = cv2.resize(img,
-                                 (int(img.shape[1] * scalef),
-                                  int(img.shape[0] * scalef)),
-                                 interpolation=cv2.INTER_AREA)
+        
+        # Look for all supported image types
+        image_files = []
+        for ext in ['*.jpg', '*.jpeg', '*.png']:
+            image_files.extend(glob.glob(os.path.join(path, ext)))
+            
+        print(f'Found {len(image_files)} image files')
+        
+        for filename in image_files:
+            try:
+                img = cv2.imread(filename)
+                if img is None:
+                    print(f'Warning: Could not read image {filename}')
+                    continue
+                    
+                # Resize large images to improve performance
+                if min(img.shape[0], img.shape[1]) > maxsize:
+                    scalef = maxsize / min(img.shape[0], img.shape[1])
+                    img = cv2.resize(img,
+                                    (int(img.shape[1] * scalef),
+                                    int(img.shape[0] * scalef)),
+                                    interpolation=cv2.INTER_AREA)
 
-            img_name = os.path.basename(filename)
-            self.test_images.append(
-                TestImage(img_name, img, self.clahe))
-        print('Done.')
+                img_name = os.path.basename(filename)
+                self.test_images.append(
+                    TestImage(img_name, img, self.clahe))
+            except Exception as e:
+                print(f'Error processing image {filename}: {e}')
+                
+        print(f'Done. Loaded {len(self.test_images)} test images.')
 
     def contour_image_gray(self, full_image, thresholding='adaptive'):
         """
@@ -977,7 +1015,7 @@ class MagicCardDetector:
 def main():
     """
     Python MTG Card Detector.
-    Can be used also purely through the defined classes.
+    Can be used as a standalone command-line tool or through the defined classes.
     """
 
     # Add command line parser
@@ -985,48 +1023,99 @@ def main():
         description='Recognize Magic: the Gathering cards from an image. ' +
                      'Author: Timo Ikonen, timo.ikonen(at)iki.fi')
 
-    parser.add_argument('input_path',
+    parser.add_argument('--input-path', required=True,
                         help='path containing the images to be analyzed')
-    parser.add_argument('output_path',
+    parser.add_argument('--output-path', required=True,
                         help='output path for the results')
-    parser.add_argument('--phash', default='alpha_reference_phash.dat',
+    parser.add_argument('--phash', default=None,
                         help='pre-calculated phash reference file')
+    parser.add_argument('--threshold', type=float, default=4.0,
+                        help='confidence threshold for matching (default: 4.0)')
     parser.add_argument('--visual', default=False, action='store_true',
                         help='run with visualization')
     parser.add_argument('--verbose', default=False, action='store_true',
                         help='run in verbose mode')
+    parser.add_argument('--profile', default=False, action='store_true',
+                        help='run with profiling')
 
     args = parser.parse_args()
 
+    # Ensure input path exists
+    if not os.path.exists(args.input_path):
+        print(f"Error: Input path '{args.input_path}' does not exist")
+        return
+
     # Create the output path
-    output_path = args.output_path.rstrip('/')
+    output_path = args.output_path
     if not os.path.exists(output_path):
-        os.mkdir(output_path)
+        os.makedirs(output_path, exist_ok=True)
+        print(f"Created output directory: {output_path}")
 
     # Instantiate the detector
     card_detector = MagicCardDetector(output_path)
-
-    do_profile = False
     card_detector.visual = args.visual
     card_detector.verbose = args.verbose
+    card_detector.hash_separation_thr = args.threshold
+    
+    # Determine hash file path if not provided
+    hash_file = args.phash
+    if hash_file is None:
+        # Try common locations for hash files
+        possible_paths = [
+            os.path.join('assets', 'set_hashes', 'alpha_reference_phash.dat'),
+            os.path.join('assets', 'set_hashes', 'lea_reference_phash.dat'),
+            os.path.join('assets', 'set_hashes', 'dsk_reference_phash.dat')
+        ]
+        
+        for path in possible_paths:
+            if os.path.exists(path):
+                hash_file = path
+                print(f"Using default hash file: {hash_file}")
+                break
 
-    # Read the reference and test data sets
-    # card_detector.read_and_adjust_reference_images(
-    #     '../../MTG/Card_Images/LEA/')
-    card_detector.read_prehashed_reference_data(args.phash)
-    card_detector.read_and_adjust_test_images(args.input_path)
+    if hash_file is None or not os.path.exists(hash_file):
+        print("Error: No valid hash file found. Please specify with --phash parameter.")
+        return
 
-    if do_profile:
-        # Start up the profiler.
+    # Optional profiling
+    if args.profile:
+        # Start up the profiler
         profiler = cProfile.Profile()
         profiler.enable()
+    
+    try:
+        # Load reference data
+        card_detector.read_prehashed_reference_data(hash_file)
+        
+        # Process images
+        if os.path.isdir(args.input_path):
+            # Directory of images
+            card_detector.read_and_adjust_test_images(args.input_path)
+            card_detector.run_recognition()
+        else:
+            # Single image
+            img = cv2.imread(args.input_path)
+            if img is None:
+                print(f"Error: Could not read image file: {args.input_path}")
+                return
+                
+            # Process single image
+            result = card_detector.process_image_data(img, os.path.basename(args.input_path))
+            
+            # Print results
+            recognized_cards = result.return_recognized()
+            print(f"\nImage: {os.path.basename(args.input_path)}")
+            print(f"Cards found: {len(recognized_cards)}")
+            
+            if recognized_cards:
+                print("Recognized cards:")
+                for card in recognized_cards:
+                    print(f"  - {card.name} (confidence: {card.recognition_score/card_detector.hash_separation_thr*100:.1f}%)")
+    except Exception as e:
+        print(f"Error: {e}")
 
-    # Run the card detection and recognition.
-
-    card_detector.run_recognition()
-
-    if do_profile:
-        # Stop profiling and organize and print profiling results.
+    if args.profile:
+        # Stop profiling and display results
         profiler.disable()
         profiler.dump_stats('magic_card_detector.prof')
         profiler_stream = io.StringIO()
