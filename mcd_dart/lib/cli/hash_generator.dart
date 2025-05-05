@@ -153,7 +153,7 @@ class HashGenerator {
     print('Using parallelism: $parallelism');
 
     try {
-      // Use the ScryfallClient to download images
+      // Use the ScryfallClient to download images including all variants
       final List<String> downloadedFiles =
           await ScryfallClient.downloadSetImages(
             setCode,
@@ -165,6 +165,7 @@ class HashGenerator {
                 print('Progress: $current/$total - Processing: $cardName');
               }
             },
+            includeLanguage: 'en', // English only
           );
 
       print('Downloaded ${downloadedFiles.length} card images to: $outputDir');

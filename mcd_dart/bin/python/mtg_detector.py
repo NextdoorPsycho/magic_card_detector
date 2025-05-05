@@ -59,12 +59,24 @@ class ReferenceImage:
 class CardMetadata:
     """Metadata for a card, including name, set, and identifiers"""
     def __init__(self, card_name="", set_code="", collector_number="", 
-                 scryfall_id="", multiverse_id=0):
+                 scryfall_id="", multiverse_id=0, variant_type="", 
+                 is_alternate_art=False, artist="", rarity="", oracle_id="",
+                 frame_effects=None, border_color="", full_art=False, textless=False):
         self.card_name = card_name
         self.set_code = set_code
         self.collector_number = collector_number
         self.scryfall_id = scryfall_id
         self.multiverse_id = multiverse_id
+        # Added variant fields
+        self.variant_type = variant_type  # e.g., 'normal', 'extended', 'showcase', 'borderless'
+        self.is_alternate_art = is_alternate_art
+        self.artist = artist
+        self.rarity = rarity
+        self.oracle_id = oracle_id  # To group all variants of the same card
+        self.frame_effects = frame_effects if frame_effects else []  # List of frame effects
+        self.border_color = border_color  # Border color
+        self.full_art = full_art  # Whether card is full art
+        self.textless = textless  # Whether card is textless
 
 
 class EnhancedReferenceImage(ReferenceImage):
@@ -83,7 +95,16 @@ class EnhancedReferenceImage(ReferenceImage):
                 "set_code": self.metadata.set_code,
                 "collector_number": self.metadata.collector_number,
                 "scryfall_id": self.metadata.scryfall_id,
-                "multiverse_id": self.metadata.multiverse_id
+                "multiverse_id": self.metadata.multiverse_id,
+                "variant_type": self.metadata.variant_type,
+                "is_alternate_art": self.metadata.is_alternate_art,
+                "artist": self.metadata.artist,
+                "rarity": self.metadata.rarity,
+                "oracle_id": self.metadata.oracle_id,
+                "frame_effects": self.metadata.frame_effects,
+                "border_color": self.metadata.border_color,
+                "full_art": self.metadata.full_art,
+                "textless": self.metadata.textless
             }
         }
 

@@ -46,7 +46,7 @@ class EnhancedHashGenerator:
         
     def fetch_scryfall_metadata(self, set_code):
         """
-        Fetches card metadata from Scryfall API for a given set
+        Fetches card metadata from Scryfall API for a given set including ALL printing variants
         
         Args:
             set_code: The three-letter set code (e.g., LEA, DSK)
@@ -58,6 +58,7 @@ class EnhancedHashGenerator:
             return {}
             
         metadata_map = {}
+        collected_printings = set()
         
         try:
             # Try to load from local metadata.json file first if it exists
@@ -71,15 +72,17 @@ class EnhancedHashGenerator:
                             return existing_data[set_code.lower()]
                 except Exception as e:
                     print(f"Error reading local metadata: {e}")
-        
-            # Fetch cards from the Scryfall API
-            url = f"https://api.scryfall.com/cards/search?q=set:{set_code.lower()}&unique=prints"
+            
+            # Step 1: First get all base cards in the set to gather their oracle IDs
+            print(f"Step 1: Fetching base cards from set {set_code}")
+            oracle_ids = []
+            url = f"https://api.scryfall.com/cards/search?q=set:{set_code.lower()}+lang:en&unique=cards"
             next_page = url
             
             while next_page:
                 if self.verbose:
-                    print(f"Fetching Scryfall data from {next_page}")
-                    
+                    print(f"Fetching base cards from {next_page}")
+                
                 try:
                     response = requests.get(next_page)
                     if response.status_code != 200:
@@ -89,31 +92,158 @@ class EnhancedHashGenerator:
                         elif response.status_code == 429:
                             print("Rate limit exceeded. Please try again later.")
                         break
+                    
+                    data = response.json()
+                    
+                    # Extract oracle IDs
+                    for card in data.get('data', []):
+                        oracle_id = card.get('oracle_id')
+                        if oracle_id and oracle_id not in oracle_ids:
+                            oracle_ids.append(oracle_id)
+                    
+                    # Check for next page
+                    next_page = data.get('next_page') if data.get('has_more', False) else None
+                
+                except Exception as e:
+                    print(f"Error getting base cards: {e}")
+                    break
+            
+            print(f"Found {len(oracle_ids)} unique cards in set {set_code}")
+            
+            # Step 2: For each oracle ID, get ALL printings in the specified set
+            print(f"Step 2: Fetching all printings for each card")
+            for i, oracle_id in enumerate(oracle_ids):
+                if self.verbose or i % 10 == 0:
+                    print(f"Processing card {i+1}/{len(oracle_ids)}")
+                
+                # Build query to get all printings with this oracle ID in the set
+                query = f"oracleid:{oracle_id}+set:{set_code.lower()}+lang:en+include:extras+include:variations+include:promos"
+                printings_url = f"https://api.scryfall.com/cards/search?q={query}&unique=prints"
+                
+                printings_page = printings_url
+                try:
+                    while printings_page:
+                        response = requests.get(printings_page)
                         
+                        if response.status_code != 200:
+                            if response.status_code != 404:  # 404 is expected if a card has no variants
+                                print(f"Warning: Failed to load printings for oracle ID {oracle_id}: {response.status_code}")
+                            break
+                        
+                        data = response.json()
+                        
+                        for card in data.get('data', []):
+                            card_id = card.get('id')
+                            
+                            # Only add if we haven't seen this exact printing before
+                            if card_id not in collected_printings:
+                                collected_printings.add(card_id)
+                                
+                                card_name = card.get('name', '').lower()
+                                collector_number = card.get('collector_number', '')
+                                variant_type = self._determine_variant_type(card)
+                                
+                                # Create a unique key that includes variant information
+                                key = f"{card_name}_{collector_number}_{variant_type}_{card_id[-8:]}"
+                                # Clean the key for mapping
+                                clean_key = re.sub(r'[^a-z0-9_]', '', key)
+                                
+                                # Extract frame effects as a list
+                                frame_effects = []
+                                if card.get('frame_effects'):
+                                    frame_effects = card.get('frame_effects')
+                                
+                                # Store comprehensive metadata
+                                metadata_map[clean_key] = {
+                                    'name': card.get('name', ''),
+                                    'scryfall_id': card_id,
+                                    'collector_number': collector_number,
+                                    'multiverse_id': card.get('multiverse_ids', [0])[0] if card.get('multiverse_ids') else 0,
+                                    'set': card.get('set', '').upper(),
+                                    'variant_type': variant_type,
+                                    'is_alternate_art': card.get('variation', False),
+                                    'artist': card.get('artist', ''),
+                                    'rarity': card.get('rarity', ''),
+                                    'oracle_id': card.get('oracle_id', ''),
+                                    'frame_effects': frame_effects,
+                                    'border_color': card.get('border_color', ''),
+                                    'full_art': card.get('full_art', False),
+                                    'textless': card.get('textless', False)
+                                }
+                                
+                                if self.verbose:
+                                    print(f"Added metadata for {card.get('name')} ({variant_type})")
+                        
+                        # Check for next page
+                        printings_page = data.get('next_page') if data.get('has_more', False) else None
+                
+                except Exception as e:
+                    print(f"Error getting printings for oracle ID {oracle_id}: {e}")
+            
+            # Step 3: Additional safety check for variants
+            print("Step 3: Additional check for variants")
+            try:
+                extras_query = f"set:{set_code.lower()}+is:variant+lang:en"
+                extras_url = f"https://api.scryfall.com/cards/search?q={extras_query}&unique=prints"
+                
+                extras_page = extras_url
+                while extras_page:
+                    response = requests.get(extras_page)
+                    
+                    if response.status_code != 200:
+                        break  # This query may return no results, which is fine
+                    
                     data = response.json()
                     
                     for card in data.get('data', []):
-                        card_name = card.get('name', '').lower()
-                        # Clean the name for matching
-                        clean_name = re.sub(r'[^a-z0-9]', '', card_name)
+                        card_id = card.get('id')
                         
-                        # Store metadata
-                        metadata_map[clean_name] = {
-                            'name': card.get('name', ''),
-                            'scryfall_id': card.get('id', ''),
-                            'collector_number': card.get('collector_number', ''),
-                            'multiverse_id': card.get('multiverse_ids', [0])[0] if card.get('multiverse_ids') else 0,
-                            'set': card.get('set', '').upper()
-                        }
-                        
+                        # Only add if we haven't seen this exact printing before
+                        if card_id not in collected_printings:
+                            collected_printings.add(card_id)
+                            
+                            card_name = card.get('name', '').lower()
+                            collector_number = card.get('collector_number', '')
+                            variant_type = self._determine_variant_type(card)
+                            
+                            # Create a unique key that includes variant information
+                            key = f"{card_name}_{collector_number}_{variant_type}_{card_id[-8:]}"
+                            # Clean the key for mapping
+                            clean_key = re.sub(r'[^a-z0-9_]', '', key)
+                            
+                            # Extract frame effects as a list
+                            frame_effects = []
+                            if card.get('frame_effects'):
+                                frame_effects = card.get('frame_effects')
+                            
+                            # Store comprehensive metadata
+                            metadata_map[clean_key] = {
+                                'name': card.get('name', ''),
+                                'scryfall_id': card_id,
+                                'collector_number': collector_number,
+                                'multiverse_id': card.get('multiverse_ids', [0])[0] if card.get('multiverse_ids') else 0,
+                                'set': card.get('set', '').upper(),
+                                'variant_type': variant_type,
+                                'is_alternate_art': card.get('variation', False),
+                                'artist': card.get('artist', ''),
+                                'rarity': card.get('rarity', ''),
+                                'oracle_id': card.get('oracle_id', ''),
+                                'frame_effects': frame_effects,
+                                'border_color': card.get('border_color', ''),
+                                'full_art': card.get('full_art', False),
+                                'textless': card.get('textless', False)
+                            }
+                            
+                            if self.verbose:
+                                print(f"Added additional variant for {card.get('name')} ({variant_type})")
+                    
                     # Check for next page
-                    next_page = data.get('next_page') if data.get('has_more', False) else None
-                except Exception as e:
-                    print(f"Error communicating with Scryfall API: {e}")
-                    break
+                    extras_page = data.get('next_page') if data.get('has_more', False) else None
+            
+            except Exception as e:
+                print(f"Note: Additional variant search completed or not available.")
                 
-            if self.verbose:
-                print(f"Fetched metadata for {len(metadata_map)} cards from Scryfall")
+            print(f"Fetched metadata for {len(metadata_map)} cards (including ALL variants) from Scryfall")
                 
             # Save the metadata for future use if we got any results
             if metadata_map:
@@ -137,13 +267,69 @@ class EnhancedHashGenerator:
             
         return metadata_map
     
+    def _determine_variant_type(self, card):
+        """
+        Determines the variant type from a Scryfall card object
+        
+        Args:
+            card: The Scryfall card data
+            
+        Returns:
+            str: The variant type identifier
+        """
+        # Default variant type
+        variant_type = 'normal'
+        
+        # Check for specific variant indicators
+        if card.get('frame_effects'):
+            frame_effects = card.get('frame_effects', [])
+            if 'extendedart' in frame_effects:
+                variant_type = 'extended'
+            elif 'showcase' in frame_effects:
+                variant_type = 'showcase'
+            elif 'borderless' in frame_effects:
+                variant_type = 'borderless'
+        
+        # Check for full art
+        if card.get('full_art', False):
+            variant_type = 'fullart'
+        
+        # Check promo status
+        if card.get('promo', False):
+            variant_type = 'promo'
+        
+        # Check textless status
+        if card.get('textless', False):
+            variant_type = 'textless'
+        
+        # For digital only cards
+        if card.get('digital', False):
+            variant_type = 'digital'
+        
+        # Borderless and alternate art detection
+        if card.get('border_color') == 'borderless':
+            variant_type = 'borderless'
+        
+        # Fetch specific frame types from Scryfall data
+        if card.get('frame') == 'showcase':
+            variant_type = 'showcase'
+        
+        # If we have variation or finishes, append to variant type
+        if card.get('variation', False):
+            if variant_type == 'normal':
+                variant_type = 'alternate'
+            else:
+                variant_type = f'alternate_{variant_type}'
+        
+        return variant_type
+    
     def match_image_to_metadata(self, image_name, metadata_map):
         """
-        Matches an image filename to Scryfall metadata
+        Matches an image filename to Scryfall metadata with variant support
         
         Args:
             image_name: The image filename
-            metadata_map: Mapping of card names to Scryfall metadata
+            metadata_map: Mapping of card keys to Scryfall metadata
             
         Returns:
             dict: The matching metadata or None if no match found
@@ -152,37 +338,116 @@ class EnhancedHashGenerator:
         # Remove extension
         if '.' in base_name:
             base_name = base_name.split('.')[0]
-            
-        # Try various patterns to match the name
-        # First try exact match if filename is formatted
+        
+        # Handle our specific naming format for variants
+        # The expected format is: CardName__SET_CollectorNumber_VariantType_Index
+        # or front/back variants: CardName__SET_CollectorNumber_VariantType_Index_front
+        if '__' in base_name:
+            # This is likely our generated format with variant info
+            parts = base_name.split('__')
+            if len(parts) == 2:
+                card_name = parts[0].lower()
+                info_part = parts[1]
+                
+                # Parse the info part (expected: SET_CollectorNumber_VariantType_Index)
+                info_parts = info_part.split('_')
+                if len(info_parts) >= 3:
+                    set_code = info_parts[0].lower()
+                    collector_number = info_parts[1]
+                    variant_type = info_parts[2]
+                    
+                    # Remove any front/back suffix if present
+                    if variant_type.endswith('front') or variant_type.endswith('back'):
+                        variant_type = variant_type.rsplit('_', 1)[0]
+                    
+                    # Try to find an exact match with all information
+                    key = f"{card_name}_{collector_number}_{variant_type}"
+                    clean_key = re.sub(r'[^a-z0-9_]', '', key)
+                    
+                    if clean_key in metadata_map:
+                        return metadata_map[clean_key]
+                    
+                    # Try finding by card name and collector number only
+                    for k, metadata in metadata_map.items():
+                        meta_card_name = metadata['name'].lower()
+                        meta_collector_number = metadata['collector_number']
+                        
+                        # Clean the card name for comparison
+                        clean_meta_name = re.sub(r'[^a-z0-9]', '', meta_card_name)
+                        clean_card_name = re.sub(r'[^a-z0-9]', '', card_name)
+                        
+                        if (clean_meta_name == clean_card_name and 
+                            meta_collector_number == collector_number):
+                            return metadata
+        
+        # Try matching by parts in the filename
         parts = base_name.split('_')
         if len(parts) >= 1:
             card_name = parts[0].lower()
             clean_name = re.sub(r'[^a-z0-9]', '', card_name)
             
-            # Direct lookup
-            if clean_name in metadata_map:
-                return metadata_map[clean_name]
+            # Try to find collector number if present
+            collector_number = None
+            variant_type = None
+            
+            for part in parts[1:]:
+                # Try to identify if this part is a collector number (usually numeric)
+                if re.match(r'^[0-9]+[a-z]?$', part):
+                    collector_number = part
+                # Try to identify if this part is a variant type
+                elif part.lower() in ['normal', 'extended', 'showcase', 'borderless', 
+                                     'fullart', 'promo', 'textless', 'alternate']:
+                    variant_type = part.lower()
+            
+            # Try to match with specific collector number and variant
+            if collector_number and variant_type:
+                key = f"{clean_name}_{collector_number}_{variant_type}"
+                if key in metadata_map:
+                    return metadata_map[key]
+            
+            # Try with collector number only
+            if collector_number:
+                for k, metadata in metadata_map.items():
+                    if (k.startswith(f"{clean_name}_{collector_number}_") or 
+                        metadata['collector_number'] == collector_number):
+                        return metadata
+            
+            # Try with card name only - find the default/normal version
+            for k, metadata in metadata_map.items():
+                meta_name = re.sub(r'[^a-z0-9]', '', metadata['name'].lower())
+                if meta_name == clean_name and metadata['variant_type'] == 'normal':
+                    return metadata
         
-        # Try fuzzy matching by removing special characters and comparing
+        # Try fuzzy matching if we haven't found a match yet
         clean_filename = re.sub(r'[^a-z0-9]', '', base_name.lower())
         
         # Find the best match (most matching characters at start)
         best_match = None
         best_match_len = 0
+        best_match_score = 0
         
-        for clean_name, metadata in metadata_map.items():
+        for key, metadata in metadata_map.items():
+            meta_name = re.sub(r'[^a-z0-9]', '', metadata['name'].lower())
+            
             # Find common prefix length
             common_len = 0
-            for i in range(min(len(clean_filename), len(clean_name))):
-                if clean_filename[i] == clean_name[i]:
+            for i in range(min(len(clean_filename), len(meta_name))):
+                if clean_filename[i] == meta_name[i]:
                     common_len += 1
                 else:
                     break
-                    
-            if common_len > best_match_len and common_len > len(clean_name) // 2:
+            
+            # Calculate match score
+            match_score = common_len
+            
+            # Bonus for normal variants (prefer them over special variants)
+            if metadata['variant_type'] == 'normal':
+                match_score += 5
+                
+            if match_score > best_match_score and common_len > len(meta_name) // 3:
                 best_match = metadata
                 best_match_len = common_len
+                best_match_score = match_score
                 
         return best_match
     
@@ -231,27 +496,46 @@ class EnhancedHashGenerator:
             if metadata_map:
                 scryfall_meta = self.match_image_to_metadata(ref_img.name, metadata_map)
                 if scryfall_meta:
+                    # Create metadata with all variant information
+                    frame_effects = scryfall_meta.get('frame_effects', [])
                     meta = CardMetadata(
                         card_name=scryfall_meta['name'],
                         set_code=scryfall_meta['set'],
                         collector_number=scryfall_meta['collector_number'],
                         scryfall_id=scryfall_meta['scryfall_id'],
-                        multiverse_id=scryfall_meta['multiverse_id']
+                        multiverse_id=scryfall_meta['multiverse_id'],
+                        variant_type=scryfall_meta.get('variant_type', 'normal'),
+                        is_alternate_art=scryfall_meta.get('is_alternate_art', False),
+                        artist=scryfall_meta.get('artist', ''),
+                        rarity=scryfall_meta.get('rarity', ''),
+                        oracle_id=scryfall_meta.get('oracle_id', ''),
+                        frame_effects=frame_effects,
+                        border_color=scryfall_meta.get('border_color', ''),
+                        full_art=scryfall_meta.get('full_art', False),
+                        textless=scryfall_meta.get('textless', False)
                     )
                     if self.verbose:
                         print(f"Matched {ref_img.name} to {meta.card_name}")
             
             # If store_names is True and we're not using the card name already,
-            # modify the name to include the card name for direct lookup
+            # modify the name to include the card name and variant info for direct lookup
             display_name = ref_img.name
             if store_names:
-                # Create a filename that includes the card name for easier lookup later
-                if meta.card_name and meta.card_name != base_name:
-                    # Only modify if the metadata name is different from the base filename
-                    # Format the name as CardName__OriginalName to allow for consistent lookup
-                    display_name = f"{meta.card_name}__{ref_img.name}"
+                # Create a filename that includes the card name and variant for easier lookup later
+                if meta.card_name:
+                    # Format the name as CardName__SET_CollectorNumber_VariantType
+                    variant_info = f"{meta.set_code}_{meta.collector_number}_{meta.variant_type}"
+                    display_name = f"{meta.card_name}__{variant_info}"
+                    
+                    # If this is a double-faced card, may need to append front/back
+                    if "_front" in ref_img.name or "_back" in ref_img.name:
+                        if "_front" in ref_img.name:
+                            display_name += "_front"
+                        elif "_back" in ref_img.name:
+                            display_name += "_back"
+                    
                     if self.verbose:
-                        print(f"Storing name directly: {display_name}")
+                        print(f"Storing name with variant info: {display_name}")
             
             # Create enhanced reference image
             enhanced_img = EnhancedReferenceImage(
