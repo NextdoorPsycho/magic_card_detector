@@ -5,11 +5,11 @@ import 'package:path/path.dart' as path;
 /// Handles saving and loading of previous command settings
 class CommandMemory {
   static const String _memoryFileName = '.mcd_memory.json';
-  
+
   /// Command types for different operations
   static const String typeHashGeneration = 'hash_generation';
   static const String typeCardExtraction = 'card_extraction';
-  
+
   /// Saves the hash generation command parameters to memory
   static Future<bool> saveHashGenerationCommand({
     required String setCode,
@@ -27,10 +27,10 @@ class CommandMemory {
         'cleanup': cleanup,
       },
     };
-    
+
     return _saveCommandData(commandData);
   }
-  
+
   /// Saves the card extraction command parameters to memory
   static Future<bool> saveCardExtractionCommand({
     required String selectedSet,
@@ -50,10 +50,10 @@ class CommandMemory {
         'saveDebugImages': saveDebugImages,
       },
     };
-    
+
     return _saveCommandData(commandData);
   }
-  
+
   /// Loads the last command from memory
   static Future<Map<String, dynamic>?> loadLastCommand() async {
     try {
@@ -61,7 +61,7 @@ class CommandMemory {
       if (!memoryFile.existsSync()) {
         return null;
       }
-      
+
       final String fileContent = await memoryFile.readAsString();
       return jsonDecode(fileContent) as Map<String, dynamic>;
     } catch (e) {
@@ -69,23 +69,24 @@ class CommandMemory {
       return null;
     }
   }
-  
+
   /// Checks if a previous command exists
   static bool hasPreviousCommand() {
     final File memoryFile = File(_getMemoryFilePath());
     return memoryFile.existsSync();
   }
-  
+
   /// Gets the command description for display in the menu
   static Future<String> getLastCommandDescription() async {
     final lastCommand = await loadLastCommand();
     if (lastCommand == null) {
       return 'Run Previous Command';
     }
-    
+
     final String type = lastCommand['type'] as String;
-    final Map<String, dynamic> params = lastCommand['parameters'] as Map<String, dynamic>;
-    
+    final Map<String, dynamic> params =
+        lastCommand['parameters'] as Map<String, dynamic>;
+
     if (type == typeHashGeneration) {
       return 'Generate Hashes for ${params['setCode']} (${params['source']})';
     } else if (type == typeCardExtraction) {
@@ -94,7 +95,7 @@ class CommandMemory {
       return 'Run Previous Command';
     }
   }
-  
+
   /// Deletes the memory file
   static Future<void> clearMemory() async {
     final File memoryFile = File(_getMemoryFilePath());
@@ -102,7 +103,7 @@ class CommandMemory {
       await memoryFile.delete();
     }
   }
-  
+
   /// Internal helper to save command data to file
   static Future<bool> _saveCommandData(Map<String, dynamic> data) async {
     try {
@@ -115,7 +116,7 @@ class CommandMemory {
       return false;
     }
   }
-  
+
   /// Gets the path to the memory file
   static String _getMemoryFilePath() {
     return path.join(Directory.current.path, _memoryFileName);

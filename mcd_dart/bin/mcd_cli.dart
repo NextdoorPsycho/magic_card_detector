@@ -10,33 +10,28 @@ Future<void> main() async {
 
   // Check if there's a previous command
   final bool hasPreviousCommand = CommandMemory.hasPreviousCommand();
-  final String previousCommandDesc = await CommandMemory.getLastCommandDescription();
-  
+  final String previousCommandDesc =
+      await CommandMemory.getLastCommandDescription();
+
   // Create menu options
-  final List<String> menuOptions = [
-    'Generate Set Hashes',
-    'Extract Cards',
-  ];
-  
+  final List<String> menuOptions = ['Generate Set Hashes', 'Extract Cards'];
+
   // Add the previous command option if available
   if (hasPreviousCommand) {
     menuOptions.insert(0, previousCommandDesc);
   }
-  
+
   // Add exit option
   menuOptions.add('Exit');
-  
+
   final int mainSelection =
-      Select(
-        prompt: 'Select an operation:',
-        options: menuOptions,
-      ).interact();
-      
+      Select(prompt: 'Select an operation:', options: menuOptions).interact();
+
   // Calculate the adjusted index based on whether we have a previous command
   final int exitIndex = menuOptions.length - 1;
   final int extractCardsIndex = hasPreviousCommand ? 2 : 1;
   final int generateHashesIndex = hasPreviousCommand ? 1 : 0;
-  
+
   if (hasPreviousCommand && mainSelection == 0) {
     // Run previous command
     await _runPreviousCommand();
@@ -56,16 +51,18 @@ Future<void> main() async {
 /// Runs the previously saved command
 Future<void> _runPreviousCommand() async {
   print('\nRunning previous command...');
-  
-  final Map<String, dynamic>? lastCommand = await CommandMemory.loadLastCommand();
+
+  final Map<String, dynamic>? lastCommand =
+      await CommandMemory.loadLastCommand();
   if (lastCommand == null) {
     print('Error: No previous command found.');
     return;
   }
-  
+
   final String type = lastCommand['type'] as String;
-  final Map<String, dynamic> params = lastCommand['parameters'] as Map<String, dynamic>;
-  
+  final Map<String, dynamic> params =
+      lastCommand['parameters'] as Map<String, dynamic>;
+
   if (type == CommandMemory.typeHashGeneration) {
     // Run hash generation with saved parameters
     print('\nGenerate Set Hashes Configuration:');
@@ -74,20 +71,19 @@ Future<void> _runPreviousCommand() async {
     print('Parallelism: ${params['parallelism']}');
     print('Cleanup: ${params['cleanup'] ? 'Yes' : 'No'}');
     print('\nRunning hash generation...');
-    
+
     final bool success = await HashGenerator.generateHashes(
       params['setCode'] as String,
       params['source'] as String,
       params['parallelism'] as int,
       params['cleanup'] as bool,
     );
-    
+
     if (success) {
       print('Hash generation complete!');
     } else {
       print('Hash generation failed.');
     }
-    
   } else if (type == CommandMemory.typeCardExtraction) {
     // Run card extraction with saved parameters
     print('\nExtract Cards Configuration:');
@@ -97,7 +93,7 @@ Future<void> _runPreviousCommand() async {
     print('Confidence Threshold: ${params['confidenceThreshold']}%');
     print('Save Debug Images: ${params['saveDebugImages'] ? 'Yes' : 'No'}');
     print('\nRunning card extraction...');
-    
+
     final bool success = CardExtractor.extractCards(
       params['selectedSet'] as String,
       params['outputPath'] as String,
@@ -105,7 +101,7 @@ Future<void> _runPreviousCommand() async {
       params['confidenceThreshold'] as int,
       params['saveDebugImages'] as bool,
     );
-    
+
     if (success) {
       print('Card extraction complete!');
     } else {
@@ -191,10 +187,7 @@ Future<void> _extractCards() async {
   // Step 1: Set selection
   final List<String> availableSets = ['All', 'LEA', 'DSK', 'Other'];
   final int setIndex =
-      Select(
-        prompt: 'Select a set:',
-        options: availableSets,
-      ).interact();
+      Select(prompt: 'Select a set:', options: availableSets).interact();
   final String selectedSet = availableSets[setIndex];
 
   // Step 2: Output path

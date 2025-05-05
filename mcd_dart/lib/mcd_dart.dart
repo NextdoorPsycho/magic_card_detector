@@ -2,7 +2,7 @@
 ///
 /// This library provides functionality for detecting and recognizing
 /// Magic: The Gathering cards in images.
-library mcd_dart;
+library;
 
 // Export CLI functionality
 export 'cli/cli_exports.dart';

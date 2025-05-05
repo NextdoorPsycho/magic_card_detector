@@ -10,7 +10,7 @@ Future<void> main() async {
     parallelism: 4,
     cleanup: true,
   );
-  
+
   // Test that we can load and read the command
   print('Loading command...');
   final lastCommand = await CommandMemory.loadLastCommand();
@@ -18,23 +18,25 @@ Future<void> main() async {
     print('Command loaded successfully!');
     print('Type: ${lastCommand['type']}');
     print('Parameters: ${lastCommand['parameters']}');
-    
+
     // Get formatted description
     final description = await CommandMemory.getLastCommandDescription();
     print('Description: $description');
-    
+
     // Test has previous command
     print('Has previous command: ${CommandMemory.hasPreviousCommand()}');
-    
+
     // Clear memory
     print('Clearing memory...');
     await CommandMemory.clearMemory();
-    
+
     // Verify cleared
-    print('Has previous command after clearing: ${CommandMemory.hasPreviousCommand()}');
+    print(
+      'Has previous command after clearing: ${CommandMemory.hasPreviousCommand()}',
+    );
   } else {
     print('Failed to load command.');
   }
-  
+
   print('Test complete.');
 }
