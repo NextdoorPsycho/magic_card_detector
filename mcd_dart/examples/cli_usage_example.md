@@ -2,6 +2,29 @@
 
 This document provides examples of how to use the Magic Card Detector CLI for common tasks.
 
+## Using the "Run Previous Command" Feature
+
+Each time you run a command (Generate Set Hashes or Extract Cards), the CLI automatically saves your settings. The next time you run the CLI, you'll see a new option at the top of the main menu that allows you to quickly re-run your last command without having to enter all the parameters again.
+
+For example, after generating hashes for the DSK set, the next time you run the CLI, you'll see:
+
+```
+Magic Card Detector CLI
+======================
+Select an operation:
+> Generate Hashes for DSK (Scryfall)
+  Generate Set Hashes
+  Extract Cards
+  Exit
+```
+
+Selecting the first option will immediately re-run the hash generation with the same parameters you used before.
+
+This is especially useful for:
+- Running the same command repeatedly
+- Processing multiple batches of images with the same settings
+- Quickly re-running a failed command
+
 ## 1. Generate Hashes for a Card Set
 
 To generate hash data for a card set, follow these steps:
