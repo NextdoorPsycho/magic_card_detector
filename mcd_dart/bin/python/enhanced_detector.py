@@ -15,6 +15,11 @@ import cv2
 import numpy as np
 import io
 import pickle
+
+# Set matplotlib to use a non-interactive backend before any other matplotlib imports
+import matplotlib
+matplotlib.use('Agg')  # Use the Agg backend which doesn't require a GUI
+
 from PIL import Image
 
 # Add Python project root to path so we can import from the main project

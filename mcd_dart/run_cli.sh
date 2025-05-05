@@ -34,6 +34,23 @@ except ImportError as e:
     sys.exit(1)
 "
 
+# Check for enhanced detector requirements
+# These are optional but recommended
+python3 -c "
+import sys
+try:
+    import requests
+    print('Enhanced detector requirements are installed.')
+except ImportError:
+    print('Warning: Python \"requests\" library is not installed.')
+    print('Enhanced metadata features will not work fully.')
+    print('To install requests, run:')
+    print('    pip install requests')
+    print('or:')
+    print('    pip3 install requests')
+    # Continue without error - script will handle this gracefully
+"
+
 if [ $? -ne 0 ]; then
     exit 1
 fi

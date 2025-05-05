@@ -6,6 +6,10 @@ import io
 from copy import deepcopy
 from itertools import product
 
+# Set matplotlib to use a non-interactive backend before any other matplotlib imports
+import matplotlib
+matplotlib.use('Agg')  # Use the Agg backend which doesn't require a GUI
+
 import cv2
 import imagehash
 import matplotlib.pyplot as plt

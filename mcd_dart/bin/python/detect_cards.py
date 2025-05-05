@@ -10,6 +10,10 @@ import os
 import sys
 import argparse
 
+# Set matplotlib to use a non-interactive backend before any other matplotlib imports
+import matplotlib
+matplotlib.use('Agg')  # Use the Agg backend which doesn't require a GUI
+
 # Add Python project root to path so we can import from the main project
 python_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../mcd_python'))
 sys.path.append(python_project_root)

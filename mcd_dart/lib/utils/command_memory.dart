@@ -5,6 +5,7 @@ import 'package:path/path.dart' as path;
 /// Handles saving and loading of previous command settings
 class CommandMemory {
   static const String _memoryFileName = '.mcd_memory.json';
+  static const int _maxCommandHistory = 2; // Number of commands to store
 
   /// Command types for different operations
   static const String typeHashGeneration = 'hash_generation';
@@ -54,46 +55,77 @@ class CommandMemory {
     return _saveCommandData(commandData);
   }
 
-  /// Loads the last command from memory
-  static Future<Map<String, dynamic>?> loadLastCommand() async {
+  /// Loads all stored commands from memory
+  static Future<List<Map<String, dynamic>>> loadCommands() async {
     try {
       final File memoryFile = File(_getMemoryFilePath());
       if (!memoryFile.existsSync()) {
-        return null;
+        return [];
       }
 
       final String fileContent = await memoryFile.readAsString();
-      return jsonDecode(fileContent) as Map<String, dynamic>;
+      final List<dynamic> commands = jsonDecode(fileContent);
+      return commands.cast<Map<String, dynamic>>();
     } catch (e) {
-      print('Error loading last command: $e');
-      return null;
+      print('Error loading commands: $e');
+      return [];
     }
   }
 
-  /// Checks if a previous command exists
+  /// Loads a specific command by index (0 = most recent)
+  static Future<Map<String, dynamic>?> loadCommandByIndex(int index) async {
+    final commands = await loadCommands();
+    if (commands.isEmpty || index >= commands.length) {
+      return null;
+    }
+    return commands[index];
+  }
+
+  /// Loads the last (most recent) command
+  static Future<Map<String, dynamic>?> loadLastCommand() async {
+    return loadCommandByIndex(0);
+  }
+
+  /// Checks if previous commands exist
   static bool hasPreviousCommand() {
     final File memoryFile = File(_getMemoryFilePath());
     return memoryFile.existsSync();
   }
 
-  /// Gets the command description for display in the menu
-  static Future<String> getLastCommandDescription() async {
-    final lastCommand = await loadLastCommand();
-    if (lastCommand == null) {
-      return 'Run Previous Command';
+  /// Gets the number of stored commands
+  static Future<int> getCommandCount() async {
+    final commands = await loadCommands();
+    return commands.length;
+  }
+
+  /// Gets a command description for display in the menu
+  static Future<String> getCommandDescription(int index) async {
+    final command = await loadCommandByIndex(index);
+    if (command == null) {
+      return 'Run Command #${index + 1}';
     }
 
-    final String type = lastCommand['type'] as String;
+    final String type = command['type'] as String;
     final Map<String, dynamic> params =
-        lastCommand['parameters'] as Map<String, dynamic>;
+        command['parameters'] as Map<String, dynamic>;
 
     if (type == typeHashGeneration) {
       return 'Generate Hashes for ${params['setCode']} (${params['source']})';
     } else if (type == typeCardExtraction) {
       return 'Extract Cards from ${params['inputPath']} using ${params['selectedSet']}';
     } else {
-      return 'Run Previous Command';
+      return 'Run Command #${index + 1}';
     }
+  }
+
+  /// Gets the last command description
+  static Future<String> getLastCommandDescription() async {
+    return getCommandDescription(0);
+  }
+
+  /// Gets the second-to-last command description
+  static Future<String> getSecondLastCommandDescription() async {
+    return getCommandDescription(1);
   }
 
   /// Deletes the memory file
@@ -107,8 +139,19 @@ class CommandMemory {
   /// Internal helper to save command data to file
   static Future<bool> _saveCommandData(Map<String, dynamic> data) async {
     try {
+      final List<Map<String, dynamic>> commands = await loadCommands();
+      
+      // Add new command to the beginning of the list
+      commands.insert(0, data);
+      
+      // Limit the number of stored commands
+      while (commands.length > _maxCommandHistory) {
+        commands.removeLast();
+      }
+      
+      // Save the updated list
       final File memoryFile = File(_getMemoryFilePath());
-      final String jsonData = jsonEncode(data);
+      final String jsonData = jsonEncode(commands);
       await memoryFile.writeAsString(jsonData);
       return true;
     } catch (e) {

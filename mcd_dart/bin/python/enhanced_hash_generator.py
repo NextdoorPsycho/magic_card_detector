@@ -12,7 +12,21 @@ import json
 import argparse
 import pickle
 import re
-import requests
+
+# Set matplotlib to use a non-interactive backend before any other matplotlib imports
+import matplotlib
+matplotlib.use('Agg')  # Use the Agg backend which doesn't require a GUI
+
+# Try to import requests, provide helpful error if missing
+try:
+    import requests
+except ImportError:
+    print("ERROR: Python 'requests' library is not installed.")
+    print("Please install it using:")
+    print("    pip install requests")
+    print("or")
+    print("    pip3 install requests")
+    sys.exit(1)
 
 # Add Python project root to path so we can import from the main project
 python_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../mcd_python'))
@@ -44,42 +58,86 @@ class EnhancedHashGenerator:
         Returns:
             dict: Mapping of card names to their Scryfall metadata
         """
+        if not set_code:
+            return {}
+            
         metadata_map = {}
         
-        # Fetch cards from the set
-        url = f"https://api.scryfall.com/cards/search?q=set:{set_code.lower()}&unique=prints"
-        next_page = url
+        try:
+            # Try to load from local metadata.json file first if it exists
+            metadata_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'metadata.json')
+            if os.path.exists(metadata_file):
+                try:
+                    with open(metadata_file, 'r', encoding='utf-8') as f:
+                        print(f"Loading metadata from local file: {metadata_file}")
+                        existing_data = json.load(f)
+                        if set_code.lower() in existing_data:
+                            return existing_data[set_code.lower()]
+                except Exception as e:
+                    print(f"Error reading local metadata: {e}")
         
-        while next_page:
+            # Fetch cards from the Scryfall API
+            url = f"https://api.scryfall.com/cards/search?q=set:{set_code.lower()}&unique=prints"
+            next_page = url
+            
+            while next_page:
+                if self.verbose:
+                    print(f"Fetching Scryfall data from {next_page}")
+                    
+                try:
+                    response = requests.get(next_page)
+                    if response.status_code != 200:
+                        print(f"Error fetching data from Scryfall: {response.status_code}")
+                        if response.status_code == 404:
+                            print(f"Set '{set_code}' not found on Scryfall.")
+                        elif response.status_code == 429:
+                            print("Rate limit exceeded. Please try again later.")
+                        break
+                        
+                    data = response.json()
+                    
+                    for card in data.get('data', []):
+                        card_name = card.get('name', '').lower()
+                        # Clean the name for matching
+                        clean_name = re.sub(r'[^a-z0-9]', '', card_name)
+                        
+                        # Store metadata
+                        metadata_map[clean_name] = {
+                            'name': card.get('name', ''),
+                            'scryfall_id': card.get('id', ''),
+                            'collector_number': card.get('collector_number', ''),
+                            'multiverse_id': card.get('multiverse_ids', [0])[0] if card.get('multiverse_ids') else 0,
+                            'set': card.get('set', '').upper()
+                        }
+                        
+                    # Check for next page
+                    next_page = data.get('next_page') if data.get('has_more', False) else None
+                except Exception as e:
+                    print(f"Error communicating with Scryfall API: {e}")
+                    break
+                
             if self.verbose:
-                print(f"Fetching Scryfall data from {next_page}")
+                print(f"Fetched metadata for {len(metadata_map)} cards from Scryfall")
                 
-            response = requests.get(next_page)
-            if response.status_code != 200:
-                print(f"Error fetching data from Scryfall: {response.status_code}")
-                break
-                
-            data = response.json()
-            
-            for card in data.get('data', []):
-                card_name = card.get('name', '').lower()
-                # Clean the name for matching
-                clean_name = re.sub(r'[^a-z0-9]', '', card_name)
-                
-                # Store metadata
-                metadata_map[clean_name] = {
-                    'name': card.get('name', ''),
-                    'scryfall_id': card.get('id', ''),
-                    'collector_number': card.get('collector_number', ''),
-                    'multiverse_id': card.get('multiverse_ids', [0])[0] if card.get('multiverse_ids') else 0,
-                    'set': card.get('set', '').upper()
-                }
-                
-            # Check for next page
-            next_page = data.get('next_page') if data.get('has_more', False) else None
-            
-        if self.verbose:
-            print(f"Fetched metadata for {len(metadata_map)} cards from Scryfall")
+            # Save the metadata for future use if we got any results
+            if metadata_map:
+                try:
+                    all_metadata = {}
+                    if os.path.exists(metadata_file):
+                        with open(metadata_file, 'r', encoding='utf-8') as f:
+                            all_metadata = json.load(f)
+                    
+                    all_metadata[set_code.lower()] = metadata_map
+                    
+                    with open(metadata_file, 'w', encoding='utf-8') as f:
+                        json.dump(all_metadata, f, indent=2)
+                        if self.verbose:
+                            print(f"Saved metadata to {metadata_file}")
+                except Exception as e:
+                    print(f"Warning: Could not save metadata for future use: {e}")
+        except Exception as e:
+            print(f"Error fetching metadata from Scryfall: {e}")
+            print("Processing will continue without metadata.")
             
         return metadata_map
     
@@ -300,7 +358,18 @@ def main():
     generator = EnhancedHashGenerator(verbose=args.verbose)
     
     # Process images and generate hashes with metadata
-    generator.process_images(set_path, args.set_code, store_names=args.store_names)
+    if args.set_code and not os.path.exists(os.path.join(set_path, 'metadata.json')):
+        try:
+            # Use Scryfall API for metadata if set code is provided
+            generator.process_images(set_path, args.set_code, store_names=args.store_names)
+        except Exception as e:
+            print(f"Warning: Failed to fetch metadata from Scryfall: {e}")
+            print("Continuing without Scryfall metadata...")
+            # Fall back to local processing without Scryfall integration
+            generator.process_images(set_path, None, store_names=args.store_names)
+    else:
+        # No set code provided or local metadata exists, just process locally
+        generator.process_images(set_path, None, store_names=args.store_names)
     
     # Export reference data
     success = generator.export_reference_data(args.output, include_json=args.json)

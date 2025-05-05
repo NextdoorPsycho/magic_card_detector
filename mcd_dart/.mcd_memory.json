@@ -1,1 +1,1 @@
-{"type":"card_extraction","timestamp":"2025-05-04T22:40:19.545641","parameters":{"selectedSet":"All","outputPath":"./assets/out","inputPath":"./assets/in","confidenceThreshold":85,"saveDebugImages":true}}
+[{"type":"hash_generation","timestamp":"2025-05-04T23:08:01.471472","parameters":{"setCode":"LEA","source":"Scryfall","parallelism":100,"cleanup":true}},{"type":"card_extraction","timestamp":"2025-05-04T23:04:48.040586","parameters":{"selectedSet":"All","outputPath":"./assets/out","inputPath":"./assets/in","confidenceThreshold":85,"saveDebugImages":false}}]

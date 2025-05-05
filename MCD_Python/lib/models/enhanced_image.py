@@ -3,6 +3,10 @@ Enhanced image classes for representing reference and test images.
 These classes include additional metadata for the cards.
 """
 
+# Set matplotlib to use a non-interactive backend before any other matplotlib imports
+import matplotlib
+matplotlib.use('Agg')  # Use the Agg backend which doesn't require a GUI
+
 import cv2
 import imagehash
 import numpy as np

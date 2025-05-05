@@ -98,6 +98,7 @@ class HashGenerator {
 
       // Use Flython to integrate with the Python script
       print('Initializing Python integration...');
+      bool hashSuccess = false;
       try {
         await _generateHashesWithPython(
           imagePath,
@@ -105,15 +106,26 @@ class HashGenerator {
           setCode,
           verbose,
         );
+        hashSuccess = true;
       } catch (e) {
         print('Error running Python hash generation: $e');
-        return false;
+        // Don't return yet, we still need to clean up if requested
       }
 
-      // Clean up if requested
+      // Clean up if requested, even if hash generation failed
       if (cleanup && tempDir.existsSync() && source == 'Scryfall') {
         print('Cleaning up temporary files...');
-        tempDir.deleteSync(recursive: true);
+        try {
+          tempDir.deleteSync(recursive: true);
+          print('Temporary files cleaned up successfully.');
+        } catch (e) {
+          print('Warning: Failed to clean up temporary files: $e');
+        }
+      }
+      
+      // Return success only if hash generation succeeded
+      if (!hashSuccess) {
+        return false;
       }
 
       print('Hash generation completed successfully!');

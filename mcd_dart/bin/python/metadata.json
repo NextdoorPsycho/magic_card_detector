@@ -1,0 +1,3975 @@
+{
+  "dsk": {
+    "abandonedcampground": {
+      "name": "Abandoned Campground",
+      "scryfall_id": "ee0565f5-ebdb-43f9-bbb4-0485b1968937",
+      "collector_number": "255",
+      "multiverse_id": 673660,
+      "set": "DSK"
+    },
+    "abhorrentoculus": {
+      "name": "Abhorrent Oculus",
+      "scryfall_id": "5f89402a-ef5c-47c1-8cef-f40920f98fac",
+      "collector_number": "344",
+      "multiverse_id": 673106,
+      "set": "DSK"
+    },
+    "acrobaticcheerleader": {
+      "name": "Acrobatic Cheerleader",
+      "scryfall_id": "6f1a7590-3eee-4803-b192-d4fb771e6a86",
+      "collector_number": "1",
+      "multiverse_id": 673406,
+      "set": "DSK"
+    },
+    "aleylineofresonance": {
+      "name": "A-Leyline of Resonance",
+      "scryfall_id": "053c829b-ab70-4e99-8062-a9d848adb66c",
+      "collector_number": "A-143",
+      "multiverse_id": 0,
+      "set": "DSK"
+    },
+    "altanakthethricecalled": {
+      "name": "Altanak, the Thrice-Called",
+      "scryfall_id": "807b0674-8eba-4204-b6b6-fa2b785a79e9",
+      "collector_number": "166",
+      "multiverse_id": 673571,
+      "set": "DSK"
+    },
+    "anthropede": {
+      "name": "Anthropede",
+      "scryfall_id": "51216ab0-9806-4faa-afbd-143e95dc255b",
+      "collector_number": "167",
+      "multiverse_id": 673572,
+      "set": "DSK"
+    },
+    "appendageamalgam": {
+      "name": "Appendage Amalgam",
+      "scryfall_id": "d16b3cf3-7b85-4153-b25a-e6b5fce725cf",
+      "collector_number": "83",
+      "multiverse_id": 673488,
+      "set": "DSK"
+    },
+    "arabellaabandoneddoll": {
+      "name": "Arabella, Abandoned Doll",
+      "scryfall_id": "f683d5a1-b8bf-446f-9fe3-88a4398bf3cf",
+      "collector_number": "208",
+      "multiverse_id": 673613,
+      "set": "DSK"
+    },
+    "attackinthebox": {
+      "name": "Attack-in-the-Box",
+      "scryfall_id": "a477dc3e-0fa1-4ce4-b3de-8cae0d1a0763",
+      "collector_number": "242",
+      "multiverse_id": 673647,
+      "set": "DSK"
+    },
+    "balemurkleech": {
+      "name": "Balemurk Leech",
+      "scryfall_id": "f0621b32-95c5-4f70-96cf-d46d20efc85d",
+      "collector_number": "84",
+      "multiverse_id": 673489,
+      "set": "DSK"
+    },
+    "balustradewurm": {
+      "name": "Balustrade Wurm",
+      "scryfall_id": "d7944c86-c578-48fa-b222-7fce3f5d301d",
+      "collector_number": "319",
+      "multiverse_id": 675079,
+      "set": "DSK"
+    },
+    "baseballbat": {
+      "name": "Baseball Bat",
+      "scryfall_id": "438accb1-6d2c-4710-adeb-df4301a7b8f1",
+      "collector_number": "209",
+      "multiverse_id": 673614,
+      "set": "DSK"
+    },
+    "bashfulbeastie": {
+      "name": "Bashful Beastie",
+      "scryfall_id": "c20fa7ee-a4c2-4eb0-9467-195f3b894fa0",
+      "collector_number": "169",
+      "multiverse_id": 673574,
+      "set": "DSK"
+    },
+    "beartrap": {
+      "name": "Bear Trap",
+      "scryfall_id": "e27c27d6-dc3a-4420-bb35-d97dc216e002",
+      "collector_number": "243",
+      "multiverse_id": 673648,
+      "set": "DSK"
+    },
+    "beastiebeatdown": {
+      "name": "Beastie Beatdown",
+      "scryfall_id": "5f889c95-46af-4fd9-aff2-573d5384fd58",
+      "collector_number": "210",
+      "multiverse_id": 673615,
+      "set": "DSK"
+    },
+    "bedheadbeastie": {
+      "name": "Bedhead Beastie",
+      "scryfall_id": "77c72b5b-dd81-4eb4-80d9-a0124e27e1dc",
+      "collector_number": "125",
+      "multiverse_id": 673530,
+      "set": "DSK"
+    },
+    "betrayersbargain": {
+      "name": "Betrayer's Bargain",
+      "scryfall_id": "7956ae00-8f0c-48f0-8110-19ff53863876",
+      "collector_number": "126",
+      "multiverse_id": 673531,
+      "set": "DSK"
+    },
+    "blazemireverge": {
+      "name": "Blazemire Verge",
+      "scryfall_id": "73a926c5-ba2b-4ac5-9717-6c9181f9a827",
+      "collector_number": "329",
+      "multiverse_id": 673076,
+      "set": "DSK"
+    },
+    "bleedingwoods": {
+      "name": "Bleeding Woods",
+      "scryfall_id": "cb224874-aff5-461f-82ee-89b06663231a",
+      "collector_number": "257",
+      "multiverse_id": 673662,
+      "set": "DSK"
+    },
+    "boilerbilgesripper": {
+      "name": "Boilerbilges Ripper",
+      "scryfall_id": "1a68009c-83cd-455f-81e9-bdd720d23a43",
+      "collector_number": "127",
+      "multiverse_id": 673532,
+      "set": "DSK"
+    },
+    "bottomlesspoollockerroom": {
+      "name": "Bottomless Pool // Locker Room",
+      "scryfall_id": "606fe87c-d17b-4fa7-8e82-e7002d8229ef",
+      "collector_number": "43",
+      "multiverse_id": 673448,
+      "set": "DSK"
+    },
+    "breakdownthedoor": {
+      "name": "Break Down the Door",
+      "scryfall_id": "209e9bbc-a15d-47fc-b149-6b0c57dd09ea",
+      "collector_number": "170",
+      "multiverse_id": 673575,
+      "set": "DSK"
+    },
+    "broodspinner": {
+      "name": "Broodspinner",
+      "scryfall_id": "dcdd2622-ab7a-4990-b026-3667cac42894",
+      "collector_number": "211",
+      "multiverse_id": 673616,
+      "set": "DSK"
+    },
+    "cacklingslasher": {
+      "name": "Cackling Slasher",
+      "scryfall_id": "b1269ccf-febf-42b0-8c20-21ccb731a3ec",
+      "collector_number": "85",
+      "multiverse_id": 673490,
+      "set": "DSK"
+    },
+    "catharticparting": {
+      "name": "Cathartic Parting",
+      "scryfall_id": "6afc250a-854d-4555-ba78-db9283fa7c22",
+      "collector_number": "171",
+      "multiverse_id": 673576,
+      "set": "DSK"
+    },
+    "cautioussurvivor": {
+      "name": "Cautious Survivor",
+      "scryfall_id": "ee2b4c1a-e058-4e06-bc46-e250fd9c9b54",
+      "collector_number": "172",
+      "multiverse_id": 673577,
+      "set": "DSK"
+    },
+    "centralelevatorpromisingstairs": {
+      "name": "Central Elevator // Promising Stairs",
+      "scryfall_id": "8634ba10-0312-4efe-9ddd-786c87d22131",
+      "collector_number": "336",
+      "multiverse_id": 673156,
+      "set": "DSK"
+    },
+    "chainsaw": {
+      "name": "Chainsaw",
+      "scryfall_id": "1c8d0f4e-6b1e-4444-8851-adf857273964",
+      "collector_number": "314",
+      "multiverse_id": 675074,
+      "set": "DSK"
+    },
+    "charredfoyerwarpedspace": {
+      "name": "Charred Foyer // Warped Space",
+      "scryfall_id": "c802966b-642c-4560-9c8e-e04adc9f41a4",
+      "collector_number": "340",
+      "multiverse_id": 673160,
+      "set": "DSK"
+    },
+    "clammyprowler": {
+      "name": "Clammy Prowler",
+      "scryfall_id": "237f0b93-f12e-4c5f-a3d7-83e8f20f8493",
+      "collector_number": "45",
+      "multiverse_id": 673450,
+      "set": "DSK"
+    },
+    "clockworkpercussionist": {
+      "name": "Clockwork Percussionist",
+      "scryfall_id": "e44340c7-d3bb-4cf9-a105-ebbf6ce3ace1",
+      "collector_number": "295",
+      "multiverse_id": 673324,
+      "set": "DSK"
+    },
+    "comebackwrong": {
+      "name": "Come Back Wrong",
+      "scryfall_id": "0e8761b8-3583-422d-a23c-b3f0915ce15b",
+      "collector_number": "309",
+      "multiverse_id": 675069,
+      "set": "DSK"
+    },
+    "communewithevil": {
+      "name": "Commune with Evil",
+      "scryfall_id": "9ab94ebe-b51b-4c6f-af43-0ed80e2808a3",
+      "collector_number": "87",
+      "multiverse_id": 673492,
+      "set": "DSK"
+    },
+    "conductivemachete": {
+      "name": "Conductive Machete",
+      "scryfall_id": "1cf37c1a-096b-4306-97cf-bc4d4c47d4a1",
+      "collector_number": "244",
+      "multiverse_id": 673649,
+      "set": "DSK"
+    },
+    "coordinatedclobbering": {
+      "name": "Coordinated Clobbering",
+      "scryfall_id": "d498cd5d-5807-4297-bc8a-c0941f2f5ce2",
+      "collector_number": "173",
+      "multiverse_id": 673578,
+      "set": "DSK"
+    },
+    "crackedskull": {
+      "name": "Cracked Skull",
+      "scryfall_id": "7616ad5e-ed30-4876-8743-6f0f9f143ea1",
+      "collector_number": "88",
+      "multiverse_id": 673493,
+      "set": "DSK"
+    },
+    "creepingpeeper": {
+      "name": "Creeping Peeper",
+      "scryfall_id": "7ad59368-1335-4d8e-a254-ccd889933e57",
+      "collector_number": "46",
+      "multiverse_id": 673451,
+      "set": "DSK"
+    },
+    "cryptidinspector": {
+      "name": "Cryptid Inspector",
+      "scryfall_id": "820c2932-2e23-4f67-92d0-a630aec6f1b4",
+      "collector_number": "174",
+      "multiverse_id": 673579,
+      "set": "DSK"
+    },
+    "culthealer": {
+      "name": "Cult Healer",
+      "scryfall_id": "9c9b8fbe-8a5e-4b62-b53f-9ead8147bbbb",
+      "collector_number": "2",
+      "multiverse_id": 673407,
+      "set": "DSK"
+    },
+    "cursedrecording": {
+      "name": "Cursed Recording",
+      "scryfall_id": "5aacedd1-de6b-4485-891e-0283ef33f3d4",
+      "collector_number": "315",
+      "multiverse_id": 675075,
+      "set": "DSK"
+    },
+    "cursedwindbreaker": {
+      "name": "Cursed Windbreaker",
+      "scryfall_id": "f651e216-f9da-4696-8a1d-6d674e9044c0",
+      "collector_number": "47",
+      "multiverse_id": 673452,
+      "set": "DSK"
+    },
+    "cynicalloner": {
+      "name": "Cynical Loner",
+      "scryfall_id": "cc93bcb8-778d-491e-877b-e6ad432764cb",
+      "collector_number": "89",
+      "multiverse_id": 673494,
+      "set": "DSK"
+    },
+    "daggermawmegalodon": {
+      "name": "Daggermaw Megalodon",
+      "scryfall_id": "e72a38b9-29aa-4804-ab27-4c40321f0bc3",
+      "collector_number": "48",
+      "multiverse_id": 673453,
+      "set": "DSK"
+    },
+    "dashingbloodsucker": {
+      "name": "Dashing Bloodsucker",
+      "scryfall_id": "790a90cc-d36f-43b5-8423-89e30bdf7b9f",
+      "collector_number": "90",
+      "multiverse_id": 673495,
+      "set": "DSK"
+    },
+    "dazzlingtheaterproproom": {
+      "name": "Dazzling Theater // Prop Room",
+      "scryfall_id": "988219dd-1b39-4c46-a3e3-844ca38e6e26",
+      "collector_number": "334",
+      "multiverse_id": 673154,
+      "set": "DSK"
+    },
+    "defiantsurvivor": {
+      "name": "Defiant Survivor",
+      "scryfall_id": "327772f3-5a87-47af-9308-c1119ad2711d",
+      "collector_number": "175",
+      "multiverse_id": 673580,
+      "set": "DSK"
+    },
+    "defiledcryptcadaverlab": {
+      "name": "Defiled Crypt // Cadaver Lab",
+      "scryfall_id": "d94fb4da-0d3f-4d84-966b-914b84b23289",
+      "collector_number": "91",
+      "multiverse_id": 673496,
+      "set": "DSK"
+    },
+    "demoniccounsel": {
+      "name": "Demonic Counsel",
+      "scryfall_id": "fa9defeb-d28e-451e-9333-914394231fbb",
+      "collector_number": "310",
+      "multiverse_id": 675070,
+      "set": "DSK"
+    },
+    "derelictatticwidowswalk": {
+      "name": "Derelict Attic // Widow's Walk",
+      "scryfall_id": "2cae24c1-53f1-4f3f-8795-b634c46a17c4",
+      "collector_number": "93",
+      "multiverse_id": 673498,
+      "set": "DSK"
+    },
+    "dissectiontools": {
+      "name": "Dissection Tools",
+      "scryfall_id": "0a376a56-7385-4d64-bbaa-952218531a76",
+      "collector_number": "385",
+      "multiverse_id": 673261,
+      "set": "DSK"
+    },
+    "disturbingmirth": {
+      "name": "Disturbing Mirth",
+      "scryfall_id": "f79b0c5d-6823-439c-a011-8b9bf424bdad",
+      "collector_number": "212",
+      "multiverse_id": 673617,
+      "set": "DSK"
+    },
+    "diversionspecialist": {
+      "name": "Diversion Specialist",
+      "scryfall_id": "acc9b17c-4210-49f4-a920-b1dc9dfa950f",
+      "collector_number": "132",
+      "multiverse_id": 673537,
+      "set": "DSK"
+    },
+    "dollmakersshopporcelaingallery": {
+      "name": "Dollmaker's Shop // Porcelain Gallery",
+      "scryfall_id": "4b9225ce-f29d-4235-8e9d-98a4fd159f73",
+      "collector_number": "335",
+      "multiverse_id": 673155,
+      "set": "DSK"
+    },
+    "dontmakeasound": {
+      "name": "Don't Make a Sound",
+      "scryfall_id": "b5f42e59-7315-41cb-9c41-346e44f0c5fb",
+      "collector_number": "49",
+      "multiverse_id": 673454,
+      "set": "DSK"
+    },
+    "doomsdayexcruciator": {
+      "name": "Doomsday Excruciator",
+      "scryfall_id": "50f9cecb-0ff7-4837-a8c5-4af394834e2c",
+      "collector_number": "346",
+      "multiverse_id": 673108,
+      "set": "DSK"
+    },
+    "dragtotheroots": {
+      "name": "Drag to the Roots",
+      "scryfall_id": "f764d201-b62e-4968-a1fc-a69247859854",
+      "collector_number": "414",
+      "multiverse_id": 675035,
+      "set": "DSK"
+    },
+    "duskmournsdomination": {
+      "name": "Duskmourn's Domination",
+      "scryfall_id": "1d96dbc9-c2fd-42c1-9d55-5c14fa1c1c6f",
+      "collector_number": "50",
+      "multiverse_id": 673455,
+      "set": "DSK"
+    },
+    "emergefromthecocoon": {
+      "name": "Emerge from the Cocoon",
+      "scryfall_id": "3ba16fbf-2d44-4337-87cb-6ff6b84a258a",
+      "collector_number": "5",
+      "multiverse_id": 673410,
+      "set": "DSK"
+    },
+    "enduringcourage": {
+      "name": "Enduring Courage",
+      "scryfall_id": "b07d4d21-2a88-4cfc-b0ce-9def76c20b7d",
+      "collector_number": "402",
+      "multiverse_id": 673230,
+      "set": "DSK"
+    },
+    "enduringcuriosity": {
+      "name": "Enduring Curiosity",
+      "scryfall_id": "d1c10e8d-b393-41fd-ba31-5e39b2dc7cce",
+      "collector_number": "398",
+      "multiverse_id": 673226,
+      "set": "DSK"
+    },
+    "enduringinnocence": {
+      "name": "Enduring Innocence",
+      "scryfall_id": "dc36adbc-544c-46a1-9e99-92cc7b2b2af1",
+      "collector_number": "396",
+      "multiverse_id": 673224,
+      "set": "DSK"
+    },
+    "enduringtenacity": {
+      "name": "Enduring Tenacity",
+      "scryfall_id": "59b698d6-4107-45d3-bc27-fb0746b7f91a",
+      "collector_number": "400",
+      "multiverse_id": 673228,
+      "set": "DSK"
+    },
+    "enduringvitality": {
+      "name": "Enduring Vitality",
+      "scryfall_id": "8a8c711f-f29f-4f6a-88c4-3dbf9ce471c3",
+      "collector_number": "404",
+      "multiverse_id": 673232,
+      "set": "DSK"
+    },
+    "entertheenigma": {
+      "name": "Enter the Enigma",
+      "scryfall_id": "cf5479c7-9e46-4a57-abe7-8cc670de89e4",
+      "collector_number": "52",
+      "multiverse_id": 673457,
+      "set": "DSK"
+    },
+    "entitytracker": {
+      "name": "Entity Tracker",
+      "scryfall_id": "885098d1-f9b4-429b-97b5-c5c448111e22",
+      "collector_number": "307",
+      "multiverse_id": 675067,
+      "set": "DSK"
+    },
+    "erraticapparition": {
+      "name": "Erratic Apparition",
+      "scryfall_id": "a74fd612-2890-4333-a379-5bf7650fbb87",
+      "collector_number": "54",
+      "multiverse_id": 673459,
+      "set": "DSK"
+    },
+    "etchedcornfield": {
+      "name": "Etched Cornfield",
+      "scryfall_id": "f8900b89-0e10-4602-bba2-da8d60ea5885",
+      "collector_number": "258",
+      "multiverse_id": 673663,
+      "set": "DSK"
+    },
+    "etherealarmor": {
+      "name": "Ethereal Armor",
+      "scryfall_id": "fd0e8a82-0201-483e-a976-5f29764b35a4",
+      "collector_number": "7",
+      "multiverse_id": 673412,
+      "set": "DSK"
+    },
+    "exorcise": {
+      "name": "Exorcise",
+      "scryfall_id": "f49006f2-a097-417d-8eb0-b8016ff2e0d5",
+      "collector_number": "8",
+      "multiverse_id": 673413,
+      "set": "DSK"
+    },
+    "fanaticoftheharrowing": {
+      "name": "Fanatic of the Harrowing",
+      "scryfall_id": "2a0acb05-91e0-4f7c-b48b-99e1068fad16",
+      "collector_number": "96",
+      "multiverse_id": 673501,
+      "set": "DSK"
+    },
+    "fearofabduction": {
+      "name": "Fear of Abduction",
+      "scryfall_id": "fc9374be-5e4b-4c23-8b6e-94c03d4f5ef1",
+      "collector_number": "9",
+      "multiverse_id": 673414,
+      "set": "DSK"
+    },
+    "fearofbeinghunted": {
+      "name": "Fear of Being Hunted",
+      "scryfall_id": "a0a5e716-68c1-4fa0-aa08-5b08114e08d8",
+      "collector_number": "134",
+      "multiverse_id": 673539,
+      "set": "DSK"
+    },
+    "fearofburningalive": {
+      "name": "Fear of Burning Alive",
+      "scryfall_id": "b282f8e3-8b79-47e9-8c18-62284211442b",
+      "collector_number": "135",
+      "multiverse_id": 673540,
+      "set": "DSK"
+    },
+    "fearofexposure": {
+      "name": "Fear of Exposure",
+      "scryfall_id": "93bb4abc-5af1-4cf5-919b-244b6a36f8ec",
+      "collector_number": "177",
+      "multiverse_id": 673582,
+      "set": "DSK"
+    },
+    "fearoffailedtests": {
+      "name": "Fear of Failed Tests",
+      "scryfall_id": "a87c39df-7636-454b-8485-a1cc9362fd84",
+      "collector_number": "55",
+      "multiverse_id": 673460,
+      "set": "DSK"
+    },
+    "fearoffalling": {
+      "name": "Fear of Falling",
+      "scryfall_id": "0e814e48-cd9d-428f-90e2-74d97cb9c8f1",
+      "collector_number": "56",
+      "multiverse_id": 673461,
+      "set": "DSK"
+    },
+    "fearofimmobility": {
+      "name": "Fear of Immobility",
+      "scryfall_id": "9220c8fa-6ef7-4bc1-acb9-fc54cc43e498",
+      "collector_number": "10",
+      "multiverse_id": 673415,
+      "set": "DSK"
+    },
+    "fearofimpostors": {
+      "name": "Fear of Impostors",
+      "scryfall_id": "bdee441e-14ab-42d1-b447-5a6488fd713a",
+      "collector_number": "57",
+      "multiverse_id": 673462,
+      "set": "DSK"
+    },
+    "fearofinfinity": {
+      "name": "Fear of Infinity",
+      "scryfall_id": "81756844-c642-406f-842d-35c1e404fec0",
+      "collector_number": "214",
+      "multiverse_id": 673619,
+      "set": "DSK"
+    },
+    "fearofisolation": {
+      "name": "Fear of Isolation",
+      "scryfall_id": "69aa6054-8c59-4bbc-a283-adb453639786",
+      "collector_number": "58",
+      "multiverse_id": 673463,
+      "set": "DSK"
+    },
+    "fearoflostteeth": {
+      "name": "Fear of Lost Teeth",
+      "scryfall_id": "259045fe-f349-4be1-bf29-465d084ed35e",
+      "collector_number": "97",
+      "multiverse_id": 673502,
+      "set": "DSK"
+    },
+    "fearofmissingout": {
+      "name": "Fear of Missing Out",
+      "scryfall_id": "45b924a5-6533-4ca6-bd2e-32debdfb6c08",
+      "collector_number": "316",
+      "multiverse_id": 675076,
+      "set": "DSK"
+    },
+    "fearofsurveillance": {
+      "name": "Fear of Surveillance",
+      "scryfall_id": "6e98559d-d9fd-4bdf-8df9-389eee756a3a",
+      "collector_number": "11",
+      "multiverse_id": 673416,
+      "set": "DSK"
+    },
+    "fearofthedark": {
+      "name": "Fear of the Dark",
+      "scryfall_id": "8700eb8d-1cc0-45ff-b769-c875ee6500ea",
+      "collector_number": "98",
+      "multiverse_id": 673503,
+      "set": "DSK"
+    },
+    "finalvengeance": {
+      "name": "Final Vengeance",
+      "scryfall_id": "648da934-71f6-4945-a08f-09698414417b",
+      "collector_number": "99",
+      "multiverse_id": 673504,
+      "set": "DSK"
+    },
+    "fleshburrower": {
+      "name": "Flesh Burrower",
+      "scryfall_id": "60499c90-a512-4abb-98eb-0735a7138421",
+      "collector_number": "178",
+      "multiverse_id": 673583,
+      "set": "DSK"
+    },
+    "floodfarmverge": {
+      "name": "Floodfarm Verge",
+      "scryfall_id": "025152a1-4fdf-4e4e-a792-c540dd43fccd",
+      "collector_number": "330",
+      "multiverse_id": 673077,
+      "set": "DSK"
+    },
+    "floodpitsdrowner": {
+      "name": "Floodpits Drowner",
+      "scryfall_id": "a6a62aa3-8edb-4000-8ebd-15ec4b00eed7",
+      "collector_number": "59",
+      "multiverse_id": 673464,
+      "set": "DSK"
+    },
+    "forest": {
+      "name": "Forest",
+      "scryfall_id": "ba2a4cbb-f325-4178-80db-7090f5672414",
+      "collector_number": "276",
+      "multiverse_id": 672888,
+      "set": "DSK"
+    },
+    "foundfootage": {
+      "name": "Found Footage",
+      "scryfall_id": "b12eb087-762e-4e7d-a6e0-f48df603b7c7",
+      "collector_number": "246",
+      "multiverse_id": 673651,
+      "set": "DSK"
+    },
+    "franticstrength": {
+      "name": "Frantic Strength",
+      "scryfall_id": "bbd9d35d-7fd0-4193-9f7e-b8a59fae4ac5",
+      "collector_number": "179",
+      "multiverse_id": 673584,
+      "set": "DSK"
+    },
+    "friendlyghost": {
+      "name": "Friendly Ghost",
+      "scryfall_id": "20e0dba2-d15c-4d55-9b68-00648175e760",
+      "collector_number": "12",
+      "multiverse_id": 673417,
+      "set": "DSK"
+    },
+    "friendlyteddy": {
+      "name": "Friendly Teddy",
+      "scryfall_id": "82b142be-4586-487a-8dd8-a55eff776458",
+      "collector_number": "247",
+      "multiverse_id": 673652,
+      "set": "DSK"
+    },
+    "funeralroomawakeninghall": {
+      "name": "Funeral Room // Awakening Hall",
+      "scryfall_id": "da30e940-acba-4f10-bd0e-3a0b165233f9",
+      "collector_number": "338",
+      "multiverse_id": 673158,
+      "set": "DSK"
+    },
+    "getout": {
+      "name": "Get Out",
+      "scryfall_id": "5d9471c8-2db9-4ce3-a1e5-42b85134cb8e",
+      "collector_number": "60",
+      "multiverse_id": 673465,
+      "set": "DSK"
+    },
+    "ghostlydancers": {
+      "name": "Ghostly Dancers",
+      "scryfall_id": "851b9caa-bb70-4d84-8139-b70867193922",
+      "collector_number": "302",
+      "multiverse_id": 675062,
+      "set": "DSK"
+    },
+    "ghostlykeybearer": {
+      "name": "Ghostly Keybearer",
+      "scryfall_id": "11d04a98-6997-4653-9719-e6b215567599",
+      "collector_number": "61",
+      "multiverse_id": 673466,
+      "set": "DSK"
+    },
+    "ghostvacuum": {
+      "name": "Ghost Vacuum",
+      "scryfall_id": "abf254c0-7c3c-4b68-8b3e-4ae444baa886",
+      "collector_number": "326",
+      "multiverse_id": 675086,
+      "set": "DSK"
+    },
+    "giveintoviolence": {
+      "name": "Give In to Violence",
+      "scryfall_id": "00ac1759-d4cc-41d5-a9b7-a89b80d2190c",
+      "collector_number": "101",
+      "multiverse_id": 673506,
+      "set": "DSK"
+    },
+    "glassworksshatteredyard": {
+      "name": "Glassworks // Shattered Yard",
+      "scryfall_id": "fe32f667-8d9f-4414-913e-256cbc2fbc45",
+      "collector_number": "137",
+      "multiverse_id": 673542,
+      "set": "DSK"
+    },
+    "glimmerburst": {
+      "name": "Glimmerburst",
+      "scryfall_id": "fe1ab8db-3994-4b6d-9eaf-75243a78b715",
+      "collector_number": "62",
+      "multiverse_id": 673467,
+      "set": "DSK"
+    },
+    "glimmerlight": {
+      "name": "Glimmerlight",
+      "scryfall_id": "1071691c-5c65-42d4-ac96-d302185ca678",
+      "collector_number": "249",
+      "multiverse_id": 673654,
+      "set": "DSK"
+    },
+    "glimmerseeker": {
+      "name": "Glimmer Seeker",
+      "scryfall_id": "7f06bbb1-0c7d-4803-9b35-8a2206803eed",
+      "collector_number": "14",
+      "multiverse_id": 673419,
+      "set": "DSK"
+    },
+    "gloomlakeverge": {
+      "name": "Gloomlake Verge",
+      "scryfall_id": "b414e4bd-a443-4ab3-bee4-1ad1d039aa1a",
+      "collector_number": "331",
+      "multiverse_id": 673078,
+      "set": "DSK"
+    },
+    "grabtheprize": {
+      "name": "Grab the Prize",
+      "scryfall_id": "50895202-f1a1-4840-a11a-55b78b8b5929",
+      "collector_number": "138",
+      "multiverse_id": 673543,
+      "set": "DSK"
+    },
+    "grandentrywayelegantrotunda": {
+      "name": "Grand Entryway // Elegant Rotunda",
+      "scryfall_id": "6ef39d0e-4caa-4808-949f-1d75e160dbc3",
+      "collector_number": "287",
+      "multiverse_id": 673316,
+      "set": "DSK"
+    },
+    "graspinglongneck": {
+      "name": "Grasping Longneck",
+      "scryfall_id": "7fddcd48-3efe-4b56-9d69-9659b3dc6021",
+      "collector_number": "180",
+      "multiverse_id": 673585,
+      "set": "DSK"
+    },
+    "greenhousericketygazebo": {
+      "name": "Greenhouse // Rickety Gazebo",
+      "scryfall_id": "a22e8038-0706-47ec-bfda-f421a4912774",
+      "collector_number": "181",
+      "multiverse_id": 673586,
+      "set": "DSK"
+    },
+    "gremlintamer": {
+      "name": "Gremlin Tamer",
+      "scryfall_id": "3593a222-21c5-4f91-bde1-763ea08071da",
+      "collector_number": "215",
+      "multiverse_id": 673620,
+      "set": "DSK"
+    },
+    "grievouswound": {
+      "name": "Grievous Wound",
+      "scryfall_id": "bea4b0aa-7ed8-4e1c-867b-50754447f41b",
+      "collector_number": "416",
+      "multiverse_id": 673214,
+      "set": "DSK"
+    },
+    "growingdread": {
+      "name": "Growing Dread",
+      "scryfall_id": "5479ac50-8335-4c6a-be99-750a44e24f25",
+      "collector_number": "216",
+      "multiverse_id": 673621,
+      "set": "DSK"
+    },
+    "handthatfeeds": {
+      "name": "Hand That Feeds",
+      "scryfall_id": "297c2860-5a68-4a18-a23a-ca5cfdfbcac8",
+      "collector_number": "139",
+      "multiverse_id": 673544,
+      "set": "DSK"
+    },
+    "hardenedescort": {
+      "name": "Hardened Escort",
+      "scryfall_id": "12054e10-46d6-4581-a7e5-ff277cb0e229",
+      "collector_number": "16",
+      "multiverse_id": 673421,
+      "set": "DSK"
+    },
+    "hauntedscreen": {
+      "name": "Haunted Screen",
+      "scryfall_id": "5e7d552f-a7ac-4a49-a582-9d378137005f",
+      "collector_number": "250",
+      "multiverse_id": 673655,
+      "set": "DSK"
+    },
+    "hauntwoodsshrieker": {
+      "name": "Hauntwoods Shrieker",
+      "scryfall_id": "0c6148f7-01cb-4789-87a6-53d741f44ec2",
+      "collector_number": "349",
+      "multiverse_id": 673111,
+      "set": "DSK"
+    },
+    "hedgeshredder": {
+      "name": "Hedge Shredder",
+      "scryfall_id": "01595caa-7abd-4b47-8015-3754d8eb39cf",
+      "collector_number": "320",
+      "multiverse_id": 675080,
+      "set": "DSK"
+    },
+    "horridvigor": {
+      "name": "Horrid Vigor",
+      "scryfall_id": "c175c998-7b80-4187-bdbc-5b6e0d7eac91",
+      "collector_number": "184",
+      "multiverse_id": 673589,
+      "set": "DSK"
+    },
+    "housecartographer": {
+      "name": "House Cartographer",
+      "scryfall_id": "2a534918-a009-4f7d-87c9-5ef600b6e7c2",
+      "collector_number": "185",
+      "multiverse_id": 673590,
+      "set": "DSK"
+    },
+    "hushwoodverge": {
+      "name": "Hushwood Verge",
+      "scryfall_id": "2bc1b38f-11bf-4eb0-b333-4d605290e75b",
+      "collector_number": "332",
+      "multiverse_id": 673079,
+      "set": "DSK"
+    },
+    "impossibleinferno": {
+      "name": "Impossible Inferno",
+      "scryfall_id": "a35248f9-9a4e-4758-a4c1-0e0c83e3fd75",
+      "collector_number": "140",
+      "multiverse_id": 673545,
+      "set": "DSK"
+    },
+    "infernalphantom": {
+      "name": "Infernal Phantom",
+      "scryfall_id": "f0c5999f-a185-4fc7-86fa-c4e5b091e768",
+      "collector_number": "141",
+      "multiverse_id": 673546,
+      "set": "DSK"
+    },
+    "innocuousrat": {
+      "name": "Innocuous Rat",
+      "scryfall_id": "94edbbc5-5673-4753-bfad-4432c4b7dca4",
+      "collector_number": "103",
+      "multiverse_id": 673508,
+      "set": "DSK"
+    },
+    "inquisitiveglimmer": {
+      "name": "Inquisitive Glimmer",
+      "scryfall_id": "e8cc1465-ee00-40f4-aaa9-02f0465beb88",
+      "collector_number": "415",
+      "multiverse_id": 675036,
+      "set": "DSK"
+    },
+    "insidiousfungus": {
+      "name": "Insidious Fungus",
+      "scryfall_id": "68fadf08-c799-47da-8330-5d0df7b41ca1",
+      "collector_number": "321",
+      "multiverse_id": 675081,
+      "set": "DSK"
+    },
+    "intrudingsoulrager": {
+      "name": "Intruding Soulrager",
+      "scryfall_id": "adffc298-0219-4807-ab05-d94460e767bc",
+      "collector_number": "218",
+      "multiverse_id": 673623,
+      "set": "DSK"
+    },
+    "irreverentgremlin": {
+      "name": "Irreverent Gremlin",
+      "scryfall_id": "8da254f5-53f2-41d2-a4f0-a90b3dd6209c",
+      "collector_number": "142",
+      "multiverse_id": 673547,
+      "set": "DSK"
+    },
+    "island": {
+      "name": "Island",
+      "scryfall_id": "40e3bf00-84cc-498c-b214-1052b4904d92",
+      "collector_number": "273",
+      "multiverse_id": 672885,
+      "set": "DSK"
+    },
+    "jumpscare": {
+      "name": "Jump Scare",
+      "scryfall_id": "a2dd8903-31ca-470d-b2ff-280f6d40c794",
+      "collector_number": "17",
+      "multiverse_id": 673422,
+      "set": "DSK"
+    },
+    "kaitobaneofnightmares": {
+      "name": "Kaito, Bane of Nightmares",
+      "scryfall_id": "14901700-881a-4c79-b162-aeeb1579757e",
+      "collector_number": "409",
+      "multiverse_id": 673222,
+      "set": "DSK"
+    },
+    "keystothehouse": {
+      "name": "Keys to the House",
+      "scryfall_id": "8c11a413-7f33-4b63-bdd9-e143e529f56d",
+      "collector_number": "251",
+      "multiverse_id": 673656,
+      "set": "DSK"
+    },
+    "killersmask": {
+      "name": "Killer's Mask",
+      "scryfall_id": "f1fc02ae-77b8-4e5e-94b4-22ecf7ae40ae",
+      "collector_number": "104",
+      "multiverse_id": 673509,
+      "set": "DSK"
+    },
+    "konarescuebeastie": {
+      "name": "Kona, Rescue Beastie",
+      "scryfall_id": "bf256f95-d184-4ea9-9039-fc64f461d9b3",
+      "collector_number": "358",
+      "multiverse_id": 673006,
+      "set": "DSK"
+    },
+    "lakesideshack": {
+      "name": "Lakeside Shack",
+      "scryfall_id": "a9367acd-393a-4966-ba60-af2ecd4e7596",
+      "collector_number": "262",
+      "multiverse_id": 673667,
+      "set": "DSK"
+    },
+    "letsplayagame": {
+      "name": "Let's Play a Game",
+      "scryfall_id": "645911b4-7728-4380-9097-e4139b986423",
+      "collector_number": "105",
+      "multiverse_id": 673510,
+      "set": "DSK"
+    },
+    "leylineofhope": {
+      "name": "Leyline of Hope",
+      "scryfall_id": "e6209ca8-3a2a-4c0a-9f86-54283af9df75",
+      "collector_number": "369",
+      "multiverse_id": 673245,
+      "set": "DSK"
+    },
+    "leylineofmutation": {
+      "name": "Leyline of Mutation",
+      "scryfall_id": "cb5ad232-9863-454f-9455-9725e69fa33f",
+      "collector_number": "382",
+      "multiverse_id": 673258,
+      "set": "DSK"
+    },
+    "leylineofresonance": {
+      "name": "Leyline of Resonance",
+      "scryfall_id": "c006baf9-451e-461c-9355-7bf5a4f0d601",
+      "collector_number": "379",
+      "multiverse_id": 673255,
+      "set": "DSK"
+    },
+    "leylineofthevoid": {
+      "name": "Leyline of the Void",
+      "scryfall_id": "b30a559e-79f9-479e-8ef1-65fb91b9507d",
+      "collector_number": "376",
+      "multiverse_id": 673252,
+      "set": "DSK"
+    },
+    "leylineoftransformation": {
+      "name": "Leyline of Transformation",
+      "scryfall_id": "fd545d86-9a3e-4e4f-b0fe-9363a85b9290",
+      "collector_number": "372",
+      "multiverse_id": 673248,
+      "set": "DSK"
+    },
+    "lionheartglimmer": {
+      "name": "Lionheart Glimmer",
+      "scryfall_id": "483e1c6f-331c-45f1-bf5d-9b9742aa8903",
+      "collector_number": "19",
+      "multiverse_id": 673424,
+      "set": "DSK"
+    },
+    "liveordie": {
+      "name": "Live or Die",
+      "scryfall_id": "cd81e438-e38f-42a1-b677-202dbcb3837c",
+      "collector_number": "107",
+      "multiverse_id": 673512,
+      "set": "DSK"
+    },
+    "livingphone": {
+      "name": "Living Phone",
+      "scryfall_id": "8266f93b-f91c-4427-a222-075ceb0be3af",
+      "collector_number": "20",
+      "multiverse_id": 673425,
+      "set": "DSK"
+    },
+    "malevolentchandelier": {
+      "name": "Malevolent Chandelier",
+      "scryfall_id": "ef09d296-4493-47f7-ad76-ad76c747df78",
+      "collector_number": "252",
+      "multiverse_id": 673657,
+      "set": "DSK"
+    },
+    "manifestdread": {
+      "name": "Manifest Dread",
+      "scryfall_id": "a649265b-6c32-49e7-b6cb-6086c40d26e8",
+      "collector_number": "189",
+      "multiverse_id": 673594,
+      "set": "DSK"
+    },
+    "marinavendrell": {
+      "name": "Marina Vendrell",
+      "scryfall_id": "f6424845-7e9b-4514-93aa-1cf6c45f634c",
+      "collector_number": "360",
+      "multiverse_id": 673008,
+      "set": "DSK"
+    },
+    "marinavendrellsgrimoire": {
+      "name": "Marina Vendrell's Grimoire",
+      "scryfall_id": "b976d642-3cf0-42c5-b3ba-12818e596f9c",
+      "collector_number": "308",
+      "multiverse_id": 675068,
+      "set": "DSK"
+    },
+    "marvinmurderousmimic": {
+      "name": "Marvin, Murderous Mimic",
+      "scryfall_id": "ed4f107a-ce90-464c-8be0-eb6c1db0f80f",
+      "collector_number": "367",
+      "multiverse_id": 673015,
+      "set": "DSK"
+    },
+    "meathookmassacreii": {
+      "name": "Meathook Massacre II",
+      "scryfall_id": "b3686075-cef4-48b7-ac50-3e27282a3f70",
+      "collector_number": "311",
+      "multiverse_id": 675071,
+      "set": "DSK"
+    },
+    "meatlockerdrowneddiner": {
+      "name": "Meat Locker // Drowned Diner",
+      "scryfall_id": "b3c773f0-9e65-48de-a362-a9a943198693",
+      "collector_number": "65",
+      "multiverse_id": 673470,
+      "set": "DSK"
+    },
+    "miasmademon": {
+      "name": "Miasma Demon",
+      "scryfall_id": "6d167c00-75ff-4301-855a-8319b89e3689",
+      "collector_number": "109",
+      "multiverse_id": 673514,
+      "set": "DSK"
+    },
+    "midnightmayhem": {
+      "name": "Midnight Mayhem",
+      "scryfall_id": "4fc0b94f-08b3-4fb6-9b09-2f3a215203ca",
+      "collector_number": "222",
+      "multiverse_id": 673627,
+      "set": "DSK"
+    },
+    "mirrorroomfracturedrealm": {
+      "name": "Mirror Room // Fractured Realm",
+      "scryfall_id": "f0c32b23-0586-4ac2-9304-d90b4636e7ae",
+      "collector_number": "337",
+      "multiverse_id": 673157,
+      "set": "DSK"
+    },
+    "molderinggymweightroom": {
+      "name": "Moldering Gym // Weight Room",
+      "scryfall_id": "245d5a61-c40c-4039-aea8-3ad61415b8f0",
+      "collector_number": "190",
+      "multiverse_id": 673595,
+      "set": "DSK"
+    },
+    "monstrousemergence": {
+      "name": "Monstrous Emergence",
+      "scryfall_id": "b999eb47-b842-47f1-be91-c79fc46e1896",
+      "collector_number": "191",
+      "multiverse_id": 673596,
+      "set": "DSK"
+    },
+    "mostvaluableslayer": {
+      "name": "Most Valuable Slayer",
+      "scryfall_id": "c2b7b635-4c72-4129-bf95-1eef05cce3d3",
+      "collector_number": "144",
+      "multiverse_id": 673549,
+      "set": "DSK"
+    },
+    "mountain": {
+      "name": "Mountain",
+      "scryfall_id": "8c8841b2-9b4e-4f65-8e30-1e9423cb8fbc",
+      "collector_number": "275",
+      "multiverse_id": 672887,
+      "set": "DSK"
+    },
+    "murder": {
+      "name": "Murder",
+      "scryfall_id": "2c249609-9cf7-46f1-b94c-9329add966bb",
+      "collector_number": "110",
+      "multiverse_id": 673515,
+      "set": "DSK"
+    },
+    "murkysewer": {
+      "name": "Murky Sewer",
+      "scryfall_id": "6098d8be-4e3f-455d-8799-91435bf45a1c",
+      "collector_number": "263",
+      "multiverse_id": 673668,
+      "set": "DSK"
+    },
+    "nashisearcherinthedark": {
+      "name": "Nashi, Searcher in the Dark",
+      "scryfall_id": "44aa4f0c-7b2b-44cc-a59f-95f276b25898",
+      "collector_number": "361",
+      "multiverse_id": 673009,
+      "set": "DSK"
+    },
+    "neglectedmanor": {
+      "name": "Neglected Manor",
+      "scryfall_id": "11cf1531-8a3c-4e28-a114-d3a342b33bb6",
+      "collector_number": "264",
+      "multiverse_id": 673669,
+      "set": "DSK"
+    },
+    "nikolightofhope": {
+      "name": "Niko, Light of Hope",
+      "scryfall_id": "a54c9d18-76d7-4c24-ab19-7ad57d9a33a4",
+      "collector_number": "410",
+      "multiverse_id": 673223,
+      "set": "DSK"
+    },
+    "norinswiftsurvivalist": {
+      "name": "Norin, Swift Survivalist",
+      "scryfall_id": "f86f4026-b75a-4d74-871e-715ece0225d3",
+      "collector_number": "297",
+      "multiverse_id": 673326,
+      "set": "DSK"
+    },
+    "nowheretorun": {
+      "name": "Nowhere to Run",
+      "scryfall_id": "fee60e9d-9ee7-444a-88f3-c1929e1888fb",
+      "collector_number": "111",
+      "multiverse_id": 673516,
+      "set": "DSK"
+    },
+    "obliviousbookworm": {
+      "name": "Oblivious Bookworm",
+      "scryfall_id": "9f328937-6585-4325-a1f2-95facab2c58a",
+      "collector_number": "300",
+      "multiverse_id": 673329,
+      "set": "DSK"
+    },
+    "omnivorousflytrap": {
+      "name": "Omnivorous Flytrap",
+      "scryfall_id": "f779cc02-2470-4fc0-ae08-503adeb8e0a9",
+      "collector_number": "322",
+      "multiverse_id": 675082,
+      "set": "DSK"
+    },
+    "optimisticscavenger": {
+      "name": "Optimistic Scavenger",
+      "scryfall_id": "f67d6bd4-b03a-4d04-bc38-85b3ee39aa8a",
+      "collector_number": "288",
+      "multiverse_id": 673317,
+      "set": "DSK"
+    },
+    "orphansofthewheat": {
+      "name": "Orphans of the Wheat",
+      "scryfall_id": "8ef4aab1-8bc0-4652-91d7-3e8b20b411ad",
+      "collector_number": "22",
+      "multiverse_id": 673427,
+      "set": "DSK"
+    },
+    "osseoussticktwister": {
+      "name": "Osseous Sticktwister",
+      "scryfall_id": "4f43473e-1302-4543-b331-1a86cfbc3ced",
+      "collector_number": "112",
+      "multiverse_id": 673517,
+      "set": "DSK"
+    },
+    "overgrownzealot": {
+      "name": "Overgrown Zealot",
+      "scryfall_id": "96d68d29-499a-4864-be18-bd98fda0d173",
+      "collector_number": "193",
+      "multiverse_id": 673598,
+      "set": "DSK"
+    },
+    "overlordofthebalemurk": {
+      "name": "Overlord of the Balemurk",
+      "scryfall_id": "49df3de4-ed62-4828-8256-a05220d9eada",
+      "collector_number": "401",
+      "multiverse_id": 673229,
+      "set": "DSK"
+    },
+    "overlordoftheboilerbilges": {
+      "name": "Overlord of the Boilerbilges",
+      "scryfall_id": "0e8c085e-db0e-45a8-96d0-80b480361771",
+      "collector_number": "403",
+      "multiverse_id": 673231,
+      "set": "DSK"
+    },
+    "overlordofthefloodpits": {
+      "name": "Overlord of the Floodpits",
+      "scryfall_id": "bf42de20-43af-4c37-a5af-aa7c48699596",
+      "collector_number": "399",
+      "multiverse_id": 673227,
+      "set": "DSK"
+    },
+    "overlordofthehauntwoods": {
+      "name": "Overlord of the Hauntwoods",
+      "scryfall_id": "f9f3ecff-2d67-4676-8706-9191d67215fc",
+      "collector_number": "405",
+      "multiverse_id": 673233,
+      "set": "DSK"
+    },
+    "overlordofthemistmoors": {
+      "name": "Overlord of the Mistmoors",
+      "scryfall_id": "5b2c4873-dfa7-4dd8-aded-a5d1b6048ad7",
+      "collector_number": "397",
+      "multiverse_id": 673225,
+      "set": "DSK"
+    },
+    "paintersstudiodefacedgallery": {
+      "name": "Painter's Studio // Defaced Gallery",
+      "scryfall_id": "e96901eb-5b57-43f4-a7b1-ae3b809bc36e",
+      "collector_number": "147",
+      "multiverse_id": 673552,
+      "set": "DSK"
+    },
+    "paranormalanalyst": {
+      "name": "Paranormal Analyst",
+      "scryfall_id": "60cf954a-5503-460c-8720-8960842eea47",
+      "collector_number": "69",
+      "multiverse_id": 673474,
+      "set": "DSK"
+    },
+    "patchedplaything": {
+      "name": "Patched Plaything",
+      "scryfall_id": "513da431-4f3a-4f4a-8be4-7e162dd93307",
+      "collector_number": "24",
+      "multiverse_id": 673429,
+      "set": "DSK"
+    },
+    "patchworkbeastie": {
+      "name": "Patchwork Beastie",
+      "scryfall_id": "895de583-36d2-43fd-927f-8876d4302c73",
+      "collector_number": "195",
+      "multiverse_id": 673600,
+      "set": "DSK"
+    },
+    "peculiarlighthouse": {
+      "name": "Peculiar Lighthouse",
+      "scryfall_id": "3a6e40c0-e70e-4353-a920-9851cfac71dd",
+      "collector_number": "265",
+      "multiverse_id": 673670,
+      "set": "DSK"
+    },
+    "peerpasttheveil": {
+      "name": "Peer Past the Veil",
+      "scryfall_id": "b70e7b3a-3fe2-4f3c-8292-b44e4a0fc5a4",
+      "collector_number": "325",
+      "multiverse_id": 675085,
+      "set": "DSK"
+    },
+    "piggybank": {
+      "name": "Piggy Bank",
+      "scryfall_id": "55d35442-5ca0-4fd7-8ff1-b7347b3e6690",
+      "collector_number": "148",
+      "multiverse_id": 673553,
+      "set": "DSK"
+    },
+    "piranhafly": {
+      "name": "Piranha Fly",
+      "scryfall_id": "cd891675-12d4-40df-996a-97d694155227",
+      "collector_number": "70",
+      "multiverse_id": 673475,
+      "set": "DSK"
+    },
+    "plains": {
+      "name": "Plains",
+      "scryfall_id": "e67ce864-bf29-42f1-81ca-a98022892eec",
+      "collector_number": "272",
+      "multiverse_id": 672884,
+      "set": "DSK"
+    },
+    "popularegotist": {
+      "name": "Popular Egotist",
+      "scryfall_id": "35e64605-8edb-4def-9522-765e90d1f0f3",
+      "collector_number": "114",
+      "multiverse_id": 673519,
+      "set": "DSK"
+    },
+    "possessedgoat": {
+      "name": "Possessed Goat",
+      "scryfall_id": "cd02b8ff-ff65-4a38-b8fb-f8dd130edbf7",
+      "collector_number": "25",
+      "multiverse_id": 673430,
+      "set": "DSK"
+    },
+    "pyroclasm": {
+      "name": "Pyroclasm",
+      "scryfall_id": "f4005974-fac5-465f-b742-bcb41eb8ba74",
+      "collector_number": "413",
+      "multiverse_id": 675034,
+      "set": "DSK"
+    },
+    "raggedplaymate": {
+      "name": "Ragged Playmate",
+      "scryfall_id": "000499a4-3f39-4d25-a2a2-b2f014e30754",
+      "collector_number": "150",
+      "multiverse_id": 673555,
+      "set": "DSK"
+    },
+    "rampagingsoulrager": {
+      "name": "Rampaging Soulrager",
+      "scryfall_id": "569c914b-95af-428f-a142-6f20e418bc59",
+      "collector_number": "151",
+      "multiverse_id": 673556,
+      "set": "DSK"
+    },
+    "raucouscarnival": {
+      "name": "Raucous Carnival",
+      "scryfall_id": "3604a211-9bf7-474e-bd78-32a862f4259c",
+      "collector_number": "266",
+      "multiverse_id": 673671,
+      "set": "DSK"
+    },
+    "razorkinhordecaller": {
+      "name": "Razorkin Hordecaller",
+      "scryfall_id": "f7fb0f11-d1d0-4941-a1a7-a2db88f30394",
+      "collector_number": "152",
+      "multiverse_id": 673557,
+      "set": "DSK"
+    },
+    "razorkinneedlehead": {
+      "name": "Razorkin Needlehead",
+      "scryfall_id": "25c34cb6-c8cb-4814-a647-9c63b10f02c4",
+      "collector_number": "347",
+      "multiverse_id": 673109,
+      "set": "DSK"
+    },
+    "razortrapgorge": {
+      "name": "Razortrap Gorge",
+      "scryfall_id": "98d0d067-b52d-47ec-ba7b-8cfcd716c0e5",
+      "collector_number": "267",
+      "multiverse_id": 673672,
+      "set": "DSK"
+    },
+    "reluctantrolemodel": {
+      "name": "Reluctant Role Model",
+      "scryfall_id": "1fcea7eb-3174-4549-a1de-8dda577cd0b9",
+      "collector_number": "303",
+      "multiverse_id": 675063,
+      "set": "DSK"
+    },
+    "restrictedofficelecturehall": {
+      "name": "Restricted Office // Lecture Hall",
+      "scryfall_id": "e35b3ab8-9230-469e-8c01-5f735fea5c9e",
+      "collector_number": "342",
+      "multiverse_id": 673162,
+      "set": "DSK"
+    },
+    "resurrectedcultist": {
+      "name": "Resurrected Cultist",
+      "scryfall_id": "e41bd259-e81f-432a-bebf-4c6534f23db7",
+      "collector_number": "115",
+      "multiverse_id": 673520,
+      "set": "DSK"
+    },
+    "ripchainrazorkin": {
+      "name": "Ripchain Razorkin",
+      "scryfall_id": "effad662-3309-434c-addc-4394db1f359c",
+      "collector_number": "154",
+      "multiverse_id": 673559,
+      "set": "DSK"
+    },
+    "ripspawnhunter": {
+      "name": "Rip, Spawn Hunter",
+      "scryfall_id": "1ce8da0e-7822-4e8b-b073-5d4edcb38c59",
+      "collector_number": "362",
+      "multiverse_id": 673010,
+      "set": "DSK"
+    },
+    "riteofthemoth": {
+      "name": "Rite of the Moth",
+      "scryfall_id": "0e79123f-accd-4193-8c72-b750e0d6f3fa",
+      "collector_number": "229",
+      "multiverse_id": 673634,
+      "set": "DSK"
+    },
+    "roaringfurnacesteamingsauna": {
+      "name": "Roaring Furnace // Steaming Sauna",
+      "scryfall_id": "fe8e3d06-ae97-4f92-a379-b54e183e2aa0",
+      "collector_number": "343",
+      "multiverse_id": 673163,
+      "set": "DSK"
+    },
+    "rootwisesurvivor": {
+      "name": "Rootwise Survivor",
+      "scryfall_id": "d843c242-088f-4131-9e52-7ee2d0db5e20",
+      "collector_number": "196",
+      "multiverse_id": 673601,
+      "set": "DSK"
+    },
+    "saviorofthesmall": {
+      "name": "Savior of the Small",
+      "scryfall_id": "e2ed31ea-c278-4e8c-afa7-6d09af399345",
+      "collector_number": "27",
+      "multiverse_id": 673432,
+      "set": "DSK"
+    },
+    "saw": {
+      "name": "Saw",
+      "scryfall_id": "603c3ef4-4ef1-4db8-9ed2-e2b0926269d5",
+      "collector_number": "254",
+      "multiverse_id": 673659,
+      "set": "DSK"
+    },
+    "sawbladeskinripper": {
+      "name": "Sawblade Skinripper",
+      "scryfall_id": "cbe51964-50d2-49b0-9c3c-81751dcbeade",
+      "collector_number": "231",
+      "multiverse_id": 673636,
+      "set": "DSK"
+    },
+    "sayitsname": {
+      "name": "Say Its Name",
+      "scryfall_id": "94c58683-b5f2-4863-9562-6f6be1ec21fe",
+      "collector_number": "197",
+      "multiverse_id": 673602,
+      "set": "DSK"
+    },
+    "scorchingdragonfire": {
+      "name": "Scorching Dragonfire",
+      "scryfall_id": "a55f4f37-796a-4b18-a5ee-1d4f711f19b8",
+      "collector_number": "156",
+      "multiverse_id": 673561,
+      "set": "DSK"
+    },
+    "scrabblingskullcrab": {
+      "name": "Scrabbling Skullcrab",
+      "scryfall_id": "c1017b8e-e7fa-41de-8eb2-2e4a59db5117",
+      "collector_number": "71",
+      "multiverse_id": 673476,
+      "set": "DSK"
+    },
+    "screamingnemesis": {
+      "name": "Screaming Nemesis",
+      "scryfall_id": "ad3f4c72-ff6e-4d7f-8eb8-45a0a9605fc0",
+      "collector_number": "348",
+      "multiverse_id": 673110,
+      "set": "DSK"
+    },
+    "seizedfromslumber": {
+      "name": "Seized from Slumber",
+      "scryfall_id": "24456083-0c76-46c5-9b18-8d468702df69",
+      "collector_number": "28",
+      "multiverse_id": 673433,
+      "set": "DSK"
+    },
+    "shardmagesrescue": {
+      "name": "Shardmage's Rescue",
+      "scryfall_id": "05652e01-1144-4214-b962-c34f677e0a07",
+      "collector_number": "411",
+      "multiverse_id": 675032,
+      "set": "DSK"
+    },
+    "shelteredbyghosts": {
+      "name": "Sheltered by Ghosts",
+      "scryfall_id": "389f3f7b-be40-4a2d-b5cc-28471a577981",
+      "collector_number": "30",
+      "multiverse_id": 673435,
+      "set": "DSK"
+    },
+    "shepherdingspirits": {
+      "name": "Shepherding Spirits",
+      "scryfall_id": "86c02ab1-0fb2-4cb0-a871-bfad406726fc",
+      "collector_number": "31",
+      "multiverse_id": 673436,
+      "set": "DSK"
+    },
+    "shrewdstoryteller": {
+      "name": "Shrewd Storyteller",
+      "scryfall_id": "f9636877-8fcc-4ad5-8eb2-a5d5ba49583d",
+      "collector_number": "232",
+      "multiverse_id": 673637,
+      "set": "DSK"
+    },
+    "shroudstomper": {
+      "name": "Shroudstomper",
+      "scryfall_id": "53f746bf-0642-48db-835e-27a7fe369fef",
+      "collector_number": "233",
+      "multiverse_id": 673638,
+      "set": "DSK"
+    },
+    "silenthallcreeper": {
+      "name": "Silent Hallcreeper",
+      "scryfall_id": "a0ee370f-99d1-44bc-9952-29bcafbf7887",
+      "collector_number": "345",
+      "multiverse_id": 673107,
+      "set": "DSK"
+    },
+    "skullsnapnuisance": {
+      "name": "Skullsnap Nuisance",
+      "scryfall_id": "0fdcdfd0-8c66-4767-a894-58cf0c6d7e07",
+      "collector_number": "234",
+      "multiverse_id": 673639,
+      "set": "DSK"
+    },
+    "slaveringbranchsnapper": {
+      "name": "Slavering Branchsnapper",
+      "scryfall_id": "5ed7ca4d-5895-4074-8315-656363d14862",
+      "collector_number": "198",
+      "multiverse_id": 673603,
+      "set": "DSK"
+    },
+    "smokyloungemistysalon": {
+      "name": "Smoky Lounge // Misty Salon",
+      "scryfall_id": "4700987d-fc55-44eb-bc9f-0e0316ca65e2",
+      "collector_number": "235",
+      "multiverse_id": 673640,
+      "set": "DSK"
+    },
+    "spectralsnatcher": {
+      "name": "Spectral Snatcher",
+      "scryfall_id": "68f90f57-94a0-4ee1-9383-093e8fca52ea",
+      "collector_number": "116",
+      "multiverse_id": 673521,
+      "set": "DSK"
+    },
+    "spineseekercentipede": {
+      "name": "Spineseeker Centipede",
+      "scryfall_id": "b50d697c-8358-429b-8f79-7ad9d01a5edd",
+      "collector_number": "199",
+      "multiverse_id": 673604,
+      "set": "DSK"
+    },
+    "splitskindoll": {
+      "name": "Splitskin Doll",
+      "scryfall_id": "0453be94-e59b-48f1-a488-7a9fd96a627e",
+      "collector_number": "33",
+      "multiverse_id": 673438,
+      "set": "DSK"
+    },
+    "splitup": {
+      "name": "Split Up",
+      "scryfall_id": "7428a157-67e8-48fb-9882-54bf3ae001e3",
+      "collector_number": "304",
+      "multiverse_id": 675064,
+      "set": "DSK"
+    },
+    "sporogenicinfection": {
+      "name": "Sporogenic Infection",
+      "scryfall_id": "eaae086e-0781-4f4d-bc9c-a98228bc380c",
+      "collector_number": "117",
+      "multiverse_id": 673522,
+      "set": "DSK"
+    },
+    "stalkedresearcher": {
+      "name": "Stalked Researcher",
+      "scryfall_id": "8a26ccad-adfa-43cc-be4c-dc8dd584bca3",
+      "collector_number": "73",
+      "multiverse_id": 673478,
+      "set": "DSK"
+    },
+    "stayhiddenstaysilent": {
+      "name": "Stay Hidden, Stay Silent",
+      "scryfall_id": "9fdd7bdd-2ba8-4658-9825-741aecad5f42",
+      "collector_number": "291",
+      "multiverse_id": 673320,
+      "set": "DSK"
+    },
+    "strangledcemetery": {
+      "name": "Strangled Cemetery",
+      "scryfall_id": "c1ce9250-bdbe-4c77-9243-6db9ffffe69b",
+      "collector_number": "268",
+      "multiverse_id": 673673,
+      "set": "DSK"
+    },
+    "surgicalsuitehospitalroom": {
+      "name": "Surgical Suite // Hospital Room",
+      "scryfall_id": "96b2dc14-4477-4444-a9eb-4fa4c02dfbde",
+      "collector_number": "34",
+      "multiverse_id": 673439,
+      "set": "DSK"
+    },
+    "swamp": {
+      "name": "Swamp",
+      "scryfall_id": "7442c1c7-1c10-4387-92e6-4bdea263064f",
+      "collector_number": "274",
+      "multiverse_id": 672886,
+      "set": "DSK"
+    },
+    "terramorphicexpanse": {
+      "name": "Terramorphic Expanse",
+      "scryfall_id": "b379c8f1-817c-4f18-8f58-45c40504433e",
+      "collector_number": "269",
+      "multiverse_id": 673674,
+      "set": "DSK"
+    },
+    "thejollyballoonman": {
+      "name": "The Jolly Balloon Man",
+      "scryfall_id": "594df270-02d0-438b-a758-c32d71e8d4ff",
+      "collector_number": "359",
+      "multiverse_id": 673007,
+      "set": "DSK"
+    },
+    "themindskinner": {
+      "name": "The Mindskinner",
+      "scryfall_id": "3130a342-3c98-4c69-975b-a958ccddfe37",
+      "collector_number": "357",
+      "multiverse_id": 673005,
+      "set": "DSK"
+    },
+    "therollercrusherride": {
+      "name": "The Rollercrusher Ride",
+      "scryfall_id": "4d14e9ee-f82f-4062-b972-9486377dacdb",
+      "collector_number": "317",
+      "multiverse_id": 675077,
+      "set": "DSK"
+    },
+    "theswarmweaver": {
+      "name": "The Swarmweaver",
+      "scryfall_id": "f4542e4f-2fb7-4036-aefc-291f5c010ca8",
+      "collector_number": "363",
+      "multiverse_id": 673011,
+      "set": "DSK"
+    },
+    "thetaleoftamiyo": {
+      "name": "The Tale of Tamiyo",
+      "scryfall_id": "aaeba193-05d3-4c2d-a304-bbe7114c2eef",
+      "collector_number": "75",
+      "multiverse_id": 673480,
+      "set": "DSK"
+    },
+    "thewanderingrescuer": {
+      "name": "The Wandering Rescuer",
+      "scryfall_id": "a9a4f2ba-2d16-4dda-85e8-dafce0d5ee1b",
+      "collector_number": "406",
+      "multiverse_id": 673219,
+      "set": "DSK"
+    },
+    "thornspireverge": {
+      "name": "Thornspire Verge",
+      "scryfall_id": "a817f77d-19ea-4342-b90f-d92f62543303",
+      "collector_number": "333",
+      "multiverse_id": 673080,
+      "set": "DSK"
+    },
+    "threatsaroundeverycorner": {
+      "name": "Threats Around Every Corner",
+      "scryfall_id": "7201ee12-9104-48d8-aeec-08a318c8ee10",
+      "collector_number": "200",
+      "multiverse_id": 673605,
+      "set": "DSK"
+    },
+    "ticketboothtunnelofhate": {
+      "name": "Ticket Booth // Tunnel of Hate",
+      "scryfall_id": "058ffe36-ed2d-4b67-83cd-162db8383a32",
+      "collector_number": "158",
+      "multiverse_id": 673563,
+      "set": "DSK"
+    },
+    "tobybeastiebefriender": {
+      "name": "Toby, Beastie Befriender",
+      "scryfall_id": "cafe5755-88b0-4fee-8596-4232844f60fc",
+      "collector_number": "356",
+      "multiverse_id": 673004,
+      "set": "DSK"
+    },
+    "trappedinthescreen": {
+      "name": "Trapped in the Screen",
+      "scryfall_id": "1fe95bfb-8ca7-434f-a2e7-a6b2e699584e",
+      "collector_number": "36",
+      "multiverse_id": 673441,
+      "set": "DSK"
+    },
+    "trialofagony": {
+      "name": "Trial of Agony",
+      "scryfall_id": "fa62f67a-d20f-4d99-b0a2-327634299c9f",
+      "collector_number": "159",
+      "multiverse_id": 673564,
+      "set": "DSK"
+    },
+    "tunnelsurveyor": {
+      "name": "Tunnel Surveyor",
+      "scryfall_id": "12ee2690-f464-4a38-81e1-6dd2053a3327",
+      "collector_number": "76",
+      "multiverse_id": 673481,
+      "set": "DSK"
+    },
+    "turninsideout": {
+      "name": "Turn Inside Out",
+      "scryfall_id": "57e2a92c-06d3-4cb5-883d-cba428a7e98e",
+      "collector_number": "160",
+      "multiverse_id": 673565,
+      "set": "DSK"
+    },
+    "twistreality": {
+      "name": "Twist Reality",
+      "scryfall_id": "644714dd-7a0b-4d4b-9a61-8f6e505b1d22",
+      "collector_number": "77",
+      "multiverse_id": 673482,
+      "set": "DSK"
+    },
+    "twitchingdoll": {
+      "name": "Twitching Doll",
+      "scryfall_id": "23684053-024e-4e15-8aec-de3d4bc7f126",
+      "collector_number": "417",
+      "multiverse_id": 673217,
+      "set": "DSK"
+    },
+    "tyvarthepummeler": {
+      "name": "Tyvar, the Pummeler",
+      "scryfall_id": "bd10920a-25b2-4191-b7f2-c43dbd1c5cc5",
+      "collector_number": "408",
+      "multiverse_id": 673221,
+      "set": "DSK"
+    },
+    "unabletoscream": {
+      "name": "Unable to Scream",
+      "scryfall_id": "7c59e0cd-10a8-4a32-9c0a-a2c6ef1ed9a6",
+      "collector_number": "78",
+      "multiverse_id": 673483,
+      "set": "DSK"
+    },
+    "undeadsprinter": {
+      "name": "Undead Sprinter",
+      "scryfall_id": "ef349a98-d4df-4eab-81e3-96a74aff5902",
+      "collector_number": "350",
+      "multiverse_id": 673112,
+      "set": "DSK"
+    },
+    "undertheskin": {
+      "name": "Under the Skin",
+      "scryfall_id": "9eb34e17-bc12-4a4e-a418-0dbd3e6665a8",
+      "collector_number": "323",
+      "multiverse_id": 675083,
+      "set": "DSK"
+    },
+    "underwatertunnelslimyaquarium": {
+      "name": "Underwater Tunnel // Slimy Aquarium",
+      "scryfall_id": "2dd69f2d-8c9c-41fc-93ea-48fc7a6d5272",
+      "collector_number": "79",
+      "multiverse_id": 673484,
+      "set": "DSK"
+    },
+    "unholyannexritualchamber": {
+      "name": "Unholy Annex // Ritual Chamber",
+      "scryfall_id": "681caa94-e95e-47f0-8305-eca0ed55cb5e",
+      "collector_number": "339",
+      "multiverse_id": 673159,
+      "set": "DSK"
+    },
+    "unidentifiedhovership": {
+      "name": "Unidentified Hovership",
+      "scryfall_id": "426b1aa9-e94f-4654-88c7-9cea52f1bc0a",
+      "collector_number": "305",
+      "multiverse_id": 675065,
+      "set": "DSK"
+    },
+    "unnervinggrasp": {
+      "name": "Unnerving Grasp",
+      "scryfall_id": "5602756d-76d2-4502-965f-36fc44596123",
+      "collector_number": "80",
+      "multiverse_id": 673485,
+      "set": "DSK"
+    },
+    "unsettlingtwins": {
+      "name": "Unsettling Twins",
+      "scryfall_id": "85da2e65-4e22-48b6-98ad-6969684d69e1",
+      "collector_number": "38",
+      "multiverse_id": 673443,
+      "set": "DSK"
+    },
+    "unstoppableslasher": {
+      "name": "Unstoppable Slasher",
+      "scryfall_id": "0a30a301-8e87-46e7-89aa-cd55b1a14420",
+      "collector_number": "312",
+      "multiverse_id": 675072,
+      "set": "DSK"
+    },
+    "untimelymalfunction": {
+      "name": "Untimely Malfunction",
+      "scryfall_id": "857bfb0e-17dc-4dda-bc37-3df927a9eae6",
+      "collector_number": "161",
+      "multiverse_id": 673566,
+      "set": "DSK"
+    },
+    "unwantedremake": {
+      "name": "Unwanted Remake",
+      "scryfall_id": "be897dda-8603-4264-a022-87870f635b40",
+      "collector_number": "306",
+      "multiverse_id": 675066,
+      "set": "DSK"
+    },
+    "unwillingvessel": {
+      "name": "Unwilling Vessel",
+      "scryfall_id": "5d1758ed-fe33-4ead-8c83-e54fabcb4cfe",
+      "collector_number": "81",
+      "multiverse_id": 673486,
+      "set": "DSK"
+    },
+    "valgavothsfaithful": {
+      "name": "Valgavoth's Faithful",
+      "scryfall_id": "25ef0c5b-4bcf-435f-b9bb-c8175c7b4257",
+      "collector_number": "412",
+      "multiverse_id": 675033,
+      "set": "DSK"
+    },
+    "valgavothslair": {
+      "name": "Valgavoth's Lair",
+      "scryfall_id": "7b5041f1-7cb8-4b60-94f6-436430bbece4",
+      "collector_number": "327",
+      "multiverse_id": 675087,
+      "set": "DSK"
+    },
+    "valgavothsonslaught": {
+      "name": "Valgavoth's Onslaught",
+      "scryfall_id": "3518fbe6-5640-4aca-a2fd-e83c82d2e2fd",
+      "collector_number": "324",
+      "multiverse_id": 675084,
+      "set": "DSK"
+    },
+    "valgavothterroreater": {
+      "name": "Valgavoth, Terror Eater",
+      "scryfall_id": "497ec48f-5e6a-4f57-86ca-3640b7235002",
+      "collector_number": "407",
+      "multiverse_id": 673220,
+      "set": "DSK"
+    },
+    "vanishfromsight": {
+      "name": "Vanish from Sight",
+      "scryfall_id": "5254988b-3113-42f7-b751-517ffb3b40f0",
+      "collector_number": "82",
+      "multiverse_id": 673487,
+      "set": "DSK"
+    },
+    "vengefulpossession": {
+      "name": "Vengeful Possession",
+      "scryfall_id": "d6918d50-a4c3-40d8-9480-343f14773a69",
+      "collector_number": "162",
+      "multiverse_id": 673567,
+      "set": "DSK"
+    },
+    "veteransurvivor": {
+      "name": "Veteran Survivor",
+      "scryfall_id": "39368ea2-f665-40b1-b042-c0182f7c6df0",
+      "collector_number": "40",
+      "multiverse_id": 673445,
+      "set": "DSK"
+    },
+    "viciousclown": {
+      "name": "Vicious Clown",
+      "scryfall_id": "12649f73-9d29-4eed-bc89-cc0d1a8969e3",
+      "collector_number": "163",
+      "multiverse_id": 673568,
+      "set": "DSK"
+    },
+    "victorvalgavothsseneschal": {
+      "name": "Victor, Valgavoth's Seneschal",
+      "scryfall_id": "1db4440e-0107-434d-9d8e-77a11bc0245a",
+      "collector_number": "364",
+      "multiverse_id": 673012,
+      "set": "DSK"
+    },
+    "vilemutilator": {
+      "name": "Vile Mutilator",
+      "scryfall_id": "383fe040-98bb-40f3-b809-48c429b83f47",
+      "collector_number": "122",
+      "multiverse_id": 673527,
+      "set": "DSK"
+    },
+    "violenturge": {
+      "name": "Violent Urge",
+      "scryfall_id": "a47c968b-1edd-45ac-a67c-311647e7e2fc",
+      "collector_number": "164",
+      "multiverse_id": 673569,
+      "set": "DSK"
+    },
+    "walkinclosetforgottencellar": {
+      "name": "Walk-In Closet // Forgotten Cellar",
+      "scryfall_id": "c2e9868b-da2a-474d-8560-8bc4eb672cd3",
+      "collector_number": "341",
+      "multiverse_id": 673161,
+      "set": "DSK"
+    },
+    "waltzofrage": {
+      "name": "Waltz of Rage",
+      "scryfall_id": "dcecce11-59e3-4c95-bff9-b02d004c917b",
+      "collector_number": "318",
+      "multiverse_id": 675078,
+      "set": "DSK"
+    },
+    "warywatchdog": {
+      "name": "Wary Watchdog",
+      "scryfall_id": "25ed97f2-b47e-49b7-9b1a-694c4bbeca3b",
+      "collector_number": "206",
+      "multiverse_id": 673611,
+      "set": "DSK"
+    },
+    "wickerfolkthresher": {
+      "name": "Wickerfolk Thresher",
+      "scryfall_id": "b3a74892-20cd-47f7-b514-a4c7f14cca8b",
+      "collector_number": "207",
+      "multiverse_id": 673612,
+      "set": "DSK"
+    },
+    "wildfirewickerfolk": {
+      "name": "Wildfire Wickerfolk",
+      "scryfall_id": "7c7fbc6e-09c6-4f0e-92e2-766aae950b3d",
+      "collector_number": "239",
+      "multiverse_id": 673644,
+      "set": "DSK"
+    },
+    "wintermisanthropicguide": {
+      "name": "Winter, Misanthropic Guide",
+      "scryfall_id": "7cf9f742-a662-46b3-84e1-1609177d0c8a",
+      "collector_number": "365",
+      "multiverse_id": 673013,
+      "set": "DSK"
+    },
+    "wintersintervention": {
+      "name": "Winter's Intervention",
+      "scryfall_id": "b33d38fa-bbcf-4bcc-93a8-adbfd9c93faa",
+      "collector_number": "123",
+      "multiverse_id": 673528,
+      "set": "DSK"
+    },
+    "witheringtorment": {
+      "name": "Withering Torment",
+      "scryfall_id": "87e03d07-c491-4ea1-a2f7-49c022005059",
+      "collector_number": "313",
+      "multiverse_id": 675073,
+      "set": "DSK"
+    },
+    "zimoneallquestioning": {
+      "name": "Zimone, All-Questioning",
+      "scryfall_id": "c8af5a2b-b87e-4ee2-88bd-f80670559875",
+      "collector_number": "366",
+      "multiverse_id": 673014,
+      "set": "DSK"
+    }
+  },
+  "lea": {
+    "airelemental": {
+      "name": "Air Elemental",
+      "scryfall_id": "69c3b2a3-0daa-4d42-832d-fcdfda6555ea",
+      "collector_number": "46",
+      "multiverse_id": 94,
+      "set": "LEA"
+    },
+    "ancestralrecall": {
+      "name": "Ancestral Recall",
+      "scryfall_id": "70e7ddf2-5604-41e7-bb9d-ddd03d3e9d0b",
+      "collector_number": "47",
+      "multiverse_id": 95,
+      "set": "LEA"
+    },
+    "animateartifact": {
+      "name": "Animate Artifact",
+      "scryfall_id": "664b46f5-0424-4f4e-9f26-6bd2cf5e0357",
+      "collector_number": "48",
+      "multiverse_id": 96,
+      "set": "LEA"
+    },
+    "animatedead": {
+      "name": "Animate Dead",
+      "scryfall_id": "8fd7861d-925f-4b4c-a4ab-60be6f43d50b",
+      "collector_number": "92",
+      "multiverse_id": 48,
+      "set": "LEA"
+    },
+    "animatewall": {
+      "name": "Animate Wall",
+      "scryfall_id": "d5c83259-9b90-47c2-b48e-c7d78519e792",
+      "collector_number": "1",
+      "multiverse_id": 232,
+      "set": "LEA"
+    },
+    "ankhofmishra": {
+      "name": "Ankh of Mishra",
+      "scryfall_id": "f594b7aa-d44e-47c4-989b-565f881e25f1",
+      "collector_number": "230",
+      "multiverse_id": 1,
+      "set": "LEA"
+    },
+    "armageddon": {
+      "name": "Armageddon",
+      "scryfall_id": "5b6ddce7-b9c5-431d-a0b0-46d4aa93cbcb",
+      "collector_number": "2",
+      "multiverse_id": 233,
+      "set": "LEA"
+    },
+    "aspectofwolf": {
+      "name": "Aspect of Wolf",
+      "scryfall_id": "fd9ac9e6-1395-4fbd-80e2-645f0d910c29",
+      "collector_number": "184",
+      "multiverse_id": 140,
+      "set": "LEA"
+    },
+    "badlands": {
+      "name": "Badlands",
+      "scryfall_id": "717f6d10-9144-4ade-9ac6-a481cc66b875",
+      "collector_number": "277",
+      "multiverse_id": 279,
+      "set": "LEA"
+    },
+    "badmoon": {
+      "name": "Bad Moon",
+      "scryfall_id": "43572906-ea74-4411-a549-5dc401591d2a",
+      "collector_number": "93",
+      "multiverse_id": 49,
+      "set": "LEA"
+    },
+    "balance": {
+      "name": "Balance",
+      "scryfall_id": "6f9ea46a-411f-40ce-a873-a905180093f4",
+      "collector_number": "3",
+      "multiverse_id": 234,
+      "set": "LEA"
+    },
+    "basaltmonolith": {
+      "name": "Basalt Monolith",
+      "scryfall_id": "66a74c89-6f86-4ec8-af17-391cd5026054",
+      "collector_number": "231",
+      "multiverse_id": 2,
+      "set": "LEA"
+    },
+    "bayou": {
+      "name": "Bayou",
+      "scryfall_id": "412ceddd-2b9a-4551-a6bf-ae2830a2010a",
+      "collector_number": "278",
+      "multiverse_id": 280,
+      "set": "LEA"
+    },
+    "benalishhero": {
+      "name": "Benalish Hero",
+      "scryfall_id": "11600105-56c6-4073-a4a6-8469030b39c9",
+      "collector_number": "4",
+      "multiverse_id": 235,
+      "set": "LEA"
+    },
+    "berserk": {
+      "name": "Berserk",
+      "scryfall_id": "e173c8ce-2352-405e-ad00-e3bb94ced1ad",
+      "collector_number": "185",
+      "multiverse_id": 141,
+      "set": "LEA"
+    },
+    "birdsofparadise": {
+      "name": "Birds of Paradise",
+      "scryfall_id": "55fe6449-1f23-43dc-adee-d144cd505b5c",
+      "collector_number": "186",
+      "multiverse_id": 142,
+      "set": "LEA"
+    },
+    "blackknight": {
+      "name": "Black Knight",
+      "scryfall_id": "c1662949-0d69-49a3-8c69-daf10717ed4e",
+      "collector_number": "94",
+      "multiverse_id": 50,
+      "set": "LEA"
+    },
+    "blacklotus": {
+      "name": "Black Lotus",
+      "scryfall_id": "b0faa7f2-b547-42c4-a810-839da50dadfe",
+      "collector_number": "232",
+      "multiverse_id": 3,
+      "set": "LEA"
+    },
+    "blackvise": {
+      "name": "Black Vise",
+      "scryfall_id": "76ac72f8-5b1e-4d67-a796-ef69cde27424",
+      "collector_number": "233",
+      "multiverse_id": 4,
+      "set": "LEA"
+    },
+    "blackward": {
+      "name": "Black Ward",
+      "scryfall_id": "15967a39-303f-457d-bcde-51837c8d63e1",
+      "collector_number": "5",
+      "multiverse_id": 236,
+      "set": "LEA"
+    },
+    "blazeofglory": {
+      "name": "Blaze of Glory",
+      "scryfall_id": "98fba951-c5bb-497c-9292-ce1b2a1e1247",
+      "collector_number": "6",
+      "multiverse_id": 237,
+      "set": "LEA"
+    },
+    "blessing": {
+      "name": "Blessing",
+      "scryfall_id": "f131fd27-18da-47ca-b59f-135bcac83abd",
+      "collector_number": "7",
+      "multiverse_id": 238,
+      "set": "LEA"
+    },
+    "blueelementalblast": {
+      "name": "Blue Elemental Blast",
+      "scryfall_id": "20d666ef-39bf-4fbf-8201-5f1056539da2",
+      "collector_number": "49",
+      "multiverse_id": 97,
+      "set": "LEA"
+    },
+    "blueward": {
+      "name": "Blue Ward",
+      "scryfall_id": "93f9f0f2-e1cc-4740-888c-1336c6de0a27",
+      "collector_number": "8",
+      "multiverse_id": 239,
+      "set": "LEA"
+    },
+    "bogwraith": {
+      "name": "Bog Wraith",
+      "scryfall_id": "6701874e-986e-4b81-9268-90b6171e6187",
+      "collector_number": "95",
+      "multiverse_id": 51,
+      "set": "LEA"
+    },
+    "braingeyser": {
+      "name": "Braingeyser",
+      "scryfall_id": "62b19a12-6914-430e-81ce-dcfca47884df",
+      "collector_number": "50",
+      "multiverse_id": 98,
+      "set": "LEA"
+    },
+    "burrowing": {
+      "name": "Burrowing",
+      "scryfall_id": "a14c05e4-8df3-450b-8a98-5028e73b14c1",
+      "collector_number": "138",
+      "multiverse_id": 186,
+      "set": "LEA"
+    },
+    "camouflage": {
+      "name": "Camouflage",
+      "scryfall_id": "3838c2a3-7fab-4976-9c1b-2891aee24e52",
+      "collector_number": "187",
+      "multiverse_id": 143,
+      "set": "LEA"
+    },
+    "castle": {
+      "name": "Castle",
+      "scryfall_id": "b0da8d56-3178-44c2-9344-95d2346d326f",
+      "collector_number": "9",
+      "multiverse_id": 240,
+      "set": "LEA"
+    },
+    "celestialprism": {
+      "name": "Celestial Prism",
+      "scryfall_id": "a47417cb-1ea7-4f65-ba06-e27a99373114",
+      "collector_number": "234",
+      "multiverse_id": 5,
+      "set": "LEA"
+    },
+    "channel": {
+      "name": "Channel",
+      "scryfall_id": "c1862c47-71cc-45a3-8805-a5ddc62e55ea",
+      "collector_number": "188",
+      "multiverse_id": 144,
+      "set": "LEA"
+    },
+    "chaoslace": {
+      "name": "Chaoslace",
+      "scryfall_id": "72ea2048-57bc-43d5-8987-33ca727f1a97",
+      "collector_number": "139",
+      "multiverse_id": 187,
+      "set": "LEA"
+    },
+    "chaosorb": {
+      "name": "Chaos Orb",
+      "scryfall_id": "92274971-7c4a-4326-b0fe-75e2d124f718",
+      "collector_number": "235",
+      "multiverse_id": 6,
+      "set": "LEA"
+    },
+    "circleofprotectionblue": {
+      "name": "Circle of Protection: Blue",
+      "scryfall_id": "848b1a7f-e8ba-40b5-92b7-af1e963a0319",
+      "collector_number": "10",
+      "multiverse_id": 241,
+      "set": "LEA"
+    },
+    "circleofprotectiongreen": {
+      "name": "Circle of Protection: Green",
+      "scryfall_id": "1ae32d20-b438-4f43-b603-e8f706ecfb03",
+      "collector_number": "11",
+      "multiverse_id": 242,
+      "set": "LEA"
+    },
+    "circleofprotectionred": {
+      "name": "Circle of Protection: Red",
+      "scryfall_id": "b3dd94c5-42f6-4148-be6e-2a3a4226cc0e",
+      "collector_number": "12",
+      "multiverse_id": 243,
+      "set": "LEA"
+    },
+    "circleofprotectionwhite": {
+      "name": "Circle of Protection: White",
+      "scryfall_id": "92df19c9-e127-42d9-8dd2-7fa5a7095428",
+      "collector_number": "13",
+      "multiverse_id": 244,
+      "set": "LEA"
+    },
+    "clockworkbeast": {
+      "name": "Clockwork Beast",
+      "scryfall_id": "27f916a2-0ace-44b5-99dc-72979af34db9",
+      "collector_number": "236",
+      "multiverse_id": 7,
+      "set": "LEA"
+    },
+    "clone": {
+      "name": "Clone",
+      "scryfall_id": "f00d33dd-4eb2-4446-9813-1923d8e2d2f3",
+      "collector_number": "51",
+      "multiverse_id": 99,
+      "set": "LEA"
+    },
+    "cockatrice": {
+      "name": "Cockatrice",
+      "scryfall_id": "9cd91814-6177-4a3d-a1c1-a3be7d7c7957",
+      "collector_number": "189",
+      "multiverse_id": 145,
+      "set": "LEA"
+    },
+    "consecrateland": {
+      "name": "Consecrate Land",
+      "scryfall_id": "d2379f78-c03f-447f-b3c9-10a918d556e9",
+      "collector_number": "14",
+      "multiverse_id": 245,
+      "set": "LEA"
+    },
+    "conservator": {
+      "name": "Conservator",
+      "scryfall_id": "c7824e2a-4eff-4f72-9216-0db30a4f4252",
+      "collector_number": "237",
+      "multiverse_id": 8,
+      "set": "LEA"
+    },
+    "contractfrombelow": {
+      "name": "Contract from Below",
+      "scryfall_id": "9853b0ce-4763-4877-9741-f9145a3659c6",
+      "collector_number": "96",
+      "multiverse_id": 52,
+      "set": "LEA"
+    },
+    "controlmagic": {
+      "name": "Control Magic",
+      "scryfall_id": "7b52f459-c703-4a0b-9114-ff69eec61287",
+      "collector_number": "52",
+      "multiverse_id": 100,
+      "set": "LEA"
+    },
+    "conversion": {
+      "name": "Conversion",
+      "scryfall_id": "13186bc9-8d9c-433b-ba15-121ef94dd68a",
+      "collector_number": "15",
+      "multiverse_id": 246,
+      "set": "LEA"
+    },
+    "coppertablet": {
+      "name": "Copper Tablet",
+      "scryfall_id": "30935e4a-013e-4c46-ad05-304df8e5dfa4",
+      "collector_number": "238",
+      "multiverse_id": 9,
+      "set": "LEA"
+    },
+    "copyartifact": {
+      "name": "Copy Artifact",
+      "scryfall_id": "fd5ed955-1193-4e6a-a3e2-f54c1f9bf063",
+      "collector_number": "53",
+      "multiverse_id": 101,
+      "set": "LEA"
+    },
+    "counterspell": {
+      "name": "Counterspell",
+      "scryfall_id": "0df55e3f-14de-46ef-b6b1-616618724d9e",
+      "collector_number": "54",
+      "multiverse_id": 102,
+      "set": "LEA"
+    },
+    "crawwurm": {
+      "name": "Craw Wurm",
+      "scryfall_id": "bfed1a95-bd67-4e16-a781-81866028af2f",
+      "collector_number": "190",
+      "multiverse_id": 146,
+      "set": "LEA"
+    },
+    "creaturebond": {
+      "name": "Creature Bond",
+      "scryfall_id": "ee4bd7d1-77e5-46e5-a594-c24469e88c4c",
+      "collector_number": "55",
+      "multiverse_id": 103,
+      "set": "LEA"
+    },
+    "crusade": {
+      "name": "Crusade",
+      "scryfall_id": "057986c7-20c0-4157-b4df-beae4ef5c66d",
+      "collector_number": "16",
+      "multiverse_id": 247,
+      "set": "LEA"
+    },
+    "crystalrod": {
+      "name": "Crystal Rod",
+      "scryfall_id": "76693233-7961-4b7e-80f2-ed90e494c4aa",
+      "collector_number": "239",
+      "multiverse_id": 10,
+      "set": "LEA"
+    },
+    "cursedland": {
+      "name": "Cursed Land",
+      "scryfall_id": "cf5f3c61-1e54-4eea-bf82-311cfa988e6a",
+      "collector_number": "97",
+      "multiverse_id": 53,
+      "set": "LEA"
+    },
+    "cyclopeantomb": {
+      "name": "Cyclopean Tomb",
+      "scryfall_id": "894c5cf2-8ae2-427a-bcbc-67df0bdfee9d",
+      "collector_number": "240",
+      "multiverse_id": 11,
+      "set": "LEA"
+    },
+    "darkpact": {
+      "name": "Darkpact",
+      "scryfall_id": "e78db688-93a2-47f5-9aa5-9158a72cd973",
+      "collector_number": "99",
+      "multiverse_id": 55,
+      "set": "LEA"
+    },
+    "darkritual": {
+      "name": "Dark Ritual",
+      "scryfall_id": "ebb6664d-23ca-456e-9916-afcd6f26aa7f",
+      "collector_number": "98",
+      "multiverse_id": 54,
+      "set": "LEA"
+    },
+    "deathgrip": {
+      "name": "Deathgrip",
+      "scryfall_id": "2371c126-f19a-472a-ba5f-3b1366274ea0",
+      "collector_number": "100",
+      "multiverse_id": 56,
+      "set": "LEA"
+    },
+    "deathlace": {
+      "name": "Deathlace",
+      "scryfall_id": "6ff1cefc-62cb-4525-b0c5-2b09603b4314",
+      "collector_number": "101",
+      "multiverse_id": 57,
+      "set": "LEA"
+    },
+    "deathward": {
+      "name": "Death Ward",
+      "scryfall_id": "fa5466cc-aa57-4a7f-8b21-d92b2fe02e13",
+      "collector_number": "17",
+      "multiverse_id": 248,
+      "set": "LEA"
+    },
+    "demonicattorney": {
+      "name": "Demonic Attorney",
+      "scryfall_id": "fd891fc6-d9d6-494e-ae65-8bea8f44b575",
+      "collector_number": "102",
+      "multiverse_id": 58,
+      "set": "LEA"
+    },
+    "demonichordes": {
+      "name": "Demonic Hordes",
+      "scryfall_id": "6c9bb8b1-fb79-4b99-ba09-c6e6c860de50",
+      "collector_number": "103",
+      "multiverse_id": 59,
+      "set": "LEA"
+    },
+    "demonictutor": {
+      "name": "Demonic Tutor",
+      "scryfall_id": "711d4d54-5520-4de8-9b93-79902ed8e562",
+      "collector_number": "104",
+      "multiverse_id": 60,
+      "set": "LEA"
+    },
+    "dingusegg": {
+      "name": "Dingus Egg",
+      "scryfall_id": "65eb6cda-e512-40a8-9c1f-335b713409ff",
+      "collector_number": "241",
+      "multiverse_id": 12,
+      "set": "LEA"
+    },
+    "disenchant": {
+      "name": "Disenchant",
+      "scryfall_id": "2722d7e2-61c6-4934-9c21-875ee78fd06c",
+      "collector_number": "18",
+      "multiverse_id": 249,
+      "set": "LEA"
+    },
+    "disintegrate": {
+      "name": "Disintegrate",
+      "scryfall_id": "8712c49e-f171-4669-bed9-87575a37af11",
+      "collector_number": "140",
+      "multiverse_id": 188,
+      "set": "LEA"
+    },
+    "disruptingscepter": {
+      "name": "Disrupting Scepter",
+      "scryfall_id": "ca571ee8-07a2-43b8-9acf-89cbfd3cf7c9",
+      "collector_number": "242",
+      "multiverse_id": 13,
+      "set": "LEA"
+    },
+    "dragonwhelp": {
+      "name": "Dragon Whelp",
+      "scryfall_id": "6bbf1eab-bc32-4835-b566-8634b1fe81b0",
+      "collector_number": "141",
+      "multiverse_id": 189,
+      "set": "LEA"
+    },
+    "drainlife": {
+      "name": "Drain Life",
+      "scryfall_id": "5d077a49-73d4-4958-b42a-31b814e110e8",
+      "collector_number": "105",
+      "multiverse_id": 61,
+      "set": "LEA"
+    },
+    "drainpower": {
+      "name": "Drain Power",
+      "scryfall_id": "ea3830c5-cc66-453e-9e53-0636e00ee0ee",
+      "collector_number": "56",
+      "multiverse_id": 104,
+      "set": "LEA"
+    },
+    "drudgeskeletons": {
+      "name": "Drudge Skeletons",
+      "scryfall_id": "23614289-0d73-4747-a849-5cb67cc97d6a",
+      "collector_number": "106",
+      "multiverse_id": 62,
+      "set": "LEA"
+    },
+    "dwarvendemolitionteam": {
+      "name": "Dwarven Demolition Team",
+      "scryfall_id": "03482c9c-1f25-4d73-9243-17462ea37ac4",
+      "collector_number": "142",
+      "multiverse_id": 190,
+      "set": "LEA"
+    },
+    "dwarvenwarriors": {
+      "name": "Dwarven Warriors",
+      "scryfall_id": "2d4d87a3-5f8b-4152-9a8b-538ab49d62e8",
+      "collector_number": "143",
+      "multiverse_id": 191,
+      "set": "LEA"
+    },
+    "earthbind": {
+      "name": "Earthbind",
+      "scryfall_id": "a6d492b7-b0b3-420e-8d00-6dacb11de77e",
+      "collector_number": "145",
+      "multiverse_id": 193,
+      "set": "LEA"
+    },
+    "earthelemental": {
+      "name": "Earth Elemental",
+      "scryfall_id": "b24b5864-44c0-4bc8-8705-9504f83b2c03",
+      "collector_number": "144",
+      "multiverse_id": 192,
+      "set": "LEA"
+    },
+    "earthquake": {
+      "name": "Earthquake",
+      "scryfall_id": "e68ac362-6cdc-48a6-bdd3-4f8ea32add64",
+      "collector_number": "146",
+      "multiverse_id": 194,
+      "set": "LEA"
+    },
+    "elvisharchers": {
+      "name": "Elvish Archers",
+      "scryfall_id": "1cb9d405-f2b5-4e10-a405-feafd2a87d90",
+      "collector_number": "191",
+      "multiverse_id": 147,
+      "set": "LEA"
+    },
+    "evilpresence": {
+      "name": "Evil Presence",
+      "scryfall_id": "0551d66e-8cd4-48f0-aa17-15f26be9d85f",
+      "collector_number": "107",
+      "multiverse_id": 63,
+      "set": "LEA"
+    },
+    "falseorders": {
+      "name": "False Orders",
+      "scryfall_id": "7eb71ac4-796d-4011-9002-1129bc09c284",
+      "collector_number": "147",
+      "multiverse_id": 195,
+      "set": "LEA"
+    },
+    "farmstead": {
+      "name": "Farmstead",
+      "scryfall_id": "3455b006-9ea5-4aef-8ad2-d0701eb0cacf",
+      "collector_number": "19",
+      "multiverse_id": 250,
+      "set": "LEA"
+    },
+    "fastbond": {
+      "name": "Fastbond",
+      "scryfall_id": "a575a9af-e1de-4a1d-91d8-440585377e4f",
+      "collector_number": "192",
+      "multiverse_id": 148,
+      "set": "LEA"
+    },
+    "fear": {
+      "name": "Fear",
+      "scryfall_id": "0cd927be-e63f-4371-a1d8-7a0489cb187e",
+      "collector_number": "108",
+      "multiverse_id": 64,
+      "set": "LEA"
+    },
+    "feedback": {
+      "name": "Feedback",
+      "scryfall_id": "0eb8f591-d763-49bf-8ef9-86265aaa72f7",
+      "collector_number": "57",
+      "multiverse_id": 105,
+      "set": "LEA"
+    },
+    "fireball": {
+      "name": "Fireball",
+      "scryfall_id": "b7623c00-144b-4a8f-9c6c-f5e9e4f65ece",
+      "collector_number": "149",
+      "multiverse_id": 197,
+      "set": "LEA"
+    },
+    "firebreathing": {
+      "name": "Firebreathing",
+      "scryfall_id": "3eb27381-505d-4e47-bf66-9e7ba91a5075",
+      "collector_number": "150",
+      "multiverse_id": 198,
+      "set": "LEA"
+    },
+    "fireelemental": {
+      "name": "Fire Elemental",
+      "scryfall_id": "da237992-2919-4e37-8f56-2164095f59b5",
+      "collector_number": "148",
+      "multiverse_id": 196,
+      "set": "LEA"
+    },
+    "flashfires": {
+      "name": "Flashfires",
+      "scryfall_id": "ee8a05a4-0ce3-4abe-bb60-08af53cf08e5",
+      "collector_number": "151",
+      "multiverse_id": 199,
+      "set": "LEA"
+    },
+    "flight": {
+      "name": "Flight",
+      "scryfall_id": "67c7784b-6b79-4268-a714-895c82809aff",
+      "collector_number": "58",
+      "multiverse_id": 106,
+      "set": "LEA"
+    },
+    "fog": {
+      "name": "Fog",
+      "scryfall_id": "cfba606d-bb55-43ba-aa0c-299649958788",
+      "collector_number": "193",
+      "multiverse_id": 149,
+      "set": "LEA"
+    },
+    "forcefield": {
+      "name": "Forcefield",
+      "scryfall_id": "3f2004c1-8efe-407f-bf48-27b807422eea",
+      "collector_number": "243",
+      "multiverse_id": 14,
+      "set": "LEA"
+    },
+    "forceofnature": {
+      "name": "Force of Nature",
+      "scryfall_id": "21551cb6-3a53-42dd-9bbd-4bc56304d6d3",
+      "collector_number": "194",
+      "multiverse_id": 150,
+      "set": "LEA"
+    },
+    "forest": {
+      "name": "Forest",
+      "scryfall_id": "f20c89d9-71c9-45f5-a9cb-6e253b0a7cca",
+      "collector_number": "295",
+      "multiverse_id": 288,
+      "set": "LEA"
+    },
+    "fork": {
+      "name": "Fork",
+      "scryfall_id": "e6b43916-fe2d-417a-a550-d7c795023297",
+      "collector_number": "152",
+      "multiverse_id": 200,
+      "set": "LEA"
+    },
+    "frozenshade": {
+      "name": "Frozen Shade",
+      "scryfall_id": "d0bd76c8-4cff-4c15-9686-7a299b589814",
+      "collector_number": "109",
+      "multiverse_id": 65,
+      "set": "LEA"
+    },
+    "fungusaur": {
+      "name": "Fungusaur",
+      "scryfall_id": "5ad89f0d-b09b-40a0-84d6-3ee60dec7e23",
+      "collector_number": "195",
+      "multiverse_id": 151,
+      "set": "LEA"
+    },
+    "gaeasliege": {
+      "name": "Gaea's Liege",
+      "scryfall_id": "e2b15221-c8b0-4861-9f8b-8a65834ad499",
+      "collector_number": "196",
+      "multiverse_id": 152,
+      "set": "LEA"
+    },
+    "gauntletofmight": {
+      "name": "Gauntlet of Might",
+      "scryfall_id": "da248001-ed75-4b68-9532-37d3cd5afc4c",
+      "collector_number": "244",
+      "multiverse_id": 15,
+      "set": "LEA"
+    },
+    "giantgrowth": {
+      "name": "Giant Growth",
+      "scryfall_id": "367dbefe-3366-408e-9fcf-7dc00f8cc201",
+      "collector_number": "197",
+      "multiverse_id": 153,
+      "set": "LEA"
+    },
+    "giantspider": {
+      "name": "Giant Spider",
+      "scryfall_id": "77636b4c-faea-4bf5-b88c-dd5bb88dc930",
+      "collector_number": "198",
+      "multiverse_id": 154,
+      "set": "LEA"
+    },
+    "glassesofurza": {
+      "name": "Glasses of Urza",
+      "scryfall_id": "cafc2350-5d64-4379-9198-79a114654d45",
+      "collector_number": "245",
+      "multiverse_id": 16,
+      "set": "LEA"
+    },
+    "gloom": {
+      "name": "Gloom",
+      "scryfall_id": "a8d10bc7-daeb-4c0d-9e4a-8eae8d11699f",
+      "collector_number": "110",
+      "multiverse_id": 66,
+      "set": "LEA"
+    },
+    "goblinballoonbrigade": {
+      "name": "Goblin Balloon Brigade",
+      "scryfall_id": "5129b422-7a35-4bc5-b14b-c814012a0d8f",
+      "collector_number": "153",
+      "multiverse_id": 201,
+      "set": "LEA"
+    },
+    "goblinking": {
+      "name": "Goblin King",
+      "scryfall_id": "5873672d-37ea-4c0f-97f3-12b74fde112d",
+      "collector_number": "154",
+      "multiverse_id": 202,
+      "set": "LEA"
+    },
+    "granitegargoyle": {
+      "name": "Granite Gargoyle",
+      "scryfall_id": "f15bf2b2-6848-4fbd-b89a-8d8da8ae1cdc",
+      "collector_number": "155",
+      "multiverse_id": 203,
+      "set": "LEA"
+    },
+    "grayogre": {
+      "name": "Gray Ogre",
+      "scryfall_id": "73ae5276-b607-4f23-a9d2-e8cc7b8e3693",
+      "collector_number": "156",
+      "multiverse_id": 204,
+      "set": "LEA"
+    },
+    "greenward": {
+      "name": "Green Ward",
+      "scryfall_id": "1f6118b2-fe01-425a-a2ed-6d7c42286c8e",
+      "collector_number": "20",
+      "multiverse_id": 251,
+      "set": "LEA"
+    },
+    "grizzlybears": {
+      "name": "Grizzly Bears",
+      "scryfall_id": "ce2d603a-3231-4a8c-bf39-1617586ea870",
+      "collector_number": "199",
+      "multiverse_id": 155,
+      "set": "LEA"
+    },
+    "guardianangel": {
+      "name": "Guardian Angel",
+      "scryfall_id": "0f84d676-5327-454c-a033-b4498a9d28e2",
+      "collector_number": "21",
+      "multiverse_id": 252,
+      "set": "LEA"
+    },
+    "healingsalve": {
+      "name": "Healing Salve",
+      "scryfall_id": "e28de37e-84d5-4dc7-b36c-e14da5924729",
+      "collector_number": "22",
+      "multiverse_id": 253,
+      "set": "LEA"
+    },
+    "helmofchatzuk": {
+      "name": "Helm of Chatzuk",
+      "scryfall_id": "3792c6ef-c4e6-4923-9a51-7d28fbc5c393",
+      "collector_number": "246",
+      "multiverse_id": 17,
+      "set": "LEA"
+    },
+    "hillgiant": {
+      "name": "Hill Giant",
+      "scryfall_id": "0ddb98e8-13fe-4786-83f7-b72c56db135a",
+      "collector_number": "157",
+      "multiverse_id": 205,
+      "set": "LEA"
+    },
+    "holyarmor": {
+      "name": "Holy Armor",
+      "scryfall_id": "b01041d2-687e-4972-81c8-16690809275b",
+      "collector_number": "23",
+      "multiverse_id": 254,
+      "set": "LEA"
+    },
+    "holystrength": {
+      "name": "Holy Strength",
+      "scryfall_id": "e945a4cd-0eb1-4f54-898d-169ce2748a03",
+      "collector_number": "24",
+      "multiverse_id": 255,
+      "set": "LEA"
+    },
+    "howlfrombeyond": {
+      "name": "Howl from Beyond",
+      "scryfall_id": "67ec17e1-174b-4d07-a27f-91a333c4b2fb",
+      "collector_number": "111",
+      "multiverse_id": 67,
+      "set": "LEA"
+    },
+    "howlingmine": {
+      "name": "Howling Mine",
+      "scryfall_id": "51f8f6e1-a451-4262-90d3-5107caf54175",
+      "collector_number": "247",
+      "multiverse_id": 18,
+      "set": "LEA"
+    },
+    "hurloonminotaur": {
+      "name": "Hurloon Minotaur",
+      "scryfall_id": "78a9088f-8755-47cb-aa93-51d992ccab90",
+      "collector_number": "158",
+      "multiverse_id": 206,
+      "set": "LEA"
+    },
+    "hurricane": {
+      "name": "Hurricane",
+      "scryfall_id": "52f5a19f-16e4-4d35-89e1-969ac8202f88",
+      "collector_number": "200",
+      "multiverse_id": 156,
+      "set": "LEA"
+    },
+    "hypnoticspecter": {
+      "name": "Hypnotic Specter",
+      "scryfall_id": "b43b900f-2d9b-442b-9699-058483604ec9",
+      "collector_number": "112",
+      "multiverse_id": 68,
+      "set": "LEA"
+    },
+    "icestorm": {
+      "name": "Ice Storm",
+      "scryfall_id": "9914836e-2fa6-4390-94b2-431427848a54",
+      "collector_number": "201",
+      "multiverse_id": 157,
+      "set": "LEA"
+    },
+    "icymanipulator": {
+      "name": "Icy Manipulator",
+      "scryfall_id": "29dc1596-a2e7-4d60-9f99-89babaef8a06",
+      "collector_number": "248",
+      "multiverse_id": 19,
+      "set": "LEA"
+    },
+    "illusionarymask": {
+      "name": "Illusionary Mask",
+      "scryfall_id": "62ef2f37-b8ad-47ad-89ca-d6abcb7ff21b",
+      "collector_number": "249",
+      "multiverse_id": 20,
+      "set": "LEA"
+    },
+    "instillenergy": {
+      "name": "Instill Energy",
+      "scryfall_id": "5bd38716-874c-4e3c-a315-837839a6258c",
+      "collector_number": "202",
+      "multiverse_id": 158,
+      "set": "LEA"
+    },
+    "invisibility": {
+      "name": "Invisibility",
+      "scryfall_id": "1858ac51-e6a7-48d7-8759-166070ca13d8",
+      "collector_number": "59",
+      "multiverse_id": 107,
+      "set": "LEA"
+    },
+    "ironclaworcs": {
+      "name": "Ironclaw Orcs",
+      "scryfall_id": "d56421a8-34ae-4033-943f-c59a7bf2b6f9",
+      "collector_number": "159",
+      "multiverse_id": 207,
+      "set": "LEA"
+    },
+    "ironroottreefolk": {
+      "name": "Ironroot Treefolk",
+      "scryfall_id": "b93c5869-7777-44bb-967a-e9439b25ced4",
+      "collector_number": "203",
+      "multiverse_id": 159,
+      "set": "LEA"
+    },
+    "ironstar": {
+      "name": "Iron Star",
+      "scryfall_id": "5786de12-cade-43c2-a6b0-0c5b294b9d0e",
+      "collector_number": "250",
+      "multiverse_id": 21,
+      "set": "LEA"
+    },
+    "island": {
+      "name": "Island",
+      "scryfall_id": "bc6ea08d-7991-4a57-a1e3-abd508426970",
+      "collector_number": "289",
+      "multiverse_id": 292,
+      "set": "LEA"
+    },
+    "islandsanctuary": {
+      "name": "Island Sanctuary",
+      "scryfall_id": "c15e8a42-89de-42bc-8d5f-33426d207c3a",
+      "collector_number": "25",
+      "multiverse_id": 256,
+      "set": "LEA"
+    },
+    "ivorycup": {
+      "name": "Ivory Cup",
+      "scryfall_id": "9964d8d8-dc97-4e5f-9f52-173f7e2c37fd",
+      "collector_number": "251",
+      "multiverse_id": 22,
+      "set": "LEA"
+    },
+    "jademonolith": {
+      "name": "Jade Monolith",
+      "scryfall_id": "4a77e0f1-449d-4a7d-9fa0-ba7598f7a73a",
+      "collector_number": "252",
+      "multiverse_id": 23,
+      "set": "LEA"
+    },
+    "jadestatue": {
+      "name": "Jade Statue",
+      "scryfall_id": "8d82d94b-ceef-4533-a4f2-b6442a61b839",
+      "collector_number": "253",
+      "multiverse_id": 24,
+      "set": "LEA"
+    },
+    "jayemdaetome": {
+      "name": "Jayemdae Tome",
+      "scryfall_id": "cac8c421-5b92-481d-b2de-560c0231ab58",
+      "collector_number": "254",
+      "multiverse_id": 25,
+      "set": "LEA"
+    },
+    "juggernaut": {
+      "name": "Juggernaut",
+      "scryfall_id": "dcd6a291-5282-4f49-8203-d9b416083c48",
+      "collector_number": "255",
+      "multiverse_id": 26,
+      "set": "LEA"
+    },
+    "jump": {
+      "name": "Jump",
+      "scryfall_id": "cb3f4b11-ad1b-48e2-a500-787d351b0174",
+      "collector_number": "60",
+      "multiverse_id": 108,
+      "set": "LEA"
+    },
+    "karma": {
+      "name": "Karma",
+      "scryfall_id": "6f30ad61-fcb7-4d55-ba86-94de1bf545e4",
+      "collector_number": "26",
+      "multiverse_id": 257,
+      "set": "LEA"
+    },
+    "keldonwarlord": {
+      "name": "Keldon Warlord",
+      "scryfall_id": "8fe3fd83-969c-4add-888f-86f4306b067c",
+      "collector_number": "160",
+      "multiverse_id": 208,
+      "set": "LEA"
+    },
+    "kormusbell": {
+      "name": "Kormus Bell",
+      "scryfall_id": "3f4ef7a1-148d-44ac-89ed-0ef379cca0c6",
+      "collector_number": "256",
+      "multiverse_id": 27,
+      "set": "LEA"
+    },
+    "kudzu": {
+      "name": "Kudzu",
+      "scryfall_id": "b2b72dcd-9ea1-4729-baae-ecd262fdff67",
+      "collector_number": "204",
+      "multiverse_id": 160,
+      "set": "LEA"
+    },
+    "lance": {
+      "name": "Lance",
+      "scryfall_id": "ddb633f5-cc4d-4157-8217-def90cb15e24",
+      "collector_number": "27",
+      "multiverse_id": 258,
+      "set": "LEA"
+    },
+    "leydruid": {
+      "name": "Ley Druid",
+      "scryfall_id": "f9232508-d363-4ef3-987a-741f6bff331f",
+      "collector_number": "205",
+      "multiverse_id": 161,
+      "set": "LEA"
+    },
+    "libraryofleng": {
+      "name": "Library of Leng",
+      "scryfall_id": "2340edcb-8cd5-4ccd-99e2-b9a29f72c495",
+      "collector_number": "257",
+      "multiverse_id": 28,
+      "set": "LEA"
+    },
+    "lich": {
+      "name": "Lich",
+      "scryfall_id": "4250caec-0e37-41be-9ec4-8938deb5f0d0",
+      "collector_number": "113",
+      "multiverse_id": 69,
+      "set": "LEA"
+    },
+    "lifeforce": {
+      "name": "Lifeforce",
+      "scryfall_id": "e292577e-6232-44fa-a9c2-cc09949c6ed3",
+      "collector_number": "206",
+      "multiverse_id": 162,
+      "set": "LEA"
+    },
+    "lifelace": {
+      "name": "Lifelace",
+      "scryfall_id": "38cb601b-a35c-412e-b386-e77dad3daa54",
+      "collector_number": "207",
+      "multiverse_id": 163,
+      "set": "LEA"
+    },
+    "lifetap": {
+      "name": "Lifetap",
+      "scryfall_id": "11add837-7ee4-4104-b031-c161bce459ae",
+      "collector_number": "61",
+      "multiverse_id": 109,
+      "set": "LEA"
+    },
+    "lightningbolt": {
+      "name": "Lightning Bolt",
+      "scryfall_id": "d573ef03-4730-45aa-93dd-e45ac1dbaf4a",
+      "collector_number": "161",
+      "multiverse_id": 209,
+      "set": "LEA"
+    },
+    "livingartifact": {
+      "name": "Living Artifact",
+      "scryfall_id": "c9e753a2-a7d0-4d37-ae65-b5a1b5039a6e",
+      "collector_number": "208",
+      "multiverse_id": 164,
+      "set": "LEA"
+    },
+    "livinglands": {
+      "name": "Living Lands",
+      "scryfall_id": "80be0580-7948-4d8e-8c0f-5e2797ac411b",
+      "collector_number": "209",
+      "multiverse_id": 165,
+      "set": "LEA"
+    },
+    "livingwall": {
+      "name": "Living Wall",
+      "scryfall_id": "4a98ada6-923a-44a5-bdef-ea6a160b481e",
+      "collector_number": "258",
+      "multiverse_id": 29,
+      "set": "LEA"
+    },
+    "llanowarelves": {
+      "name": "Llanowar Elves",
+      "scryfall_id": "d4f1cc9e-4f99-4c26-ac1b-8ef069fa8ceb",
+      "collector_number": "210",
+      "multiverse_id": 166,
+      "set": "LEA"
+    },
+    "lordofatlantis": {
+      "name": "Lord of Atlantis",
+      "scryfall_id": "210c4a90-fc7a-4c76-aeaa-20a005e45386",
+      "collector_number": "62",
+      "multiverse_id": 110,
+      "set": "LEA"
+    },
+    "lordofthepit": {
+      "name": "Lord of the Pit",
+      "scryfall_id": "2926777a-4f6e-4965-ba83-22cf7df02602",
+      "collector_number": "114",
+      "multiverse_id": 70,
+      "set": "LEA"
+    },
+    "lure": {
+      "name": "Lure",
+      "scryfall_id": "2a87b26e-0431-42e9-b44f-94ba8546111a",
+      "collector_number": "211",
+      "multiverse_id": 167,
+      "set": "LEA"
+    },
+    "magicalhack": {
+      "name": "Magical Hack",
+      "scryfall_id": "2bd4202c-0477-45aa-82fd-83c85d6d4bef",
+      "collector_number": "63",
+      "multiverse_id": 111,
+      "set": "LEA"
+    },
+    "mahamotidjinn": {
+      "name": "Mahamoti Djinn",
+      "scryfall_id": "36204ddd-ddf7-4b44-ae3c-b4a5a41ac9cb",
+      "collector_number": "64",
+      "multiverse_id": 112,
+      "set": "LEA"
+    },
+    "manabarbs": {
+      "name": "Manabarbs",
+      "scryfall_id": "6121f72f-680f-4bb4-ae4d-37ee4ebed4d8",
+      "collector_number": "163",
+      "multiverse_id": 211,
+      "set": "LEA"
+    },
+    "manaflare": {
+      "name": "Mana Flare",
+      "scryfall_id": "7fb99a26-beeb-4aca-bb02-b2d2ce0595f9",
+      "collector_number": "162",
+      "multiverse_id": 210,
+      "set": "LEA"
+    },
+    "manashort": {
+      "name": "Mana Short",
+      "scryfall_id": "73e3e0b3-5284-464f-8c62-0f7801c966f5",
+      "collector_number": "65",
+      "multiverse_id": 113,
+      "set": "LEA"
+    },
+    "manavault": {
+      "name": "Mana Vault",
+      "scryfall_id": "19499cb7-eccb-4e69-af32-6002d447a160",
+      "collector_number": "259",
+      "multiverse_id": 30,
+      "set": "LEA"
+    },
+    "meekstone": {
+      "name": "Meekstone",
+      "scryfall_id": "13a68a17-22ee-47c9-870a-83e911862b94",
+      "collector_number": "260",
+      "multiverse_id": 31,
+      "set": "LEA"
+    },
+    "merfolkofthepearltrident": {
+      "name": "Merfolk of the Pearl Trident",
+      "scryfall_id": "2b871039-6a66-4ac3-95e7-24759c1f2f92",
+      "collector_number": "66",
+      "multiverse_id": 114,
+      "set": "LEA"
+    },
+    "mesapegasus": {
+      "name": "Mesa Pegasus",
+      "scryfall_id": "eaac88da-d19e-4771-944c-3709963d04e7",
+      "collector_number": "28",
+      "multiverse_id": 259,
+      "set": "LEA"
+    },
+    "mindtwist": {
+      "name": "Mind Twist",
+      "scryfall_id": "eee9e106-a248-49d2-b8c8-6bbcd56ce739",
+      "collector_number": "115",
+      "multiverse_id": 71,
+      "set": "LEA"
+    },
+    "monssgoblinraiders": {
+      "name": "Mons's Goblin Raiders",
+      "scryfall_id": "b4eb3db3-6a7c-488a-9433-d5d1d3133816",
+      "collector_number": "164",
+      "multiverse_id": 212,
+      "set": "LEA"
+    },
+    "mountain": {
+      "name": "Mountain",
+      "scryfall_id": "1a96315d-edc6-4d68-a260-d14f61281dc1",
+      "collector_number": "293",
+      "multiverse_id": 291,
+      "set": "LEA"
+    },
+    "moxemerald": {
+      "name": "Mox Emerald",
+      "scryfall_id": "b0e1427c-05cd-465b-be59-97ed6e39f7ba",
+      "collector_number": "261",
+      "multiverse_id": 32,
+      "set": "LEA"
+    },
+    "moxjet": {
+      "name": "Mox Jet",
+      "scryfall_id": "92bcd1ce-19b1-4d78-8b09-95242ca08d76",
+      "collector_number": "262",
+      "multiverse_id": 33,
+      "set": "LEA"
+    },
+    "moxpearl": {
+      "name": "Mox Pearl",
+      "scryfall_id": "8ebe4be7-e12a-4596-a899-fbd5b152e879",
+      "collector_number": "263",
+      "multiverse_id": 34,
+      "set": "LEA"
+    },
+    "moxruby": {
+      "name": "Mox Ruby",
+      "scryfall_id": "8945585f-4773-493d-a0fe-d707db910b38",
+      "collector_number": "264",
+      "multiverse_id": 35,
+      "set": "LEA"
+    },
+    "moxsapphire": {
+      "name": "Mox Sapphire",
+      "scryfall_id": "82da0972-b17b-4600-9efd-e9430a0db04b",
+      "collector_number": "265",
+      "multiverse_id": 36,
+      "set": "LEA"
+    },
+    "naturalselection": {
+      "name": "Natural Selection",
+      "scryfall_id": "a8917dc8-01c0-4e72-9310-c4d501775411",
+      "collector_number": "212",
+      "multiverse_id": 168,
+      "set": "LEA"
+    },
+    "nethershadow": {
+      "name": "Nether Shadow",
+      "scryfall_id": "f13ad58a-6f9b-420a-bac1-40929f5e616a",
+      "collector_number": "116",
+      "multiverse_id": 72,
+      "set": "LEA"
+    },
+    "nettlingimp": {
+      "name": "Nettling Imp",
+      "scryfall_id": "8105973c-a94d-444c-ba20-ab0fa978bee8",
+      "collector_number": "117",
+      "multiverse_id": 73,
+      "set": "LEA"
+    },
+    "nevinyrralsdisk": {
+      "name": "Nevinyrral's Disk",
+      "scryfall_id": "12926dc8-8e6f-4a47-a12b-4d674189615a",
+      "collector_number": "266",
+      "multiverse_id": 37,
+      "set": "LEA"
+    },
+    "nightmare": {
+      "name": "Nightmare",
+      "scryfall_id": "b8cdd6a7-f772-4ccb-914f-63f52ed54d6b",
+      "collector_number": "118",
+      "multiverse_id": 74,
+      "set": "LEA"
+    },
+    "northernpaladin": {
+      "name": "Northern Paladin",
+      "scryfall_id": "6303233b-35eb-49ca-b844-ba6b9fe1cbd2",
+      "collector_number": "29",
+      "multiverse_id": 260,
+      "set": "LEA"
+    },
+    "obsianusgolem": {
+      "name": "Obsianus Golem",
+      "scryfall_id": "4c8e9f5c-deba-4443-bf9d-fb2be75c5418",
+      "collector_number": "267",
+      "multiverse_id": 38,
+      "set": "LEA"
+    },
+    "orcishartillery": {
+      "name": "Orcish Artillery",
+      "scryfall_id": "a97208b1-a91b-4129-8a00-2f97b418accc",
+      "collector_number": "165",
+      "multiverse_id": 213,
+      "set": "LEA"
+    },
+    "orcishoriflamme": {
+      "name": "Orcish Oriflamme",
+      "scryfall_id": "911538ea-322c-4c40-a9c3-35e47fe60fce",
+      "collector_number": "166",
+      "multiverse_id": 214,
+      "set": "LEA"
+    },
+    "paralyze": {
+      "name": "Paralyze",
+      "scryfall_id": "be33a155-de26-43d1-88f1-c926f1b7cb7c",
+      "collector_number": "119",
+      "multiverse_id": 75,
+      "set": "LEA"
+    },
+    "pearledunicorn": {
+      "name": "Pearled Unicorn",
+      "scryfall_id": "6daf1aab-1e58-4a5a-bc66-cb3f7c86e0e8",
+      "collector_number": "30",
+      "multiverse_id": 261,
+      "set": "LEA"
+    },
+    "personalincarnation": {
+      "name": "Personal Incarnation",
+      "scryfall_id": "caf9cef4-0f2d-478a-b119-fe1967687f74",
+      "collector_number": "31",
+      "multiverse_id": 262,
+      "set": "LEA"
+    },
+    "pestilence": {
+      "name": "Pestilence",
+      "scryfall_id": "d42a6350-b16b-4e10-a273-e6cbb55dcb7a",
+      "collector_number": "120",
+      "multiverse_id": 76,
+      "set": "LEA"
+    },
+    "phantasmalforces": {
+      "name": "Phantasmal Forces",
+      "scryfall_id": "0631c7c8-9aa5-4333-8e20-20247fc47033",
+      "collector_number": "67",
+      "multiverse_id": 115,
+      "set": "LEA"
+    },
+    "phantasmalterrain": {
+      "name": "Phantasmal Terrain",
+      "scryfall_id": "1c371aa1-1619-41e3-8364-7bc9b8cf5d14",
+      "collector_number": "68",
+      "multiverse_id": 116,
+      "set": "LEA"
+    },
+    "phantommonster": {
+      "name": "Phantom Monster",
+      "scryfall_id": "e46d2cf5-e8d0-4fb2-b950-252d52084b63",
+      "collector_number": "69",
+      "multiverse_id": 117,
+      "set": "LEA"
+    },
+    "pirateship": {
+      "name": "Pirate Ship",
+      "scryfall_id": "d0a7cb23-d229-43c5-addd-dcf423984b0c",
+      "collector_number": "70",
+      "multiverse_id": 118,
+      "set": "LEA"
+    },
+    "plaguerats": {
+      "name": "Plague Rats",
+      "scryfall_id": "b3724e40-0622-4aee-9334-6c9fff88bcd5",
+      "collector_number": "121",
+      "multiverse_id": 77,
+      "set": "LEA"
+    },
+    "plains": {
+      "name": "Plains",
+      "scryfall_id": "51662253-789f-4a02-9937-688e36775024",
+      "collector_number": "287",
+      "multiverse_id": 294,
+      "set": "LEA"
+    },
+    "plateau": {
+      "name": "Plateau",
+      "scryfall_id": "6eafa00b-c628-40f6-86eb-88e1361fc7a0",
+      "collector_number": "279",
+      "multiverse_id": 281,
+      "set": "LEA"
+    },
+    "powerleak": {
+      "name": "Power Leak",
+      "scryfall_id": "ccc982b6-35b2-4e33-ace2-86cb79123e4f",
+      "collector_number": "71",
+      "multiverse_id": 119,
+      "set": "LEA"
+    },
+    "powersink": {
+      "name": "Power Sink",
+      "scryfall_id": "1b342dd3-09b9-4108-bf12-a65d4cef4eb9",
+      "collector_number": "72",
+      "multiverse_id": 120,
+      "set": "LEA"
+    },
+    "powersurge": {
+      "name": "Power Surge",
+      "scryfall_id": "62858604-ca5a-4f69-a045-a7515ebfabf2",
+      "collector_number": "167",
+      "multiverse_id": 215,
+      "set": "LEA"
+    },
+    "prodigalsorcerer": {
+      "name": "Prodigal Sorcerer",
+      "scryfall_id": "e4dc1103-7bf1-47f6-9006-d3ed9ccd7a6a",
+      "collector_number": "73",
+      "multiverse_id": 121,
+      "set": "LEA"
+    },
+    "psionicblast": {
+      "name": "Psionic Blast",
+      "scryfall_id": "a6a86e6e-bfff-46af-9d36-c912901fea92",
+      "collector_number": "74",
+      "multiverse_id": 122,
+      "set": "LEA"
+    },
+    "psychicvenom": {
+      "name": "Psychic Venom",
+      "scryfall_id": "f3f5b68a-6b0e-431e-89f0-ff60f17687a5",
+      "collector_number": "75",
+      "multiverse_id": 123,
+      "set": "LEA"
+    },
+    "purelace": {
+      "name": "Purelace",
+      "scryfall_id": "2facf462-55cd-4da4-997f-2cf4add75628",
+      "collector_number": "32",
+      "multiverse_id": 263,
+      "set": "LEA"
+    },
+    "ragingriver": {
+      "name": "Raging River",
+      "scryfall_id": "61e4f56d-1f4f-49f2-8534-0d09196a3327",
+      "collector_number": "168",
+      "multiverse_id": 216,
+      "set": "LEA"
+    },
+    "raisedead": {
+      "name": "Raise Dead",
+      "scryfall_id": "ce07bede-2219-427c-a61a-56518751de42",
+      "collector_number": "122",
+      "multiverse_id": 78,
+      "set": "LEA"
+    },
+    "redelementalblast": {
+      "name": "Red Elemental Blast",
+      "scryfall_id": "776ad9be-3309-4f1d-9f27-6219d9477662",
+      "collector_number": "169",
+      "multiverse_id": 217,
+      "set": "LEA"
+    },
+    "redward": {
+      "name": "Red Ward",
+      "scryfall_id": "e0c64c01-c2aa-470b-88c6-3d3e4a969649",
+      "collector_number": "33",
+      "multiverse_id": 264,
+      "set": "LEA"
+    },
+    "regeneration": {
+      "name": "Regeneration",
+      "scryfall_id": "b7b7aa34-b4f8-41b4-82ce-ab2e204c3bf4",
+      "collector_number": "213",
+      "multiverse_id": 169,
+      "set": "LEA"
+    },
+    "regrowth": {
+      "name": "Regrowth",
+      "scryfall_id": "badc73ec-3728-4246-90c7-5f4eb7051ed5",
+      "collector_number": "214",
+      "multiverse_id": 170,
+      "set": "LEA"
+    },
+    "resurrection": {
+      "name": "Resurrection",
+      "scryfall_id": "4fff6e6f-4ebd-4ec8-9443-59efb22d376c",
+      "collector_number": "34",
+      "multiverse_id": 265,
+      "set": "LEA"
+    },
+    "reversedamage": {
+      "name": "Reverse Damage",
+      "scryfall_id": "943baea8-b173-4863-a3ab-dd217d483cd9",
+      "collector_number": "35",
+      "multiverse_id": 266,
+      "set": "LEA"
+    },
+    "righteousness": {
+      "name": "Righteousness",
+      "scryfall_id": "d0ba7b76-f3d0-47d0-8a35-0c08e67200fb",
+      "collector_number": "36",
+      "multiverse_id": 267,
+      "set": "LEA"
+    },
+    "rockhydra": {
+      "name": "Rock Hydra",
+      "scryfall_id": "410ac9e6-fbc1-4cc8-84db-84e2eb1bab97",
+      "collector_number": "171",
+      "multiverse_id": 219,
+      "set": "LEA"
+    },
+    "rocofkherridges": {
+      "name": "Roc of Kher Ridges",
+      "scryfall_id": "731a4b86-c213-4d8e-bf01-0a0e8cff0ff1",
+      "collector_number": "170",
+      "multiverse_id": 218,
+      "set": "LEA"
+    },
+    "rodofruin": {
+      "name": "Rod of Ruin",
+      "scryfall_id": "af957200-c538-4f52-b105-6db7a7abb4dc",
+      "collector_number": "268",
+      "multiverse_id": 39,
+      "set": "LEA"
+    },
+    "royalassassin": {
+      "name": "Royal Assassin",
+      "scryfall_id": "59590768-fa96-4869-8763-9d5ab6ac22ad",
+      "collector_number": "123",
+      "multiverse_id": 79,
+      "set": "LEA"
+    },
+    "sacrifice": {
+      "name": "Sacrifice",
+      "scryfall_id": "12164aee-6a27-4246-8d15-2d6dd20d92e9",
+      "collector_number": "124",
+      "multiverse_id": 80,
+      "set": "LEA"
+    },
+    "samitehealer": {
+      "name": "Samite Healer",
+      "scryfall_id": "efba235e-04e5-449c-906c-0ac33f6d7929",
+      "collector_number": "37",
+      "multiverse_id": 268,
+      "set": "LEA"
+    },
+    "savannah": {
+      "name": "Savannah",
+      "scryfall_id": "94f7e24c-2546-41b6-81ad-5e920b07e64e",
+      "collector_number": "280",
+      "multiverse_id": 282,
+      "set": "LEA"
+    },
+    "savannahlions": {
+      "name": "Savannah Lions",
+      "scryfall_id": "d05b92bd-797e-413f-a8b0-32e0937a1ee0",
+      "collector_number": "38",
+      "multiverse_id": 269,
+      "set": "LEA"
+    },
+    "scathezombies": {
+      "name": "Scathe Zombies",
+      "scryfall_id": "e9be6dcf-5e25-4b8c-9cd0-badf3771f81e",
+      "collector_number": "125",
+      "multiverse_id": 81,
+      "set": "LEA"
+    },
+    "scavengingghoul": {
+      "name": "Scavenging Ghoul",
+      "scryfall_id": "426984e0-88e1-4a2d-9a1c-798b95864df3",
+      "collector_number": "126",
+      "multiverse_id": 82,
+      "set": "LEA"
+    },
+    "scrubland": {
+      "name": "Scrubland",
+      "scryfall_id": "bebe39d4-21fb-46a4-a1ec-b97102e46c15",
+      "collector_number": "281",
+      "multiverse_id": 283,
+      "set": "LEA"
+    },
+    "scrybsprites": {
+      "name": "Scryb Sprites",
+      "scryfall_id": "6d929c38-91e6-457c-937a-d1884f4bba44",
+      "collector_number": "215",
+      "multiverse_id": 171,
+      "set": "LEA"
+    },
+    "seaserpent": {
+      "name": "Sea Serpent",
+      "scryfall_id": "d0b333b7-db4d-4439-b0de-60414cbf8d7b",
+      "collector_number": "76",
+      "multiverse_id": 124,
+      "set": "LEA"
+    },
+    "sedgetroll": {
+      "name": "Sedge Troll",
+      "scryfall_id": "b13bf496-f3c0-4c13-8282-e7abfab6a198",
+      "collector_number": "172",
+      "multiverse_id": 220,
+      "set": "LEA"
+    },
+    "sengirvampire": {
+      "name": "Sengir Vampire",
+      "scryfall_id": "510840f4-7c0e-4b47-8ebf-23c20cac4bd9",
+      "collector_number": "127",
+      "multiverse_id": 83,
+      "set": "LEA"
+    },
+    "serraangel": {
+      "name": "Serra Angel",
+      "scryfall_id": "f8ac5006-91bd-4803-93da-f87cf196dd2f",
+      "collector_number": "39",
+      "multiverse_id": 270,
+      "set": "LEA"
+    },
+    "shanodindryads": {
+      "name": "Shanodin Dryads",
+      "scryfall_id": "814cf35c-f1ad-4bf4-8c10-a5592c3b1be8",
+      "collector_number": "216",
+      "multiverse_id": 172,
+      "set": "LEA"
+    },
+    "shatter": {
+      "name": "Shatter",
+      "scryfall_id": "50dc7fc1-cb6a-4c68-b993-1a25cf16226e",
+      "collector_number": "173",
+      "multiverse_id": 221,
+      "set": "LEA"
+    },
+    "shivandragon": {
+      "name": "Shivan Dragon",
+      "scryfall_id": "fefbf149-f988-4f8b-9f53-56f5878116a6",
+      "collector_number": "174",
+      "multiverse_id": 222,
+      "set": "LEA"
+    },
+    "simulacrum": {
+      "name": "Simulacrum",
+      "scryfall_id": "35c3a78d-cc79-4187-929a-8aa1d1469990",
+      "collector_number": "128",
+      "multiverse_id": 84,
+      "set": "LEA"
+    },
+    "sinkhole": {
+      "name": "Sinkhole",
+      "scryfall_id": "04b31611-9053-4eaf-b392-21bb644fef5f",
+      "collector_number": "129",
+      "multiverse_id": 85,
+      "set": "LEA"
+    },
+    "sirenscall": {
+      "name": "Siren's Call",
+      "scryfall_id": "d992b336-3b6e-43e1-8662-d85664349b44",
+      "collector_number": "77",
+      "multiverse_id": 125,
+      "set": "LEA"
+    },
+    "sleightofmind": {
+      "name": "Sleight of Mind",
+      "scryfall_id": "d427790c-e322-446e-8d7d-a6b48ad41a42",
+      "collector_number": "78",
+      "multiverse_id": 126,
+      "set": "LEA"
+    },
+    "smoke": {
+      "name": "Smoke",
+      "scryfall_id": "7c67788e-d713-47c3-ab9f-b8a6212ae24f",
+      "collector_number": "175",
+      "multiverse_id": 223,
+      "set": "LEA"
+    },
+    "solring": {
+      "name": "Sol Ring",
+      "scryfall_id": "c4300d24-1cae-4dd5-be7e-38cc677cf5bd",
+      "collector_number": "269",
+      "multiverse_id": 40,
+      "set": "LEA"
+    },
+    "soulnet": {
+      "name": "Soul Net",
+      "scryfall_id": "2b814198-814b-4619-a158-327af675f8f2",
+      "collector_number": "270",
+      "multiverse_id": 41,
+      "set": "LEA"
+    },
+    "spellblast": {
+      "name": "Spell Blast",
+      "scryfall_id": "845734da-ab03-4dbc-bb5f-96481d3b8e88",
+      "collector_number": "79",
+      "multiverse_id": 127,
+      "set": "LEA"
+    },
+    "stasis": {
+      "name": "Stasis",
+      "scryfall_id": "b6cef408-5b4b-49f6-9531-be544815b93f",
+      "collector_number": "80",
+      "multiverse_id": 128,
+      "set": "LEA"
+    },
+    "stealartifact": {
+      "name": "Steal Artifact",
+      "scryfall_id": "83316930-d6ad-46ce-9b40-48eea856d95b",
+      "collector_number": "81",
+      "multiverse_id": 129,
+      "set": "LEA"
+    },
+    "stonegiant": {
+      "name": "Stone Giant",
+      "scryfall_id": "7ffaedb9-25f8-4304-9085-e12505b93312",
+      "collector_number": "176",
+      "multiverse_id": 224,
+      "set": "LEA"
+    },
+    "stonerain": {
+      "name": "Stone Rain",
+      "scryfall_id": "57ff74cb-a2ed-4123-ac42-f72f9820049e",
+      "collector_number": "177",
+      "multiverse_id": 225,
+      "set": "LEA"
+    },
+    "streamoflife": {
+      "name": "Stream of Life",
+      "scryfall_id": "aa1c4d4b-2645-4cd9-823e-3c9bb2eb48f9",
+      "collector_number": "217",
+      "multiverse_id": 173,
+      "set": "LEA"
+    },
+    "sunglassesofurza": {
+      "name": "Sunglasses of Urza",
+      "scryfall_id": "c0d433a4-76c0-4f27-836d-4c0c13a511fb",
+      "collector_number": "271",
+      "multiverse_id": 42,
+      "set": "LEA"
+    },
+    "swamp": {
+      "name": "Swamp",
+      "scryfall_id": "edeba4e1-9012-4962-8797-3a1f6a660952",
+      "collector_number": "291",
+      "multiverse_id": 278,
+      "set": "LEA"
+    },
+    "swordstoplowshares": {
+      "name": "Swords to Plowshares",
+      "scryfall_id": "386ea9eb-abc1-4862-aa2d-8fb808d79490",
+      "collector_number": "40",
+      "multiverse_id": 271,
+      "set": "LEA"
+    },
+    "taiga": {
+      "name": "Taiga",
+      "scryfall_id": "60df6592-0b3b-4b87-aeb2-8fa94b4fb7be",
+      "collector_number": "282",
+      "multiverse_id": 284,
+      "set": "LEA"
+    },
+    "terror": {
+      "name": "Terror",
+      "scryfall_id": "21004958-2c7e-4a55-bc80-411c4d780106",
+      "collector_number": "130",
+      "multiverse_id": 86,
+      "set": "LEA"
+    },
+    "thehive": {
+      "name": "The Hive",
+      "scryfall_id": "544a7138-eae8-4ff9-9e17-680bfa717183",
+      "collector_number": "272",
+      "multiverse_id": 43,
+      "set": "LEA"
+    },
+    "thicketbasilisk": {
+      "name": "Thicket Basilisk",
+      "scryfall_id": "e92cce01-b3bd-4307-aae5-9a7c8fa386ab",
+      "collector_number": "218",
+      "multiverse_id": 174,
+      "set": "LEA"
+    },
+    "thoughtlace": {
+      "name": "Thoughtlace",
+      "scryfall_id": "23749375-1416-47a4-9251-52f41fe2fae9",
+      "collector_number": "82",
+      "multiverse_id": 130,
+      "set": "LEA"
+    },
+    "throneofbone": {
+      "name": "Throne of Bone",
+      "scryfall_id": "a2931ae0-7836-4000-b9ec-f2029ebf5d96",
+      "collector_number": "273",
+      "multiverse_id": 44,
+      "set": "LEA"
+    },
+    "timberwolves": {
+      "name": "Timber Wolves",
+      "scryfall_id": "bc2570a4-eef9-430d-b6c2-cd51d29b9d01",
+      "collector_number": "219",
+      "multiverse_id": 175,
+      "set": "LEA"
+    },
+    "timetwister": {
+      "name": "Timetwister",
+      "scryfall_id": "9a49dc44-616e-4bdd-8220-0bb71eccc512",
+      "collector_number": "84",
+      "multiverse_id": 132,
+      "set": "LEA"
+    },
+    "timevault": {
+      "name": "Time Vault",
+      "scryfall_id": "902441dc-c976-4c92-b897-6376eaa0fe38",
+      "collector_number": "274",
+      "multiverse_id": 45,
+      "set": "LEA"
+    },
+    "timewalk": {
+      "name": "Time Walk",
+      "scryfall_id": "e0139f60-d48e-46fb-9f5a-1e3d7558c834",
+      "collector_number": "83",
+      "multiverse_id": 131,
+      "set": "LEA"
+    },
+    "tranquility": {
+      "name": "Tranquility",
+      "scryfall_id": "774cc5a6-3a69-4812-add4-eb5eb6389238",
+      "collector_number": "220",
+      "multiverse_id": 176,
+      "set": "LEA"
+    },
+    "tropicalisland": {
+      "name": "Tropical Island",
+      "scryfall_id": "a9c6c759-aabf-44e7-ba8c-33c5df232b56",
+      "collector_number": "283",
+      "multiverse_id": 285,
+      "set": "LEA"
+    },
+    "tsunami": {
+      "name": "Tsunami",
+      "scryfall_id": "9ed67d61-cf47-446b-b454-eb404a8686b7",
+      "collector_number": "221",
+      "multiverse_id": 177,
+      "set": "LEA"
+    },
+    "tundra": {
+      "name": "Tundra",
+      "scryfall_id": "a03e8c5b-f4ed-4fd7-ba05-db813ccc05eb",
+      "collector_number": "284",
+      "multiverse_id": 286,
+      "set": "LEA"
+    },
+    "tunnel": {
+      "name": "Tunnel",
+      "scryfall_id": "b21ebc9f-a93e-4d18-b3e8-8459e3abbf31",
+      "collector_number": "178",
+      "multiverse_id": 226,
+      "set": "LEA"
+    },
+    "twiddle": {
+      "name": "Twiddle",
+      "scryfall_id": "576e811f-26a3-4a7c-bd13-3b1cc3e184eb",
+      "collector_number": "85",
+      "multiverse_id": 133,
+      "set": "LEA"
+    },
+    "twoheadedgiantofforiys": {
+      "name": "Two-Headed Giant of Foriys",
+      "scryfall_id": "31c687dc-ee0c-4e54-a2b3-5d8e633b3245",
+      "collector_number": "179",
+      "multiverse_id": 227,
+      "set": "LEA"
+    },
+    "undergroundsea": {
+      "name": "Underground Sea",
+      "scryfall_id": "ff76ac86-8a8a-47fe-9388-8950ca3e26c3",
+      "collector_number": "285",
+      "multiverse_id": 287,
+      "set": "LEA"
+    },
+    "unholystrength": {
+      "name": "Unholy Strength",
+      "scryfall_id": "90563f90-0127-4164-b43b-f0321dc63a1d",
+      "collector_number": "131",
+      "multiverse_id": 87,
+      "set": "LEA"
+    },
+    "unsummon": {
+      "name": "Unsummon",
+      "scryfall_id": "8512f2c1-6361-4b79-843f-80b6bceeeb99",
+      "collector_number": "86",
+      "multiverse_id": 134,
+      "set": "LEA"
+    },
+    "uthdentroll": {
+      "name": "Uthden Troll",
+      "scryfall_id": "2ff21a6f-83a7-4bf3-a078-294e303232cc",
+      "collector_number": "180",
+      "multiverse_id": 228,
+      "set": "LEA"
+    },
+    "verduranenchantress": {
+      "name": "Verduran Enchantress",
+      "scryfall_id": "9f87178b-1221-4d7a-a7a5-20d7f01b8089",
+      "collector_number": "222",
+      "multiverse_id": 178,
+      "set": "LEA"
+    },
+    "vesuvandoppelganger": {
+      "name": "Vesuvan Doppelganger",
+      "scryfall_id": "768f3a05-bd06-4a23-b9f2-94f6e618fd9f",
+      "collector_number": "87",
+      "multiverse_id": 135,
+      "set": "LEA"
+    },
+    "veteranbodyguard": {
+      "name": "Veteran Bodyguard",
+      "scryfall_id": "cbd9ab01-a833-4fa4-8dee-151bd9800835",
+      "collector_number": "41",
+      "multiverse_id": 272,
+      "set": "LEA"
+    },
+    "volcaniceruption": {
+      "name": "Volcanic Eruption",
+      "scryfall_id": "a80582b1-09db-45f8-b362-0e5207a5a8e6",
+      "collector_number": "88",
+      "multiverse_id": 136,
+      "set": "LEA"
+    },
+    "wallofair": {
+      "name": "Wall of Air",
+      "scryfall_id": "da56fdf3-6a8f-4833-a5c3-197650cc4889",
+      "collector_number": "89",
+      "multiverse_id": 137,
+      "set": "LEA"
+    },
+    "wallofbone": {
+      "name": "Wall of Bone",
+      "scryfall_id": "ae20d442-a544-4a03-9ebf-5ecb137c67dd",
+      "collector_number": "132",
+      "multiverse_id": 88,
+      "set": "LEA"
+    },
+    "wallofbrambles": {
+      "name": "Wall of Brambles",
+      "scryfall_id": "af2a4558-db6e-41b2-aff6-b164d93282a0",
+      "collector_number": "223",
+      "multiverse_id": 179,
+      "set": "LEA"
+    },
+    "walloffire": {
+      "name": "Wall of Fire",
+      "scryfall_id": "efcf12cd-fb70-444e-9641-73ffa0e8f16e",
+      "collector_number": "181",
+      "multiverse_id": 229,
+      "set": "LEA"
+    },
+    "wallofice": {
+      "name": "Wall of Ice",
+      "scryfall_id": "cc743a03-867c-4bb0-8fb0-2bcaa0a8a756",
+      "collector_number": "224",
+      "multiverse_id": 180,
+      "set": "LEA"
+    },
+    "wallofstone": {
+      "name": "Wall of Stone",
+      "scryfall_id": "140e567c-6e4a-42b0-8084-d6c9695ae802",
+      "collector_number": "182",
+      "multiverse_id": 230,
+      "set": "LEA"
+    },
+    "wallofswords": {
+      "name": "Wall of Swords",
+      "scryfall_id": "99ec4723-b36c-4015-b361-736a6523e8f5",
+      "collector_number": "42",
+      "multiverse_id": 273,
+      "set": "LEA"
+    },
+    "wallofwater": {
+      "name": "Wall of Water",
+      "scryfall_id": "41faed1a-ded8-49ee-8e2a-c60d377775d7",
+      "collector_number": "90",
+      "multiverse_id": 138,
+      "set": "LEA"
+    },
+    "wallofwood": {
+      "name": "Wall of Wood",
+      "scryfall_id": "8df80424-3bd9-4982-ad79-e55d9ba3b43d",
+      "collector_number": "225",
+      "multiverse_id": 181,
+      "set": "LEA"
+    },
+    "wanderlust": {
+      "name": "Wanderlust",
+      "scryfall_id": "220a03ca-8c9b-4acb-821d-f6577fbb20fb",
+      "collector_number": "226",
+      "multiverse_id": 182,
+      "set": "LEA"
+    },
+    "warmammoth": {
+      "name": "War Mammoth",
+      "scryfall_id": "c8d6081e-f686-4263-a0a2-21c0d9af5fdb",
+      "collector_number": "227",
+      "multiverse_id": 183,
+      "set": "LEA"
+    },
+    "warpartifact": {
+      "name": "Warp Artifact",
+      "scryfall_id": "9e5e07a2-fbdf-4c4c-996a-fce40bab5de5",
+      "collector_number": "133",
+      "multiverse_id": 89,
+      "set": "LEA"
+    },
+    "waterelemental": {
+      "name": "Water Elemental",
+      "scryfall_id": "8de940d6-98c0-46a9-b5fd-e2b0899ea19e",
+      "collector_number": "91",
+      "multiverse_id": 139,
+      "set": "LEA"
+    },
+    "weakness": {
+      "name": "Weakness",
+      "scryfall_id": "36ca06a1-9b9a-49a2-9c47-9b72228621bc",
+      "collector_number": "134",
+      "multiverse_id": 90,
+      "set": "LEA"
+    },
+    "web": {
+      "name": "Web",
+      "scryfall_id": "37c7890a-86dc-4a97-a7ce-1436fa22d0c0",
+      "collector_number": "228",
+      "multiverse_id": 184,
+      "set": "LEA"
+    },
+    "wheeloffortune": {
+      "name": "Wheel of Fortune",
+      "scryfall_id": "67b369c4-faa8-45c8-a1b9-98f228b69682",
+      "collector_number": "183",
+      "multiverse_id": 231,
+      "set": "LEA"
+    },
+    "whiteknight": {
+      "name": "White Knight",
+      "scryfall_id": "50abfba8-c9f9-4ebf-965a-4b425fe83129",
+      "collector_number": "43",
+      "multiverse_id": 274,
+      "set": "LEA"
+    },
+    "whiteward": {
+      "name": "White Ward",
+      "scryfall_id": "49b22665-1501-420a-82ad-f71f6768bcf8",
+      "collector_number": "44",
+      "multiverse_id": 275,
+      "set": "LEA"
+    },
+    "wildgrowth": {
+      "name": "Wild Growth",
+      "scryfall_id": "fd896dfa-66c0-4327-8e5b-489bbe350c95",
+      "collector_number": "229",
+      "multiverse_id": 185,
+      "set": "LEA"
+    },
+    "willothewisp": {
+      "name": "Will-o'-the-Wisp",
+      "scryfall_id": "a1a6f8e9-7bc1-4151-b55f-acf877b1a7a6",
+      "collector_number": "135",
+      "multiverse_id": 91,
+      "set": "LEA"
+    },
+    "winterorb": {
+      "name": "Winter Orb",
+      "scryfall_id": "9359f60c-9a27-4e53-b35b-964a121a6fba",
+      "collector_number": "275",
+      "multiverse_id": 46,
+      "set": "LEA"
+    },
+    "woodensphere": {
+      "name": "Wooden Sphere",
+      "scryfall_id": "bcae01a2-171b-47cd-87be-f1e4e5314326",
+      "collector_number": "276",
+      "multiverse_id": 47,
+      "set": "LEA"
+    },
+    "wordofcommand": {
+      "name": "Word of Command",
+      "scryfall_id": "96c21429-98d3-416b-be00-6aa9c4c5a006",
+      "collector_number": "136",
+      "multiverse_id": 92,
+      "set": "LEA"
+    },
+    "wrathofgod": {
+      "name": "Wrath of God",
+      "scryfall_id": "a2788d69-6a3a-42f0-8736-cc6b57755ecd",
+      "collector_number": "45",
+      "multiverse_id": 276,
+      "set": "LEA"
+    },
+    "zombiemaster": {
+      "name": "Zombie Master",
+      "scryfall_id": "3d4255a0-d445-4c00-b936-bbf07851e1c8",
+      "collector_number": "137",
+      "multiverse_id": 93,
+      "set": "LEA"
+    }
+  }
+}
