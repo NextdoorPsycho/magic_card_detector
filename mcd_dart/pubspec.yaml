@@ -6,7 +6,6 @@ environment:
   sdk: ^3.7.2
 
 dependency_overrides:
-  image: ^4.5.4
 
 # Add regular dependencies here.
 dependencies:
@@ -17,6 +16,7 @@ dependencies:
   scryfall_api: ^2.2.0 # Used for looking up additional card data
   http: ^1.3.0 # Used for HTTP requests
   interact: ^2.2.0 # CLI interactive interface
+  flython: ^0.2.0
 
 dev_dependencies:
   lints: ^5.1.1

@@ -21,33 +21,68 @@ class HashGenerator {
     print('Using source: $source');
     print('Running with parallelism: $parallelism');
 
-    // Mock function logic
+    // Define paths
     final Directory tempDir = Directory(path.join('.', 'temp_$setCode'));
+    final String outputPath = path.join('assets', 'set_hashes', 
+        '${setCode.toLowerCase()}_reference_phash.dat');
+    final Directory outputDir = Directory(path.dirname(outputPath));
 
     try {
-      // Create mock temp directory
-      print('Creating temporary directory: ${tempDir.path}');
-
-      // Download or read card information based on source
+      // Ensure output directory exists
+      if (!outputDir.existsSync()) {
+        outputDir.createSync(recursive: true);
+        print('Created output directory: ${outputDir.path}');
+      }
+      
+      // Set up image source
+      String imagePath;
       if (source == 'Scryfall') {
+        // Create temp directory for downloaded images if it doesn't exist
+        if (!tempDir.existsSync()) {
+          tempDir.createSync(recursive: true);
+        }
+        print('Creating temporary directory: ${tempDir.path}');
+        
         print('Fetching card data from Scryfall API...');
         print('Processing $parallelism cards at a time...');
+        // This is where you would download images from Scryfall
+        // For now, we'll assume images are already downloaded to temp dir
+        imagePath = tempDir.path;
       } else {
+        // Use local images
         print('Reading card images from local storage...');
+        imagePath = path.join('assets', 'in');
       }
 
-      // Generate hash data
+      // Run Python script to generate hashes
       print('Generating perceptual hashes...');
-      print(
-        'Saving hash data to set_hashes/${setCode.toLowerCase()}_reference_phash.dat',
+      final verbose = true; // Set to true for verbose output
+      
+      final result = Process.runSync(
+        'python3',
+        [
+          path.join('bin', 'generate_hash.py'),
+          '--set-path', imagePath,
+          '--output', outputPath,
+          if (verbose) '--verbose',
+        ],
       );
-
+      
+      if (result.exitCode != 0) {
+        print('Error running Python script:');
+        print(result.stderr);
+        return false;
+      }
+      
+      print(result.stdout);
+      
       // Clean up if requested
-      if (cleanup) {
+      if (cleanup && tempDir.existsSync() && source == 'Scryfall') {
         print('Cleaning up temporary files...');
+        tempDir.deleteSync(recursive: true);
       }
 
-      return true; // Mock successful execution
+      return true;
     } catch (e) {
       print('Error during hash generation: $e');
       return false;
