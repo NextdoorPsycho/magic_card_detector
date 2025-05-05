@@ -29,7 +29,7 @@ except ImportError:
     sys.exit(1)
 
 # Import from our local module
-from mcd_detector import MagicCardDetector, EnhancedReferenceImage, CardMetadata
+from mtg_detector import MagicCardDetector, EnhancedReferenceImage, CardMetadata
 import cv2
 
 class EnhancedHashGenerator:

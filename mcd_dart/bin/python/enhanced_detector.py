@@ -23,7 +23,7 @@ matplotlib.use('Agg')  # Use the Agg backend which doesn't require a GUI
 from PIL import Image
 
 # Import from our local module
-from mcd_detector import MagicCardDetector, TestImage, EnhancedReferenceImage
+from mtg_detector import MagicCardDetector, TestImage, EnhancedReferenceImage
 
 class EnhancedCardDetector:
     """
