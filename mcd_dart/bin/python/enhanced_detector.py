@@ -22,13 +22,8 @@ matplotlib.use('Agg')  # Use the Agg backend which doesn't require a GUI
 
 from PIL import Image
 
-# Add Python project root to path so we can import from the main project
-python_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../mcd_python'))
-sys.path.append(python_project_root)
-
-from lib.core.detector import MagicCardDetector
-from lib.models.image import TestImage
-from lib.models.enhanced_image import EnhancedReferenceImage
+# Import from our local module
+from mcd_detector import MagicCardDetector, TestImage, EnhancedReferenceImage
 
 class EnhancedCardDetector:
     """

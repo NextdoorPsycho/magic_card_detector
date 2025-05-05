@@ -28,12 +28,8 @@ except ImportError:
     print("    pip3 install requests")
     sys.exit(1)
 
-# Add Python project root to path so we can import from the main project
-python_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../mcd_python'))
-sys.path.append(python_project_root)
-
-from lib import MagicCardDetector
-from lib.models.enhanced_image import EnhancedReferenceImage, CardMetadata
+# Import from our local module
+from mcd_detector import MagicCardDetector, EnhancedReferenceImage, CardMetadata
 import cv2
 
 class EnhancedHashGenerator:

@@ -194,14 +194,14 @@ Future<void> _extractCards() async {
   final String outputPath =
       Input(
         prompt: 'Enter output directory path:',
-        defaultValue: './Out',
+        defaultValue: './assets/out',
       ).interact();
 
   // Step 3: Input selection
   final String inputPath =
       Input(
         prompt: 'Enter input directory path:',
-        defaultValue: './In',
+        defaultValue: './assets/in',
       ).interact();
 
   // Step 4: Advanced options
